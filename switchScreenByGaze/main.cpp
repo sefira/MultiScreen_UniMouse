@@ -12,7 +12,7 @@ void simulating_Keybd_Input(int key_Value)
 	m_Keybd_Input.ki.time = 0;
 	m_Keybd_Input.ki.dwExtraInfo = 0;
 
-	int F_Who = 0;
+	int F_Who = 0x41;
 	switch (key_Value)
 	{		
 		case 1: 
@@ -71,11 +71,11 @@ int main()
 	{
 		key_Value = 1;
 	}
-	if (strcmp(command, "xxm_pc") == 0)
+	if (strcmp(command, "xxm-pc") == 0)
 	{
 		key_Value = 2;
 	}
-
+	//Sleep(5000);
 	simulating_Keybd_Input(key_Value);
 	return 0;
 }
