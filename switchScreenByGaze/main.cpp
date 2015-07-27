@@ -61,6 +61,7 @@ void simulating_Keybd_Input(int key_Value)
 
 int main()
 {
+	getComputerName();
 	char command[1024];
 	cin.getline(command,1024);
 	cout << command << endl;
