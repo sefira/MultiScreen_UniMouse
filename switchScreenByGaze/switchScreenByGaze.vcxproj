@@ -34,9 +34,11 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="D:\opencv\opencv2410.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="D:\opencv\opencv2410.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -78,11 +80,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ComputerFinder.cpp" />
+    <ClCompile Include="computerfinder.cpp" />
+    <ClCompile Include="evaluatemedia.cpp" />
+    <ClCompile Include="face_x.cpp" />
+    <ClCompile Include="fern.cpp" />
+    <ClCompile Include="keyboardsimulater.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="regressor.cpp" />
+    <ClCompile Include="utils.cpp" />
+    <ClCompile Include="wservicestart.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ComputerFinder.h" />
+    <ClInclude Include="computerfinder.h" />
+    <ClInclude Include="evaluatemedia.h" />
+    <ClInclude Include="face_x.h" />
+    <ClInclude Include="fern.h" />
+    <ClInclude Include="keyboardsimulater.h" />
+    <ClInclude Include="regressor.h" />
+    <ClInclude Include="utils.h" />
+    <ClInclude Include="wservicestart.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -18,12 +18,54 @@
     <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="ComputerFinder.cpp">
+    <ClCompile Include="face_x.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="fern.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="regressor.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="utils.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="computerfinder.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="keyboardsimulater.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="wservicestart.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="evaluatemedia.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ComputerFinder.h">
+    <ClInclude Include="face_x.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="fern.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="regressor.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="utils.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="computerfinder.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="keyboardsimulater.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="wservicestart.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="evaluatemedia.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
