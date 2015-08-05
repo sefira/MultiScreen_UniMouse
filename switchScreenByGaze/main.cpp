@@ -57,7 +57,7 @@ int main()
 	//m_ComputerFinder.GetIPbyCompterName("xxm-pc");
 	//m_KeyBoardSimulater.Switch_Screen_to_FX(key_Value);
 
-	EvaluateMedia m_evaluatemedia = EvaluateMedia();
-	m_evaluatemedia.AlignVideoBasedonLast();
+	EvaluateMedia m_evaluatemedia = EvaluateMedia(false);
+	m_evaluatemedia.TrackingFace();
 	return 0;
 }

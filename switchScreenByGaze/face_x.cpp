@@ -32,6 +32,11 @@ THE SOFTWARE.
 
 using namespace std;
 
+FaceX::FaceX()
+{
+
+}
+
 FaceX::FaceX(const string & filename)
 {
 	cv::FileStorage model_file;

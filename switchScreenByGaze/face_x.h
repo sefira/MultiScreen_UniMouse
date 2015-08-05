@@ -36,6 +36,7 @@ THE SOFTWARE.
 class FaceX
 {
 public:
+	FaceX();
 	// Construct the object and load model from file.
 	//
 	// filename: The file name of the model file.
