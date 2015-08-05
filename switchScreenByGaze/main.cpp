@@ -58,6 +58,6 @@ int main()
 	//m_KeyBoardSimulater.Switch_Screen_to_FX(key_Value);
 
 	EvaluateMedia m_evaluatemedia = EvaluateMedia();
-	m_evaluatemedia.AlignImage();
+	m_evaluatemedia.AlignVideoBasedonLast();
 	return 0;
 }

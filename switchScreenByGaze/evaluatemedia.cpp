@@ -66,11 +66,6 @@ int EvaluateMedia::PaintFive(cv::Mat frame)
 
 int EvaluateMedia::Evaluate(cv::Mat &frame)
 {
-	CvFont font;
-	double hScale = 1;
-	double vScale = 1;
-	int lineWidth = 0.5;
-	cvInitFont(&font, CV_FONT_HERSHEY_SIMPLEX | CV_FONT_ITALIC, hScale, vScale, 0, lineWidth);
 	char msg[64], diff_value_str[64];
 	double diff_value031, diff_value379, diff_value_ratio;
 	const char *showMsg;
@@ -80,30 +75,34 @@ int EvaluateMedia::Evaluate(cv::Mat &frame)
 	sprintf(diff_value_str, "%lf", faces.size());
 	strcat(msg, diff_value_str);
 	showMsg = msg;
+	cout << showMsg << endl;
 	//cvPutText(&frame, "hahahhaha", cvPoint(10, 10), &font, CV_RGB(255, 0, 0));
 
-	//memset(msg, 0, sizeof(char));
-	//strcat(msg, "0 - 31:");
-	//diff_value031 = landmarks[0].x - landmarks[31].x + '0';
-	//sprintf(diff_value_str, "%lf", diff_value031);
-	//strcat(msg, diff_value_str);
-	//showMsg = msg;
+	memset(msg, 0, sizeof(char));
+	strcat(msg, "0 - 31:");
+	diff_value031 = landmarks[0].x - landmarks[31].x;
+	sprintf(diff_value_str, "%lf", diff_value031);
+	strcat(msg, diff_value_str);
+	showMsg = msg;
+	cout << showMsg << endl;
 	//cvPutText(&(CvMat)frame, showMsg, cvPoint(10,10), &font, CV_RGB(255, 0, 0));
 
-	//memset(msg, 0, sizeof(char));
-	//strcat(msg, "37 - 9:");
-	//diff_value379 = landmarks[37].x - landmarks[9].x + '0';
-	//sprintf(diff_value_str, "%lf", diff_value379);
-	//strcat(msg, diff_value_str);
-	//showMsg = msg;
+	memset(msg, 0, sizeof(char));
+	strcat(msg, "37 - 9:");
+	diff_value379 = landmarks[37].x - landmarks[9].x;
+	sprintf(diff_value_str, "%lf", diff_value379);
+	strcat(msg, diff_value_str);
+	showMsg = msg;
+	cout << showMsg << endl;
 	//cvPutText(&(CvMat)frame, showMsg, cvPoint(20, 10), &font, CV_RGB(255, 0, 0));
 
-	//memset(msg, 0, sizeof(char));
-	//strcat(msg, "(0-31)/(37-9):");
-	//diff_value_ratio = diff_value031 / diff_value379 + '0';
-	//sprintf(diff_value_str, "%lf", diff_value_ratio);
-	//strcat(msg, diff_value_str);
-	//showMsg = msg;
+	memset(msg, 0, sizeof(char));
+	strcat(msg, "(0-31)/(37-9):");
+	diff_value_ratio = diff_value031 / diff_value379;
+	sprintf(diff_value_str, "%lf", diff_value_ratio);
+	strcat(msg, diff_value_str);
+	showMsg = msg;
+	cout << showMsg << endl;
 	//cvPutText(&(CvMat)frame, showMsg, cvPoint(30, 10), &font, CV_RGB(255, 0, 0));
 
 	return 1;
