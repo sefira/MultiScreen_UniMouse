@@ -40,13 +40,18 @@ private:
 	static const std::string kAlt2;
 	static const std::string kTestImage;
 	static const FaceX face_x;
+
+	std::vector<cv::Point2d> landmarks;
+	std::vector<cv::Rect> faces;
 	
 public:
 	EvaluateMedia();
 
 	~EvaluateMedia();
 
-	static int PaintFive(std::vector<cv::Point2d> landmarks , cv::Mat frame);
+	int Evaluate(cv::Mat &frame);
+
+	int PaintFive(cv::Mat frame);
 
 	int AlignImage();
 

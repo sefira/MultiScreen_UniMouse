@@ -3,3 +3,4 @@ ipch
 Release
 Debug
 *.opensdf
+*.gz
