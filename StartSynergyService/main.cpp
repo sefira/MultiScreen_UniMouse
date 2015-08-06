@@ -22,54 +22,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#ifndef SWITCHSCREENBYGAZE_EVALUATEMEDIA_H_
-#define SWITCHSCREENBYGAZE_EVALUATEMEDIA_H_
+#include "wservicestart.h"
 
-#include<iostream>
-#include<string>
+#include <iostream>
+using namespace std;
 
-#include<opencv2/opencv.hpp>
-
-#include"face_x.h"
-
-class EvaluateMedia
+int main()
 {
-private:
-	static const std::string kModelFileName;
-	static const std::string kSmallModelFileName;
-	static const std::string kAlt2;
-	static const std::string kTestImage;
-	FaceX face_x;
+	WServiceStart m_WServiceStart;
+	m_WServiceStart.StartWServiceSynergy();
 
-	cv::CascadeClassifier m_cascadeclassifier;
-	std::vector<cv::Point2d> landmarks;
-	std::vector<cv::Rect> faces;
-
-	cv::Mat frame;
-	cv::Mat gray_image;
-	cv::VideoCapture m_videocapture;
-
-	//deviation maybe will be share in two thread
-	static double deviation;
-	
-public:
-	EvaluateMedia(bool load_facex);
-
-	~EvaluateMedia();
-
-	double GetDeviation();
-
-	int Evaluate();
-
-	int PaintFive(cv::Mat frame);
-
-	int TrackingFace();
-
-	int AlignImage();
-
-	int AlignVideo();
-
-	int AlignVideoBasedonLast();
-};
-
-#endif
+	return 0;
+}

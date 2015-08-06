@@ -24,18 +24,24 @@ THE SOFTWARE.
 
 #include "keyboardsimulater.h"
 #include "computerfinder.h"
-#include "wservicestart.h"
 #include "evaluatemedia.h"
 
 #include <iostream>
 using namespace std;
 
+void test()
+{
+	cv::Mat zero = cv::Mat::zeros(200, 200, CV_8U);
+
+	cv::Mat roi(zero, cv::Rect(150, 150, 50, 50));
+	roi = cv::Scalar(1);
+	cv::imshow("zero", zero);
+	cv::waitKey();
+}
 int main()
 {
 	KeyBoardSimulater m_KeyBoardSimulater;
 	ComputerFinder m_ComputerFinder;
-	WServiceStart m_WServiceStart;
-	//m_WServiceStart.StartWServiceSynergy();
 
 	//char command[1024];
 	//cin.getline(command,1024);
@@ -58,6 +64,11 @@ int main()
 	//m_KeyBoardSimulater.Switch_Screen_to_FX(key_Value);
 
 	EvaluateMedia m_evaluatemedia = EvaluateMedia(false);
-	m_evaluatemedia.TrackingFace();
+	//m_evaluatemedia.TrackingFace();
+	//cout << m_evaluatemedia.GetDeviation() << endl;
+	//test();
+	cout << "µÈ´ý°´¼ü" << endl;
+	int i;
+	cin >> i;
 	return 0;
 }
