@@ -31,6 +31,6 @@ int main()
 {
 	WServiceStart m_WServiceStart;
 	m_WServiceStart.StartWServiceSynergy();
-
+	
 	return 0;
 }

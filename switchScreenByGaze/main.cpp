@@ -64,11 +64,8 @@ int main()
 	//m_KeyBoardSimulater.Switch_Screen_to_FX(key_Value);
 
 	EvaluateMedia m_evaluatemedia = EvaluateMedia(false);
-	//m_evaluatemedia.TrackingFace();
-	//cout << m_evaluatemedia.GetDeviation() << endl;
-	//test();
-	cout << "µÈ´ý°´¼ü" << endl;
-	int i;
-	cin >> i;
+	m_evaluatemedia.TrackingFace();
+	cout << m_evaluatemedia.GetDeviation() << endl;
+	
 	return 0;
 }

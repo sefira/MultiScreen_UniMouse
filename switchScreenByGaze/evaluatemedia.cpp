@@ -154,28 +154,28 @@ int EvaluateMedia::Evaluate()
 			//	mean_rightdown.val[2] << "," << mean_rightdown.val[3] << endl;
 			//cout << "leftdown stddev:" << 
 			//	stddev_leftdown.val[0] << "," << stddev_leftdown.val[1] << "," << 
-			//	stddev_leftdown.val[2] << stddev_leftdown.val[3] << endl;
+			//	stddev_leftdown.val[2] << "," << stddev_leftdown.val[3] << endl;
 			//cout << "rightdown stddev:" <<
 			//	stddev_rightdown.val[0] << "," << stddev_rightdown.val[1] << "," <<
-			//	stddev_rightdown.val[2] << stddev_rightdown.val[3] << endl;
+			//	stddev_rightdown.val[2] << "," << stddev_rightdown.val[3] << endl;
 
 			if (mean_leftdown.val[0] > mean_rightdown.val[0])
 			{
-				if (mean_rightdown.val[0] < 0)
-				{
-					return deviation;
-				}
-				deviation = mean_leftdown.val[0] / mean_rightdown.val[0];
-				deviation += stddev_rightdown.val[0] / stddev_leftdown.val[0];
+				//if (mean_rightdown.val[0] <= 0 || stddev_leftdown.val[0] <= 0)
+				//{
+				//	return deviation;
+				//}
+				deviation = (mean_leftdown.val[0] + 1) / (mean_rightdown.val[0] + 1);
+				deviation += (stddev_rightdown.val[0] + 1) / (stddev_leftdown.val[0] + 1);
 			}
 			else
 			{
-				if (mean_leftdown.val[0] < 0)
-				{
-					return deviation;
-				}
-				deviation = mean_rightdown.val[0] / mean_leftdown.val[0];
-				deviation += stddev_leftdown.val[0] / stddev_rightdown.val[0];
+				//if (mean_leftdown.val[0] <= 0 || stddev_rightdown.val[0] <= 0)
+				//{
+				//	return deviation;
+				//}
+				deviation = (mean_rightdown.val[0] + 1) / (mean_leftdown.val[0] + 1);
+				deviation += (stddev_leftdown.val[0] + 1) / (stddev_rightdown.val[0] + 1);
 			}
 			return deviation;
 		}
