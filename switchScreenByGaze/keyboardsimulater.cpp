@@ -39,16 +39,58 @@ KeyBoardSimulater::~KeyBoardSimulater()
 
 }
 
-void KeyBoardSimulater::Switch_Screen_to_FX(int key_Value)
+int KeyBoardSimulater::LockScreen()
 {
-	INPUT m_Keybd_Input;
-	m_Keybd_Input.type = INPUT_KEYBOARD;
-	m_Keybd_Input.ki.wScan = 0;
-	m_Keybd_Input.ki.time = 0;
-	m_Keybd_Input.ki.dwExtraInfo = 0;
+	INPUT m_keybd_input;
+	m_keybd_input.type = INPUT_KEYBOARD;
+	m_keybd_input.ki.wScan = 0;
+	m_keybd_input.ki.time = 0;
+	m_keybd_input.ki.dwExtraInfo = 0;
 
-	int F_Who = 0x41;
-	switch (key_Value)
+	//press key
+	m_keybd_input.ki.dwFlags = 0;	//0 for press
+	//press ctrl
+	m_keybd_input.ki.wVk = VK_CONTROL;
+	SendInput(1, &m_keybd_input, sizeof(INPUT));
+	//press alt
+	m_keybd_input.ki.wVk = VK_MENU;
+	SendInput(1, &m_keybd_input, sizeof(INPUT));
+	//press shift
+	m_keybd_input.ki.wVk = VK_SHIFT;
+	SendInput(1, &m_keybd_input, sizeof(INPUT));
+	//press L
+	m_keybd_input.ki.wVk = 0x4C;
+	SendInput(1, &m_keybd_input, sizeof(INPUT));
+
+	//release key
+	m_keybd_input.ki.dwFlags = KEYEVENTF_KEYUP;
+	//release ctrl
+	m_keybd_input.ki.wVk = VK_CONTROL;
+	SendInput(1, &m_keybd_input, sizeof(INPUT));
+	//release alt
+	m_keybd_input.ki.wVk = VK_MENU;
+	SendInput(1, &m_keybd_input, sizeof(INPUT));
+	//release shift
+	m_keybd_input.ki.wVk = VK_SHIFT;
+	SendInput(1, &m_keybd_input, sizeof(INPUT));
+	//release F(x)
+	m_keybd_input.ki.wVk = 0x4C;
+	SendInput(1, &m_keybd_input, sizeof(INPUT));
+	cout << "simulating input" << endl;
+
+	return 1;
+}
+
+int KeyBoardSimulater::SwitchScreentoFX(int key_value)
+{
+	INPUT m_keybd_input;
+	m_keybd_input.type = INPUT_KEYBOARD;
+	m_keybd_input.ki.wScan = 0;
+	m_keybd_input.ki.time = 0;
+	m_keybd_input.ki.dwExtraInfo = 0;
+
+	int F_Who = 0x6F;
+	switch (key_value)
 	{
 	case 1:
 		F_Who = VK_F1;
@@ -62,34 +104,35 @@ void KeyBoardSimulater::Switch_Screen_to_FX(int key_Value)
 	}
 
 	//press key
-	m_Keybd_Input.ki.dwFlags = 0;	//0 for press
+	m_keybd_input.ki.dwFlags = 0;	//0 for press
 	//press ctrl
-	m_Keybd_Input.ki.wVk = VK_CONTROL;
-	SendInput(1, &m_Keybd_Input, sizeof(INPUT));
+	m_keybd_input.ki.wVk = VK_CONTROL;
+	SendInput(1, &m_keybd_input, sizeof(INPUT));
 	//press alt
-	m_Keybd_Input.ki.wVk = VK_MENU;
-	SendInput(1, &m_Keybd_Input, sizeof(INPUT));
+	m_keybd_input.ki.wVk = VK_MENU;
+	SendInput(1, &m_keybd_input, sizeof(INPUT));
 	//press shift
-	m_Keybd_Input.ki.wVk = VK_SHIFT;
-	SendInput(1, &m_Keybd_Input, sizeof(INPUT));
+	m_keybd_input.ki.wVk = VK_SHIFT;
+	SendInput(1, &m_keybd_input, sizeof(INPUT));
 	//press F(x)
-	m_Keybd_Input.ki.wVk = F_Who;
-	SendInput(1, &m_Keybd_Input, sizeof(INPUT));
+	m_keybd_input.ki.wVk = F_Who;
+	SendInput(1, &m_keybd_input, sizeof(INPUT));
 
 	//release key
-	m_Keybd_Input.ki.dwFlags = KEYEVENTF_KEYUP;
-	//press ctrl
-	m_Keybd_Input.ki.wVk = VK_CONTROL;
-	SendInput(1, &m_Keybd_Input, sizeof(INPUT));
-	//press alt
-	m_Keybd_Input.ki.wVk = VK_MENU;
-	SendInput(1, &m_Keybd_Input, sizeof(INPUT));
-	//press shift
-	m_Keybd_Input.ki.wVk = VK_SHIFT;
-	SendInput(1, &m_Keybd_Input, sizeof(INPUT));
-	//press F(x)
-	m_Keybd_Input.ki.wVk = F_Who;
-	SendInput(1, &m_Keybd_Input, sizeof(INPUT));
+	m_keybd_input.ki.dwFlags = KEYEVENTF_KEYUP;
+	//release ctrl
+	m_keybd_input.ki.wVk = VK_CONTROL;
+	SendInput(1, &m_keybd_input, sizeof(INPUT));
+	//release alt
+	m_keybd_input.ki.wVk = VK_MENU;
+	SendInput(1, &m_keybd_input, sizeof(INPUT));
+	//release shift
+	m_keybd_input.ki.wVk = VK_SHIFT;
+	SendInput(1, &m_keybd_input, sizeof(INPUT));
+	//release F(x)
+	m_keybd_input.ki.wVk = F_Who;
+	SendInput(1, &m_keybd_input, sizeof(INPUT));
 	cout << "simulating input" << endl;
-	return;
+	
+	return 1;
 }

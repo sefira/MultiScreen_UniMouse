@@ -36,7 +36,12 @@ public:
 
 	~KeyBoardSimulater();
 
-	void Switch_Screen_to_FX(int key_Value);
+	//according to input ,switch screen by press key FX
+	int SwitchScreentoFX(int key_value);
+
+	//Lock screen ,so that user can not switch screen by just move mouse
+	//Only by press key FX
+	int LockScreen();
 };
 
 
