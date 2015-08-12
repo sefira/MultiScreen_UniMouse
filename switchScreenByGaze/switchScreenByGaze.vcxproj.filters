@@ -30,13 +30,13 @@
     <ClCompile Include="utils.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="computerfinder.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="keyboardsimulater.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="evaluatemedia.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="computer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -53,19 +53,14 @@
     <ClInclude Include="utils.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="computerfinder.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="keyboardsimulater.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="evaluatemedia.h">
       <Filter>头文件</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\LICENSE">
-      <Filter>资源文件</Filter>
-    </None>
+    <ClInclude Include="computer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

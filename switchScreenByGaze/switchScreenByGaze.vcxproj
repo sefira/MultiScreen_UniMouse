@@ -80,26 +80,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="computerfinder.cpp" />
     <ClCompile Include="evaluatemedia.cpp" />
     <ClCompile Include="face_x.cpp" />
     <ClCompile Include="fern.cpp" />
     <ClCompile Include="keyboardsimulater.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="regressor.cpp" />
+    <ClCompile Include="computer.cpp" />
     <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="computerfinder.h" />
     <ClInclude Include="evaluatemedia.h" />
     <ClInclude Include="face_x.h" />
     <ClInclude Include="fern.h" />
     <ClInclude Include="keyboardsimulater.h" />
     <ClInclude Include="regressor.h" />
+    <ClInclude Include="computer.h" />
     <ClInclude Include="utils.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\LICENSE" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

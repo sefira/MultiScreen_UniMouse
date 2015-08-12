@@ -34,9 +34,45 @@ THE SOFTWARE.
 
 class EvaluateMedia
 {
+public:
+	//load_facex then program will run with landmark model
+	//load landmark model file will take a while time 
+	//then we can use AlignImage(),AlignVideo(),AlignVideoBasedoLast()
+	EvaluateMedia(bool load_facex);
+
+	~EvaluateMedia();
+
+	//return deviation 
+	static double GetDeviation();
+
+	//evaluate a skindetected frame by compute 
+	//left side and right side mean and stddev ratio
+	//the ratio is deviation
+	int Evaluate();
+
+	//paint five point from 51 point, which are 
+	//corner of eye , nose, corner of mouth
+	int PaintFive(cv::Mat frame);
+
+	//just tracking face by using openCV model, update the faces rect
+	int TrackingFace();
+
+	//compute the landmarks of lena.png
+	int AlignImage();
+
+	//compute the landmarks of a video 
+	int AlignVideo();
+
+	//compute the landmarks baseed on last landmarks 
+	//without continuous face tracking
+	int AlignVideoBasedonLast();
+
 private:
+	//landmark model file name
 	static const std::string kModelFileName;
 	static const std::string kSmallModelFileName;
+	
+	//OpenCV face model file name 
 	static const std::string kAlt2;
 	static const std::string kTestImage;
 	FaceX face_x;
@@ -49,27 +85,9 @@ private:
 	cv::Mat gray_image;
 	cv::VideoCapture m_videocapture;
 
-	//deviation maybe will be share in two thread
+	//deviation may be share in two thread
 	static double deviation;
 	
-public:
-	EvaluateMedia(bool load_facex);
-
-	~EvaluateMedia();
-
-	double GetDeviation();
-
-	int Evaluate();
-
-	int PaintFive(cv::Mat frame);
-
-	int TrackingFace();
-
-	int AlignImage();
-
-	int AlignVideo();
-
-	int AlignVideoBasedonLast();
 };
 
 #endif
