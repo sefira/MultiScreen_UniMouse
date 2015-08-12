@@ -22,44 +22,47 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#include "keyboardsimulater.h"
-#include "evaluatemedia.h"
-#include "computer.h"
+#ifndef SWITCHSCREENBYGAZE_Computer_H_
+#define SWITCHSCREENBYGAZE_Computer_H_
 
-#include <iostream>
-using namespace std;
-
-int main()
+class ComputerInfo
 {
-	KeyBoardSimulater m_KeyBoardSimulater;
+public:
+	ComputerInfo();
 
-	//char command[1024];
-	//cin.getline(command,1024);
-	//cout << command << endl;
-	//
-	//int key_Value;
+	int ToString();
 
-	//if (strcmp(command, "xbu-pc") == 0)
-	//{
-	//	key_Value = 1;
-	//}
-	//if (strcmp(command, "xxm-pc") == 0)
-	//{
-	//	key_Value = 2;
-	//}
-	//Sleep(5000);
-	//m_KeyBoardSimulater.Switch_Screen_to_FX(key_Value);
+	int num;
+	char hostname[128];
+	char IP[128];
+	double evaluate_point;
 
-	/*EvaluateMedia m_evaluatemedia = EvaluateMedia(false);
-	m_evaluatemedia.TrackingFace();
-	cout << EvaluateMedia::GetDeviation() << endl;*/
+};
 
-	ComputerInfo m_computerinfo;
-	Computer::QueryHostIPbyName("xxm-pc", m_computerinfo);
-	m_computerinfo.ToString();
+class Computer
+{
+public:
+	//a static method, to Query a remote host IP by a given name
+	int static QueryHostIPbyName(
+		char * hostname, ComputerInfo &m_comouterinfo);
 
-	Computer m_computer;
-	cout<<m_computer.GetLocalHostname()<<endl;
+	//send deviation broadcastly , get the deviation firstly
+	//by using QueryDeviation()
+	int SendDeviation();
 
-	return 0;
-}
+	//send local hostname, implement by QueryLocalHostname()
+	int SendHostname();
+
+private:
+	//Query deviation from evaluatemedia
+	double QueryDeviation();
+
+	//Query local hostname
+	int QueryLocalHostname();
+
+	char local_hostname[128];
+};
+
+
+
+#endif
