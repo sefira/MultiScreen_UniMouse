@@ -42,11 +42,15 @@ public:
 class Computer
 {
 public:
+	Computer();
+	
+	~Computer();
+
 	//a static method, to Query a remote host IP by a given name
 	int static QueryHostIPbyName(
 		char * hostname, ComputerInfo &m_comouterinfo);
 
-	//send deviation broadcastly , get the deviation firstly
+	//send deviation broadcastly or to monitor, get the deviation firstly
 	//by using QueryDeviation()
 	int SendDeviation();
 

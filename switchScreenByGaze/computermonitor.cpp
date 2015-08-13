@@ -22,45 +22,33 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#include "keyboardsimulater.h"
-#include "evaluatemedia.h"
-#include "computer.h"
 #include "computermonitor.h"
 
-#include <iostream>
 using namespace std;
 
-int main()
+ComputerMonitor::ComputerMonitor()
 {
-	KeyBoardSimulater m_KeyBoardSimulater;
 
-	//char command[1024];
-	//cin.getline(command,1024);
-	//cout << command << endl;
-	//
-	//int key_Value;
-
-	//if (strcmp(command, "xbu-pc") == 0)
-	//{
-	//	key_Value = 1;
-	//}
-	//if (strcmp(command, "xxm-pc") == 0)
-	//{
-	//	key_Value = 2;
-	//}
-	//Sleep(5000);
-	//m_KeyBoardSimulater.Switch_Screen_to_FX(key_Value);
-
-	//EvaluateMedia m_evaluatemedia = EvaluateMedia(false);
-	//m_evaluatemedia.TrackingFace();
-	//cout << EvaluateMedia::GetDeviation() << endl;
-
-	ComputerInfo m_computerinfo;
-	ComputerMonitor::QueryHostIPbyName("xxm-pc", m_computerinfo);
-	m_computerinfo.ToString();
-
-	ComputerMonitor m_computer;
-	cout<<m_computer.SendHostname()<<endl;
-
-	return 0;
 }
+
+ComputerMonitor::~ComputerMonitor()
+{
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

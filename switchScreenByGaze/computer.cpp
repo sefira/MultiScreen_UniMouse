@@ -49,6 +49,16 @@ int ComputerInfo::ToString()
 	return 0;
 }
 
+Computer::Computer()
+{
+	
+}
+
+Computer::~Computer()
+{
+
+}
+
 int Computer::QueryLocalHostname()
 {
 	struct hostent *m_hostent;

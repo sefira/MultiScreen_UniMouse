@@ -219,28 +219,30 @@ bool littlerface(const cv::Rect & face1, const cv::Rect & face2)
 
 int EvaluateMedia::TrackingFace()
 {
-	m_videocapture >> frame;
-	
-	m_videocapture >> frame;
-	cv::cvtColor(frame, gray_image, cv::COLOR_BGR2GRAY);
-	//cv::imshow("Gray image", gray_image);
-
-	m_cascadeclassifier.detectMultiScale(gray_image, faces);
-
-	if (!faces.empty())
+	while (1)
 	{
-		sort(faces.begin(), faces.end(), littlerface);
-		//cout << "in the beginning:" << endl;
-		//for (cv::Rect face : faces)
-		//{
-		//	cv::rectangle(frame, face, cv::Scalar(0, 0, 255), 2);
-		//	cout << face.area() << endl;
-		//}
+
+		m_videocapture >> frame;
+		cv::cvtColor(frame, gray_image, cv::COLOR_BGR2GRAY);
+		//cv::imshow("Gray image", gray_image);
+
+		m_cascadeclassifier.detectMultiScale(gray_image, faces);
+
+		if (!faces.empty())
+		{
+			sort(faces.begin(), faces.end(), littlerface);
+			//cout << "in the beginning:" << endl;
+			//for (cv::Rect face : faces)
+			//{
+			//	cv::rectangle(frame, face, cv::Scalar(0, 0, 255), 2);
+			//	cout << face.area() << endl;
+			//}
+		}
+		Evaluate();
+		cout << deviation << endl;
+		//cv::imshow("Tracking result", frame);
+		cv::waitKey(1000);
 	}
-	Evaluate();
-	cout << deviation << endl;
-	//cv::imshow("Tracking result", frame);
-	cv::waitKey(1000);
 	
 	return 1;
 }

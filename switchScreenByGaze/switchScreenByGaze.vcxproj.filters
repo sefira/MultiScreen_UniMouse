@@ -39,6 +39,9 @@
     <ClCompile Include="computer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="computermonitor.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="face_x.h">
@@ -60,6 +63,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="computer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="computermonitor.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

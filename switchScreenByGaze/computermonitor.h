@@ -22,45 +22,27 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#include "keyboardsimulater.h"
-#include "evaluatemedia.h"
+
 #include "computer.h"
-#include "computermonitor.h"
+#include <vector>
 
-#include <iostream>
-using namespace std;
-
-int main()
+class ComputerMonitor:public Computer
 {
-	KeyBoardSimulater m_KeyBoardSimulater;
+public:
+	ComputerMonitor();
 
-	//char command[1024];
-	//cin.getline(command,1024);
-	//cout << command << endl;
-	//
-	//int key_Value;
+	~ComputerMonitor();
 
-	//if (strcmp(command, "xbu-pc") == 0)
-	//{
-	//	key_Value = 1;
-	//}
-	//if (strcmp(command, "xxm-pc") == 0)
-	//{
-	//	key_Value = 2;
-	//}
-	//Sleep(5000);
-	//m_KeyBoardSimulater.Switch_Screen_to_FX(key_Value);
+	//receive remote computers' message about themselves hostname
+	//use isaNewHost() to judge weather it has been saved into computers_vector
+	int ReceiveHostname();
 
-	//EvaluateMedia m_evaluatemedia = EvaluateMedia(false);
-	//m_evaluatemedia.TrackingFace();
-	//cout << EvaluateMedia::GetDeviation() << endl;
+	//receive remote computers' message about themselves deviation
+	int ReceiveDeviation();
 
-	ComputerInfo m_computerinfo;
-	ComputerMonitor::QueryHostIPbyName("xxm-pc", m_computerinfo);
-	m_computerinfo.ToString();
+private:
+	bool isaNewHost(char * remote_hostname);
 
-	ComputerMonitor m_computer;
-	cout<<m_computer.SendHostname()<<endl;
-
-	return 0;
-}
+	//all receives will update this vector
+	std::vector<ComputerInfo> computers_vector;
+};

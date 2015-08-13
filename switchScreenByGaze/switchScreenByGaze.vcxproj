@@ -80,6 +80,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="computermonitor.cpp" />
     <ClCompile Include="evaluatemedia.cpp" />
     <ClCompile Include="face_x.cpp" />
     <ClCompile Include="fern.cpp" />
@@ -90,6 +91,7 @@
     <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="computermonitor.h" />
     <ClInclude Include="evaluatemedia.h" />
     <ClInclude Include="face_x.h" />
     <ClInclude Include="fern.h" />
