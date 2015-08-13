@@ -56,6 +56,20 @@ int ComputerMonitor::ReceiveDeviation()
 	return 0;
 }
 
+bool ComputerMonitor::isaNewHost(char * remote_hostname)
+{
+	bool isanewhost = true;
+
+	for (ComputerInfo m_computerinfo : computers_vector)
+	{
+		if (!strcmp(m_computerinfo.hostname, remote_hostname))
+		{
+			isanewhost = false;
+			break;
+		}
+	}
+	return isanewhost;
+}
 
 
 
