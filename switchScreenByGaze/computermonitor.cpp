@@ -24,6 +24,8 @@ THE SOFTWARE.
 
 #include "computermonitor.h"
 
+#include <iostream>
+
 using namespace std;
 
 ComputerMonitor::ComputerMonitor()
@@ -36,6 +38,23 @@ ComputerMonitor::~ComputerMonitor()
 
 }
 
+int ComputerMonitor::ReceiveHostname()
+{
+	//TODO socket receive, a really receive action
+	char remote_hostname[128] = {0};
+	cout << remote_hostname << endl;
+	
+	return 0;
+}
+
+int ComputerMonitor::ReceiveDeviation()
+{
+	//TODO socket receive, a really receive action
+	double deviation = 0;
+	cout << deviation << endl;
+
+	return 0;
+}
 
 
 

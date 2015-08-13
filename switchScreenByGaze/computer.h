@@ -61,7 +61,7 @@ private:
 	//Query deviation from evaluatemedia
 	double QueryDeviation();
 
-	//Query local hostname
+	//Query local hostname, then put it into local_hostname
 	int QueryLocalHostname();
 
 	char local_hostname[128];

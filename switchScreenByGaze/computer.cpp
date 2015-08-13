@@ -46,6 +46,7 @@ int ComputerInfo::ToString()
 	cout << "hostname:" << hostname << endl;
 	cout << "IP:" << IP << endl;
 	cout << "evaulate:" << evaluate_point << endl;
+
 	return 0;
 }
 
@@ -152,6 +153,7 @@ int Computer::QueryHostIPbyName(char * hostname, ComputerInfo &m_computerinfo)
 double Computer::QueryDeviation()
 {
 	double dev = EvaluateMedia::GetDeviation();
+
 	return dev;
 }
 
