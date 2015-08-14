@@ -86,7 +86,7 @@
     <ClCompile Include="fern.cpp" />
     <ClCompile Include="keyboardsimulater.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Messenger.cpp" />
+    <ClCompile Include="messenger.cpp" />
     <ClCompile Include="regressor.cpp" />
     <ClCompile Include="computer.cpp" />
     <ClCompile Include="utils.cpp" />

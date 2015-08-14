@@ -44,5 +44,5 @@ private:
 	bool isaNewHost(char * remote_hostname);
 
 	//all receives will update this vector
-	std::vector<ComputerInfo> computers_vector;
+	std::vector<Computer> computers_vector;
 };

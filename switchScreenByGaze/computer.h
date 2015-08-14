@@ -45,8 +45,11 @@ public:
 	//send local hostname
 	int SendHostname();
 
+	char * GetMonitorHostname();
+	int SetMonitorHostname(char monitorhostname[128]);
 	char * GetHostname();
 	char * GetIP();
+	bool AmIaMonitor();
 
 private:
 	//Query deviation from evaluatemedia
@@ -55,12 +58,16 @@ private:
 	//Query local hostname, then put it into local_hostname
 	int QueryLocalHostname();
 
+	//the num which be allot by monitor
 	int num;
 
-	char monitor_name[128];
+	char monitor_hostname[128];
+	char monitor_IP[128];
 
+	//am i a monotor, be update after call AmIaMonitor()
+	bool amiamonitor;
 	char local_hostname[128];
-	char IP[128];	
+	char local_IP[128];
 	double evaluate_point;
 };
 

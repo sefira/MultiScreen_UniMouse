@@ -60,9 +60,9 @@ bool ComputerMonitor::isaNewHost(char * remote_hostname)
 {
 	bool isanewhost = true;
 
-	for (ComputerInfo m_computerinfo : computers_vector)
+	for (Computer m_computer : computers_vector)
 	{
-		if (!strcmp(m_computerinfo.hostname, remote_hostname))
+		if (!strcmp(m_computer.GetHostname(), remote_hostname))
 		{
 			isanewhost = false;
 			break;

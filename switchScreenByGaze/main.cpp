@@ -41,26 +41,19 @@ int main()
 	//cout << monitor_name << endl;
 	Computer monitor_computer;
 	Computer::QueryHostIPbyName(monitor_name, monitor_computer);
-	cout << "The monitor is		:" << monitor_computer.local_hostname << endl;
-	cout << "The monitor's IP is:" << monitor_computer.IP << endl;
+	cout << "The monitor is		:" << monitor_computer.GetHostname() << endl;
+	cout << "The monitor's IP is:" << monitor_computer.GetIP() << endl;
 
 	Computer myself_computer;
 	char * myself_hostname = myself_computer.GetHostname();
-
-	int res_cmp;
-	bool amimonitor = false;
-	res_cmp = strcmp(myself_hostname, monitor_computerinfo.hostname);
-	if (res_cmp == 0)
+	myself_computer.SetMonitorHostname(monitor_computer.GetHostname());
+	if (myself_computer.AmIaMonitor())
 	{
-		amimonitor = true;
-	}
-	if (amimonitor)
-	{
-		cout << "I am the monitor" << endl;
+		cout << "I am a monitor." << endl;
 	}
 	else
 	{
-		cout << "I am not the monitor" << endl;
+		cout << "I am not a monitor." << endl;
 	}
 
 	KeyBoardSimulater m_KeyBoardSimulater;

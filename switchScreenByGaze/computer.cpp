@@ -36,10 +36,10 @@ using namespace std;
 Computer::Computer()
 {
 	QueryLocalHostname();
-	memset(local_hostname, 0, sizeof(local_hostname));
-	memset(IP, 0, sizeof(IP));
+	memset(local_IP, 0, sizeof(local_IP));
 	evaluate_point = 1000;
 	num = 0;
+	amiamonitor = false;
 }
 
 Computer::~Computer()
@@ -51,7 +51,7 @@ int Computer::ToString()
 {
 	cout << "num:" << num << endl;
 	cout << "hostname:" << local_hostname << endl;
-	cout << "IP:" << IP << endl;
+	cout << "IP:" << local_IP << endl;
 	cout << "evaulate:" << evaluate_point << endl;
 
 	return 0;
@@ -137,7 +137,7 @@ int Computer::QueryHostIPbyName(char * hostname, Computer &m_computer)
 		if (remotehost->h_addr_list[0] != 0)
 		{
 			addr.s_addr = *(u_long *)remotehost->h_addr_list[i++];
-			strcpy(m_computer.IP, inet_ntoa(addr));
+			strcpy(m_computer.local_IP, inet_ntoa(addr));
 		}
 		else
 		{
@@ -171,6 +171,17 @@ int Computer::SendDeviation()
 	return 0;
 }
 
+char * Computer::GetMonitorHostname()
+{
+	return monitor_hostname;
+}
+
+int Computer::SetMonitorHostname(char monitorhostname[128])
+{
+	strcpy(monitor_hostname, monitorhostname);
+	return 0;
+}
+
 char * Computer::GetHostname()
 {
 	return local_hostname;
@@ -178,5 +189,23 @@ char * Computer::GetHostname()
 
 char * Computer::GetIP()
 {
-	return IP;
+	return local_IP;
+}
+
+bool Computer::AmIaMonitor()
+{
+	int res_cmp;
+	res_cmp = strcmp(monitor_hostname, local_hostname);
+	cout << monitor_hostname << endl;
+	cout << local_hostname << endl;
+	if (res_cmp == 0)
+	{
+		amiamonitor = true;
+	}
+	else
+	{
+		amiamonitor = false;
+	}
+
+	return amiamonitor;
 }
