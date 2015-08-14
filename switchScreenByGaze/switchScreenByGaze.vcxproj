@@ -86,6 +86,7 @@
     <ClCompile Include="fern.cpp" />
     <ClCompile Include="keyboardsimulater.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Messenger.cpp" />
     <ClCompile Include="regressor.cpp" />
     <ClCompile Include="computer.cpp" />
     <ClCompile Include="utils.cpp" />
@@ -96,6 +97,7 @@
     <ClInclude Include="face_x.h" />
     <ClInclude Include="fern.h" />
     <ClInclude Include="keyboardsimulater.h" />
+    <ClInclude Include="messenger.h" />
     <ClInclude Include="regressor.h" />
     <ClInclude Include="computer.h" />
     <ClInclude Include="utils.h" />

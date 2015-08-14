@@ -25,20 +25,6 @@ THE SOFTWARE.
 #ifndef SWITCHSCREENBYGAZE_Computer_H_
 #define SWITCHSCREENBYGAZE_Computer_H_
 
-class ComputerInfo
-{
-public:
-	ComputerInfo();
-
-	int ToString();
-
-	int num;
-	char hostname[128];
-	char IP[128];
-	double evaluate_point;
-
-};
-
 class Computer
 {
 public:
@@ -46,16 +32,21 @@ public:
 	
 	~Computer();
 
+	int ToString();
+
 	//a static method, to Query a remote host IP by a given name
 	int static QueryHostIPbyName(
-		char * hostname, ComputerInfo &m_comouterinfo);
+		char * hostname, Computer &m_comouter);
 
 	//send deviation broadcastly or to monitor, get the deviation firstly
 	//by using QueryDeviation()
 	int SendDeviation();
 
-	//send local hostname, implement by QueryLocalHostname()
+	//send local hostname
 	int SendHostname();
+
+	char * GetHostname();
+	char * GetIP();
 
 private:
 	//Query deviation from evaluatemedia
@@ -64,7 +55,13 @@ private:
 	//Query local hostname, then put it into local_hostname
 	int QueryLocalHostname();
 
+	int num;
+
+	char monitor_name[128];
+
 	char local_hostname[128];
+	char IP[128];	
+	double evaluate_point;
 };
 
 

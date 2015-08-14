@@ -32,6 +32,37 @@ using namespace std;
 
 int main()
 {
+
+	cout << "please input monitor name:" << endl;
+
+	char monitor_name[128];
+
+	cin >> monitor_name;
+	//cout << monitor_name << endl;
+	Computer monitor_computer;
+	Computer::QueryHostIPbyName(monitor_name, monitor_computer);
+	cout << "The monitor is		:" << monitor_computer.local_hostname << endl;
+	cout << "The monitor's IP is:" << monitor_computer.IP << endl;
+
+	Computer myself_computer;
+	char * myself_hostname = myself_computer.GetHostname();
+
+	int res_cmp;
+	bool amimonitor = false;
+	res_cmp = strcmp(myself_hostname, monitor_computerinfo.hostname);
+	if (res_cmp == 0)
+	{
+		amimonitor = true;
+	}
+	if (amimonitor)
+	{
+		cout << "I am the monitor" << endl;
+	}
+	else
+	{
+		cout << "I am not the monitor" << endl;
+	}
+
 	KeyBoardSimulater m_KeyBoardSimulater;
 
 	//char command[1024];
@@ -54,13 +85,6 @@ int main()
 	//EvaluateMedia m_evaluatemedia = EvaluateMedia(false);
 	//m_evaluatemedia.TrackingFace();
 	//cout << EvaluateMedia::GetDeviation() << endl;
-
-	ComputerInfo m_computerinfo;
-	ComputerMonitor::QueryHostIPbyName("xxm-pc", m_computerinfo);
-	m_computerinfo.ToString();
-
-	ComputerMonitor m_computer;
-	cout<<m_computer.SendHostname()<<endl;
 
 	return 0;
 }

@@ -32,32 +32,29 @@ THE SOFTWARE.
 
 using namespace std;
 
-ComputerInfo::ComputerInfo()
+
+Computer::Computer()
 {
-	memset(hostname,0,sizeof(hostname));
+	QueryLocalHostname();
+	memset(local_hostname, 0, sizeof(local_hostname));
 	memset(IP, 0, sizeof(IP));
 	evaluate_point = 1000;
 	num = 0;
 }
 
-int ComputerInfo::ToString()
+Computer::~Computer()
+{
+
+}
+
+int Computer::ToString()
 {
 	cout << "num:" << num << endl;
-	cout << "hostname:" << hostname << endl;
+	cout << "hostname:" << local_hostname << endl;
 	cout << "IP:" << IP << endl;
 	cout << "evaulate:" << evaluate_point << endl;
 
 	return 0;
-}
-
-Computer::Computer()
-{
-	
-}
-
-Computer::~Computer()
-{
-
 }
 
 int Computer::QueryLocalHostname()
@@ -85,7 +82,7 @@ int Computer::QueryLocalHostname()
 	return 0;
 }
 
-int Computer::QueryHostIPbyName(char * hostname, ComputerInfo &m_computerinfo)
+int Computer::QueryHostIPbyName(char * hostname, Computer &m_computer)
 {
 
 	//-----------------------------------------
@@ -135,12 +132,12 @@ int Computer::QueryHostIPbyName(char * hostname, ComputerInfo &m_computerinfo)
 	}
 	else
 	{
-		strcpy(m_computerinfo.hostname, remotehost->h_name);
+		strcpy(m_computer.local_hostname, remotehost->h_name);
 
 		if (remotehost->h_addr_list[0] != 0)
 		{
 			addr.s_addr = *(u_long *)remotehost->h_addr_list[i++];
-			strcpy(m_computerinfo.IP, inet_ntoa(addr));
+			strcpy(m_computer.IP, inet_ntoa(addr));
 		}
 		else
 		{
@@ -160,7 +157,6 @@ double Computer::QueryDeviation()
 int Computer::SendHostname()
 {
 	//TODO socket send , a really send action
-	QueryLocalHostname();
 	cout << local_hostname << endl;
 	
 	return 0;
@@ -173,4 +169,14 @@ int Computer::SendDeviation()
 	cout << deviation << endl;
 
 	return 0;
+}
+
+char * Computer::GetHostname()
+{
+	return local_hostname;
+}
+
+char * Computer::GetIP()
+{
+	return IP;
 }
