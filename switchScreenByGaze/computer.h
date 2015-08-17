@@ -25,6 +25,8 @@ THE SOFTWARE.
 #ifndef SWITCHSCREENBYGAZE_Computer_H_
 #define SWITCHSCREENBYGAZE_Computer_H_
 
+#include <WinSock2.h>
+
 class Computer
 {
 public:
@@ -46,18 +48,17 @@ public:
 	int SendHostname();
 
 	char * GetMonitorHostname();
+	char * GetMonitorIP();
+	int GetNum();
 	int SetMonitorHostname(char monitorhostname[128]);
 	char * GetHostname();
 	char * GetIP();
 	bool AmIaMonitor();
 
-private:
-	//Query deviation from evaluatemedia
-	double QueryDeviation();
+	SOCKET socket_server;
+	SOCKET socket_client;
 
-	//Query local hostname, then put it into local_hostname
-	int QueryLocalHostname();
-
+protected:
 	//the num which be allot by monitor
 	int num;
 
@@ -69,6 +70,14 @@ private:
 	char local_hostname[128];
 	char local_IP[128];
 	double evaluate_point;
+
+private:
+	//Query deviation from evaluatemedia
+	double QueryDeviation();
+
+	//Query local hostname, then put it into local_hostname
+	int QueryLocalHostname();
+
 };
 
 

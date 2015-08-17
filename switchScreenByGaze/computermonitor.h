@@ -24,12 +24,18 @@ THE SOFTWARE.
 
 
 #include "computer.h"
+
 #include <vector>
+
+#include "keyboardsimulater.h"
+
 
 class ComputerMonitor:public Computer
 {
 public:
 	ComputerMonitor();
+
+	ComputerMonitor(Computer m_computer);
 
 	~ComputerMonitor();
 
@@ -39,6 +45,9 @@ public:
 
 	//receive remote computers' message about themselves deviation
 	int ReceiveDeviation();
+
+	//simulater keyboard press and release
+	KeyBoardSimulater m_keyboard_simulater;
 
 private:
 	bool isaNewHost(char * remote_hostname);

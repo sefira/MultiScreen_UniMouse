@@ -33,6 +33,19 @@ ComputerMonitor::ComputerMonitor()
 
 }
 
+ComputerMonitor::ComputerMonitor(Computer m_computer)
+{
+	num = m_computer.GetNum();
+
+	amiamonitor = true;
+
+	strcpy(monitor_hostname, m_computer.GetMonitorHostname());
+	strcpy(monitor_IP, m_computer.GetMonitorIP());
+
+	strcpy(local_hostname, m_computer.GetHostname());
+	strcpy(local_IP, m_computer.GetIP());
+}
+
 ComputerMonitor::~ComputerMonitor()
 {
 

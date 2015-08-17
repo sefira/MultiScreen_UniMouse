@@ -22,7 +22,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#include "keyboardsimulater.h"
 #include "evaluatemedia.h"
 #include "computer.h"
 #include "computermonitor.h"
@@ -50,13 +49,12 @@ int main()
 	if (myself_computer.AmIaMonitor())
 	{
 		cout << "I am a monitor." << endl;
+		ComputerMonitor myself_computermonitor(myself_computer);
 	}
 	else
 	{
 		cout << "I am not a monitor." << endl;
 	}
-
-	KeyBoardSimulater m_KeyBoardSimulater;
 
 	//char command[1024];
 	//cin.getline(command,1024);

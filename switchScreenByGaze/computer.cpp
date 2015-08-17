@@ -176,6 +176,16 @@ char * Computer::GetMonitorHostname()
 	return monitor_hostname;
 }
 
+char * Computer::GetMonitorIP()
+{
+	return monitor_IP;
+}
+
+int Computer::GetNum()
+{
+	return num;
+}
+
 int Computer::SetMonitorHostname(char monitorhostname[128])
 {
 	strcpy(monitor_hostname, monitorhostname);
