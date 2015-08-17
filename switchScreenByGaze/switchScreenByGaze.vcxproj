@@ -92,6 +92,7 @@
     <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="computercomponent.h" />
     <ClInclude Include="computermonitor.h" />
     <ClInclude Include="evaluatemedia.h" />
     <ClInclude Include="face_x.h" />

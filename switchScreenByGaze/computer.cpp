@@ -28,6 +28,8 @@ THE SOFTWARE.
 #include <iostream>
 #include <Winsock2.h>
 
+#include "messenger.h"
+
 #pragma comment(lib, "Ws2_32.lib")
 
 using namespace std;
@@ -145,6 +147,11 @@ int Computer::QueryHostIPbyName(char * hostname, Computer &m_computer)
 		}
 		return 0;
 	}
+}
+
+int Computer::ConncetWithServer()
+{
+	return Messenger::ClientConnectServer(monitor_IP, socket_client);
 }
 
 double Computer::QueryDeviation()

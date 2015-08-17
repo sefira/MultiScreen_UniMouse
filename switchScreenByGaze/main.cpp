@@ -50,10 +50,12 @@ int main()
 	{
 		cout << "I am a monitor." << endl;
 		ComputerMonitor myself_computermonitor(myself_computer);
+		myself_computermonitor.ConnectWithClient();
 	}
 	else
 	{
 		cout << "I am not a monitor." << endl;
+		myself_computer.ConncetWithServer();
 	}
 
 	//char command[1024];

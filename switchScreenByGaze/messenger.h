@@ -22,41 +22,27 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
+#ifndef SWITCHSCREENBYGAZE_MESSENGER_H_
+#define SWITCHSCREENBYGAZE_MEDDENGER_H_
 
-#include "computer.h"
-
+#include <WinSock2.h>
 #include <vector>
 
-#include "keyboardsimulater.h"
 #include "computercomponent.h"
 
-
-class ComputerMonitor:public Computer
+class Messenger
 {
 public:
-	ComputerMonitor();
+	Messenger();
 
-	ComputerMonitor(Computer m_computer);
+	~Messenger();
 
-	~ComputerMonitor();
+	//for Computer, connect to ComputerMonitor
+	static int ClientConnectServer(char * serverIP, SOCKET & socket_client);
 
-	//accept client connect for 30s
-	//and save the connection in vector, socket_server
-	int ConnectWithClient();
-
-	//receive remote computers' message about themselves hostname
-	//use isaNewHost() to judge weather it has been saved into computers_vector
-	int ReceiveHostname();
-
-	//receive remote computers' message about themselves deviation
-	int ReceiveDeviation();
-
-	//simulater keyboard press and release
-	KeyBoardSimulater m_keyboard_simulater;
-
-private:
-	bool isaNewHost(char * remote_hostname);
-
-	//all receives will update this vector
-	static std::vector<ComputerInfo> computers_vector;
+	//for ComputerMonitor, accept Computer connection and creat thread for it
+	//save Computer information in vector include the socket of accept
+	static int ServerAcceptClient(std::vector<ComputerInfo> &computers_vector);
 };
+
+#endif

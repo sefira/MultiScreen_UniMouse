@@ -26,6 +26,8 @@ THE SOFTWARE.
 
 #include <iostream>
 
+#include "messenger.h"
+
 using namespace std;
 
 ComputerMonitor::ComputerMonitor()
@@ -51,6 +53,11 @@ ComputerMonitor::~ComputerMonitor()
 
 }
 
+int ComputerMonitor::ConnectWithClient()
+{
+	return Messenger::ServerAcceptClient(computers_vector);
+}
+
 int ComputerMonitor::ReceiveHostname()
 {
 	//TODO socket receive, a really receive action
@@ -73,9 +80,9 @@ bool ComputerMonitor::isaNewHost(char * remote_hostname)
 {
 	bool isanewhost = true;
 
-	for (Computer m_computer : computers_vector)
+	for (ComputerInfo m_computer : computers_vector)
 	{
-		if (!strcmp(m_computer.GetHostname(), remote_hostname))
+		if (!strcmp(m_computer.local_hostname, remote_hostname))
 		{
 			isanewhost = false;
 			break;
@@ -83,6 +90,7 @@ bool ComputerMonitor::isaNewHost(char * remote_hostname)
 	}
 	return isanewhost;
 }
+
 
 
 
