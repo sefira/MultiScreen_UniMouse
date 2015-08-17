@@ -58,19 +58,23 @@ int ComputerMonitor::ConnectWithClient()
 	return Messenger::ServerAcceptClient(computers_vector);
 }
 
-int ComputerMonitor::ReceiveHostname()
+int ComputerMonitor::ReceiveHostname(char *recvbuf, ComputerInfo * m_computerinfo)
 {
-	//TODO socket receive, a really receive action
-	char remote_hostname[128] = {0};
+	char remote_hostname[128] = { 0 };
+	strcpy(remote_hostname, &recvbuf[1]);
 	cout << remote_hostname << endl;
+	strcpy(m_computerinfo->local_hostname,remote_hostname);
 	
 	return 0;
 }
 
-int ComputerMonitor::ReceiveDeviation()
+int ComputerMonitor::ReceiveDeviation(char *recvbuf, ComputerInfo * m_computerinfo)
 {
 	//TODO socket receive, a really receive action
-	double deviation = 0;
+	char deviation_str[128] = { 0 };
+	strcpy(deviation_str, &recvbuf[1]);
+	cout << deviation_str << endl;
+	double deviation = atof(deviation_str);
 	cout << deviation << endl;
 
 	return 0;
@@ -90,19 +94,5 @@ bool ComputerMonitor::isaNewHost(char * remote_hostname)
 	}
 	return isanewhost;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

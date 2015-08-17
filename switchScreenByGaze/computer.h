@@ -56,8 +56,9 @@ public:
 	//////////////gets sets///////////////////////////
 	char * GetMonitorHostname();
 	char * GetMonitorIP();
+	int SetMonitorHostname(char monitorhostname[]);
+	int SetMonitorIP(char monitorIp[]);
 	int GetNum();
-	int SetMonitorHostname(char monitorhostname[128]);
 	char * GetHostname();
 	char * GetIP();
 

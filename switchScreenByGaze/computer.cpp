@@ -108,7 +108,7 @@ int Computer::QueryHostIPbyName(char * hostname, Computer &m_computer)
 		return 1;
 	}
 
-	printf("Calling gethostbyname with %s\n", hostname);
+	//printf("Calling gethostbyname with %s\n", hostname);
 	remotehost = gethostbyname(hostname);
 
 	if (remotehost == NULL)
@@ -193,9 +193,15 @@ int Computer::GetNum()
 	return num;
 }
 
-int Computer::SetMonitorHostname(char monitorhostname[128])
+int Computer::SetMonitorHostname(char monitorhostname[])
 {
 	strcpy(monitor_hostname, monitorhostname);
+	return 0;
+}
+
+int Computer::SetMonitorIP(char monitorIP[])
+{
+	strcpy(monitor_IP, monitorIP);
 	return 0;
 }
 
@@ -213,8 +219,8 @@ bool Computer::AmIaMonitor()
 {
 	int res_cmp;
 	res_cmp = strcmp(monitor_hostname, local_hostname);
-	cout << monitor_hostname << endl;
-	cout << local_hostname << endl;
+	//cout << monitor_hostname << endl;
+	//cout << local_hostname << endl;
 	if (res_cmp == 0)
 	{
 		amiamonitor = true;

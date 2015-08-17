@@ -85,12 +85,12 @@ int Messenger::ClientConnectServer(char * serverIP, SOCKET & socket_client)
 		int ret = connect(socket_client, (sockaddr*)&addrClient, sizeof(SOCKADDR));
 		if (ret)
 		{
-			cout << "connect" << serverIP << "failed" << endl;
+			cout << "connect " << serverIP << " failed" << endl;
 			return 1;
 		}
 		else
 		{
-			cout << "connect" << serverIP << "succeed" << endl;
+			cout << "connect " << serverIP << " succeed" << endl;
 			break;
 		}
 	}
@@ -98,7 +98,7 @@ int Messenger::ClientConnectServer(char * serverIP, SOCKET & socket_client)
 	return 0;
 }
 
-unsigned int __stdcall Fun(void *pPM);
+unsigned int __stdcall SocketServerThread(void *pPM);
 //a semaphore to sync the thread
 HANDLE m_semaphore = CreateSemaphore(NULL, 1, 1, NULL);
 
@@ -198,6 +198,28 @@ unsigned int __stdcall SocketServerThread(void *m_computerinfo_v)
 {
 	ComputerInfo *m_computerinfo = (ComputerInfo *)m_computerinfo_v;
 	ReleaseSemaphore(m_semaphore, 1, NULL);
+
+	char recvbuf[128];
+	double m_deviation;
+	char m_IP[128];
+	while (1)
+	{
+		memset(recvbuf, 0, sizeof(recvbuf));
+		m_deviation = 1000;
+		memset(m_IP, 0, sizeof(m_IP));
+		recv(m_computerinfo->socket_server, recvbuf, sizeof(recvbuf), 0);
+
+		int flag = recvbuf[0];
+		switch (flag)
+		{
+		case 1:
+			ComputerMonitor::ReceiveHostname(recvbuf, m_computerinfo);
+
+		case 2:
+			ComputerMonitor::ReceiveDeviation(recvbuf, m_computerinfo);
+
+		}
+	}
 	
 
 	return 0;

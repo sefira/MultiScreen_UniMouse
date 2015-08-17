@@ -46,10 +46,10 @@ public:
 
 	//receive remote computers' message about themselves hostname
 	//use isaNewHost() to judge weather it has been saved into computers_vector
-	int ReceiveHostname();
+	static int ReceiveHostname(char *recvbuf, ComputerInfo *m_computerinfo);
 
 	//receive remote computers' message about themselves deviation
-	int ReceiveDeviation();
+	static int ReceiveDeviation(char *recvbuf, ComputerInfo *m_computerinfo);
 
 	//simulater keyboard press and release
 	KeyBoardSimulater m_keyboard_simulater;
@@ -58,5 +58,5 @@ private:
 	bool isaNewHost(char * remote_hostname);
 
 	//all receives will update this vector
-	static std::vector<ComputerInfo> computers_vector;
+	std::vector<ComputerInfo> computers_vector;
 };

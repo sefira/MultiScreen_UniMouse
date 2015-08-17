@@ -38,7 +38,7 @@ int main()
 
 	cin >> monitor_name;
 	//cout << monitor_name << endl;
-	Computer monitor_computer;
+	ComputerMonitor monitor_computer;
 	Computer::QueryHostIPbyName(monitor_name, monitor_computer);
 	cout << "The monitor is		:" << monitor_computer.GetHostname() << endl;
 	cout << "The monitor's IP is:" << monitor_computer.GetIP() << endl;
@@ -46,6 +46,9 @@ int main()
 	Computer myself_computer;
 	char * myself_hostname = myself_computer.GetHostname();
 	myself_computer.SetMonitorHostname(monitor_computer.GetHostname());
+	myself_computer.SetMonitorIP(monitor_computer.GetIP());
+	Computer::QueryHostIPbyName(myself_hostname, myself_computer);
+	myself_computer.ToString();
 	if (myself_computer.AmIaMonitor())
 	{
 		cout << "I am a monitor." << endl;
