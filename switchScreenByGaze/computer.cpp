@@ -163,17 +163,27 @@ double Computer::QueryDeviation()
 
 int Computer::SendHostname()
 {
-	//TODO socket send , a really send action
+	//socket send , a really send action
 	cout << local_hostname << endl;
+	char sendbuf[128];
+	sendbuf[0] = 1;
+	sendbuf[1] = 0;
+	strcpy(sendbuf,local_hostname);
 	
-	return 0;
+	return Messenger::SendMessagetoServer(socket_client, sendbuf);
 }
 
 int Computer::SendDeviation()
 {
-	//TODO socket send , a really send action
+	//socket send , a really send action
 	double deviation = QueryDeviation();
 	cout << deviation << endl;
+	char sendbuf[128];
+	sendbuf[0] = 2;
+	sendbuf[1] = 0;
+	char deviation_str[128];
+	sprintf(deviation_str, "%f", deviation);
+	strcpy(sendbuf, deviation_str);
 
 	return 0;
 }

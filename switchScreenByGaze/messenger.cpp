@@ -160,19 +160,26 @@ int Messenger::ServerAcceptClient(vector<ComputerInfo> & computers_vector)
 	int m_time_count = GetTickCount();
 	ComputerInfo m_computerinfo;
 	int m_count = 1;
-	while (true)
+	int numof_connection = 0;
+	cout << "How many Client do you want to connect:" << endl;
+	cin >> numof_connection;
+	for (int i = 0; i < numof_connection; i++)
 	{
+		//accept will blocked until a connection is present
+		//so a timer count is useless to stop it 
+
+		//cout << GetTickCount() - m_time_count << endl;
 		//server accept for 30s
-		if (GetTickCount() - m_time_count >= 30000)
-		{
-			break;
-		}
+		//if (GetTickCount() - m_time_count >= 30000)
+		//{
+		//	break;
+		//}
 		//wait for client connect, and create thread for it
 		SOCKADDR_IN cliAddr;
 		int length = sizeof(SOCKADDR);
 
 		SOCKET cliSock = accept(servSock, (SOCKADDR*)&cliAddr, &length);
-
+		
 		if (INVALID_SOCKET == cliSock)
 		{
 			cout << "listen failed with error: " << WSAGetLastError() << endl;
@@ -225,4 +232,20 @@ unsigned int __stdcall SocketServerThread(void *m_computerinfo_v)
 	
 
 	return 0;
+}
+
+int Messenger::SendMessagetoServer(SOCKET socket_server, char * sendbuf)
+{
+	int ret = 0;
+	ret = send(socket_server, sendbuf ,sizeof(sendbuf), 0);
+	if (ret == SOCKET_ERROR)
+	{
+		cout << "send message failed"<<endl;
+		return 1;
+	}
+	else
+	{
+		cout << "send message succeed" << endl;
+		return 0;
+	}
 }
