@@ -63,6 +63,9 @@ public:
 	//simulater keyboard press and release
 	KeyBoardSimulater m_keyboard_simulater;
 
+	//Find computer according given num
+	static ComputerInfo &FindNumComputerinVecotr(int num);
+
 private:
 	bool isaNewHost(char * remote_hostname);
 

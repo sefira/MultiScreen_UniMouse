@@ -35,6 +35,8 @@ THE SOFTWARE.
 
 using namespace std;
 
+vector<ComputerInfo> ComputerMonitor::computers_vector = vector<ComputerInfo>();
+
 ComputerMonitor::ComputerMonitor()
 {
 
@@ -84,7 +86,7 @@ int ComputerMonitor::ReceiveDeviation(char *recvbuf, ComputerInfo * m_computerin
 	return 0;
 }
 
-ComputerInfo &FindNumComputerinVecotr(vector<ComputerInfo> &computers_vector, int num)
+ComputerInfo &ComputerMonitor::FindNumComputerinVecotr(int num)
 {
 	for (int i = 0; i < computers_vector.size(); i++)
 	{
@@ -105,9 +107,11 @@ unsigned int __stdcall ComputerMonitor::InterfacetoEvaluateMedia(void *)
 	//test
 	srand((unsigned)time(NULL));
 	m_evaluatemedia.SetDeviation(rand());
-	FindNumComputerinVecotr(computers_vector, 0).evaluate_point =
+	FindNumComputerinVecotr(0).evaluate_point =
 		EvaluateMedia::GetDeviation();
 	Sleep(TIMEINTERVAL);
+
+	return 0;
 }
 
 int ComputerMonitor::BegintoWork()
@@ -116,6 +120,8 @@ int ComputerMonitor::BegintoWork()
 	monitor_computerinfo.num = 0;
 	computers_vector.push_back(monitor_computerinfo);
 	HANDLE handle = (HANDLE)_beginthreadex(NULL, 0, ComputerMonitor::InterfacetoEvaluateMedia, NULL, 0, NULL);
+	
+	return 0;
 }
 
 int ComputerMonitor::DetermineActivated()

@@ -102,18 +102,6 @@ unsigned int __stdcall SocketServerThread(void *pPM);
 //a semaphore to sync the thread
 HANDLE m_semaphore = CreateSemaphore(NULL, 1, 1, NULL);
 
-ComputerInfo &FindNumComputerinVecotr(vector<ComputerInfo> &computers_vector, int num)
-{
-	for (int i = 0; i < computers_vector.size(); i++)
-	{
-		ComputerInfo &m_computerinfo = computers_vector.at(i);
-		if (m_computerinfo.num == num)
-		{
-			return m_computerinfo;
-		}
-	}
-}
-
 int Messenger::ServerAcceptClient(vector<ComputerInfo> & computers_vector)
 {
 
@@ -196,7 +184,7 @@ int Messenger::ServerAcceptClient(vector<ComputerInfo> & computers_vector)
 			computers_vector.push_back(m_computerinfo);
 			m_count++;
 			HANDLE handle = (HANDLE)_beginthreadex(NULL, 0, SocketServerThread,
-				&FindNumComputerinVecotr(computers_vector, m_count - 1), 0, NULL);
+				&ComputerMonitor::FindNumComputerinVecotr(m_count - 1), 0, NULL);
 		}
 	}
 	return 0;
