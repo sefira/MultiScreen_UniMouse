@@ -27,7 +27,20 @@ THE SOFTWARE.
 #include "computermonitor.h"
 
 #include <iostream>
+#include <process.h>
 using namespace std;
+
+Computer myself_computer;
+
+unsigned int __stdcall MonitorAsClientToo(void *)
+{
+	myself_computer.ConncetWithServer();
+	myself_computer.SendHostname();
+	myself_computer.BegintoWork();
+	//myself_computer.SendDeviation();
+	
+	return 0;
+}
 
 int main()
 {
@@ -43,7 +56,6 @@ int main()
 	cout << "The monitor is		:" << monitor_computer.GetHostname() << endl;
 	cout << "The monitor's IP is:" << monitor_computer.GetIP() << endl;
 
-	Computer myself_computer;
 	char * myself_hostname = myself_computer.GetHostname();
 	myself_computer.SetMonitorHostname(monitor_computer.GetHostname());
 	myself_computer.SetMonitorIP(monitor_computer.GetIP());
@@ -53,37 +65,22 @@ int main()
 	{
 		cout << "I am a monitor." << endl;
 		ComputerMonitor myself_computermonitor(myself_computer);
+		HANDLE handle = (HANDLE)_beginthreadex(NULL, 0, MonitorAsClientToo, NULL, 0, NULL);
 		myself_computermonitor.ConnectWithClient();
+		myself_computermonitor.ToString();
+		myself_computermonitor.BegintoWork();
+		//TODO myself_computermonitor.Configuration();
+		myself_computermonitor.ToString();
 	}
 	else
 	{
 		cout << "I am not a monitor." << endl;
 		myself_computer.ConncetWithServer();
 		myself_computer.SendHostname();
-
+		myself_computer.BegintoWork();
 		myself_computer.SendDeviation();
 	}
 
-	//char command[1024];
-	//cin.getline(command,1024);
-	//cout << command << endl;
-	//
-	//int key_Value;
-
-	//if (strcmp(command, "xbu-pc") == 0)
-	//{
-	//	key_Value = 1;
-	//}
-	//if (strcmp(command, "xxm-pc") == 0)
-	//{
-	//	key_Value = 2;
-	//}
-	//Sleep(5000);
-	//m_KeyBoardSimulater.Switch_Screen_to_FX(key_Value);
-
-	//EvaluateMedia m_evaluatemedia = EvaluateMedia(false);
-	//m_evaluatemedia.TrackingFace();
-	//cout << m_evaluatemedia.GetDeviation() << endl;
-
+	cout << "main thread finshed" << endl;
 	return 0;
 }

@@ -188,21 +188,23 @@ int Computer::SendHostname()
 
 unsigned int __stdcall Computer::InterfacetoEvaluateMedia(void *)
 {
+	cout << "Client start tracking face" << endl;
 	EvaluateMedia m_evaluatemedia = EvaluateMedia(false);
 	//m_evaluatemedia.TrackingFace();
 	//cout << m_evaluatemedia.GetDeviation() << endl;
 
 	//test
-	srand((unsigned)time(NULL));
-	m_evaluatemedia.SetDeviation(rand());
-
+	while (1)
+	{
+		srand((unsigned)time(NULL));
+		m_evaluatemedia.SetDeviation(rand());
+	}
 	return 0;
 }
 
 int Computer::BegintoWork()
 {
 	HANDLE handle = (HANDLE)_beginthreadex(NULL, 0, Computer::InterfacetoEvaluateMedia, NULL, 0, NULL);
-	
 	return 0;
 }
 

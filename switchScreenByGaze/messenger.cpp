@@ -148,7 +148,7 @@ int Messenger::ServerAcceptClient(vector<ComputerInfo> & computers_vector)
 
 	int m_time_count = GetTickCount();
 	ComputerInfo m_computerinfo;
-	int m_count = 1;
+	int m_count = 0;
 	int numof_connection = 0;
 	cout << "How many Client do you want to connect:" << endl;
 	cin >> numof_connection;
@@ -181,6 +181,7 @@ int Messenger::ServerAcceptClient(vector<ComputerInfo> & computers_vector)
 			WaitForSingleObject(m_semaphore, INFINITE);
 			m_computerinfo.num = m_count;
 			m_computerinfo.socket_server = cliSock;
+			m_computerinfo.evaluate_point = 1000;
 			computers_vector.push_back(m_computerinfo);
 			m_count++;
 			HANDLE handle = (HANDLE)_beginthreadex(NULL, 0, SocketServerThread,
@@ -229,12 +230,12 @@ int Messenger::SendMessagetoServer(SOCKET socket_server, char * sendbuf)
 	ret = send(socket_server, sendbuf ,sizeof(sendbuf), 0);
 	if (ret == SOCKET_ERROR)
 	{
-		cout << "send message failed"<<endl;
+		//cout << "send message failed"<<endl;
 		return 1;
 	}
 	else
 	{
-		cout << "send message succeed" << endl;
+		//cout << "send message succeed" << endl;
 		return 0;
 	}
 }

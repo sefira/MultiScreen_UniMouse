@@ -40,6 +40,8 @@ public:
 
 	~ComputerMonitor();
 
+	int ToString();
+
 	//accept client connect for 30s
 	//and save the connection in vector, socket_server
 	int ConnectWithClient();
@@ -54,7 +56,7 @@ public:
 	//begin to work, start face tracking in a thread
 	//add self_monitor into computers_vector
 	//Lock the screen by m_keyboard_simulater
-	static unsigned int __stdcall InterfacetoEvaluateMedia(void *);
+	//static unsigned int __stdcall InterfacetoEvaluateMedia(void *);
 	int BegintoWork();
 
 	//determine who is activated

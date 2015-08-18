@@ -51,13 +51,27 @@ ComputerMonitor::ComputerMonitor(Computer m_computer)
 	strcpy(monitor_hostname, m_computer.GetMonitorHostname());
 	strcpy(monitor_IP, m_computer.GetMonitorIP());
 
-	strcpy(local_hostname, m_computer.GetHostname());
-	strcpy(local_IP, m_computer.GetIP());
+	strcpy(local_hostname, m_computer.GetMonitorHostname());
+	strcpy(local_IP, m_computer.GetMonitorIP());
 }
 
 ComputerMonitor::~ComputerMonitor()
 {
 
+}
+
+int ComputerMonitor::ToString()
+{
+	cout << "for the vector of computers:" << endl;
+	for (ComputerInfo m_computerinfo : computers_vector)
+	{
+		cout << "num:" << m_computerinfo.num << endl;
+		cout << "hostname:" << m_computerinfo.local_hostname << endl;
+		cout << "IP:" << m_computerinfo.local_IP << endl;
+		cout << "evaulate:" << m_computerinfo.evaluate_point << endl;
+		cout << endl;
+	}
+	return 0;
 }
 
 int ComputerMonitor::ConnectWithClient()
@@ -98,29 +112,25 @@ ComputerInfo &ComputerMonitor::FindNumComputerinVecotr(int num)
 	}
 }
 
-unsigned int __stdcall ComputerMonitor::InterfacetoEvaluateMedia(void *)
-{
-	EvaluateMedia m_evaluatemedia = EvaluateMedia(false);
-	//m_evaluatemedia.TrackingFace();
-	//cout << m_evaluatemedia.GetDeviation() << endl;
-
-	//test
-	srand((unsigned)time(NULL));
-	m_evaluatemedia.SetDeviation(rand());
-	FindNumComputerinVecotr(0).evaluate_point =
-		EvaluateMedia::GetDeviation();
-	Sleep(TIMEINTERVAL);
-
-	return 0;
-}
-
+//unsigned int __stdcall ComputerMonitor::InterfacetoEvaluateMedia(void *)
+//{
+//	EvaluateMedia m_evaluatemedia = EvaluateMedia(false);
+//	//m_evaluatemedia.TrackingFace();
+//	//cout << m_evaluatemedia.GetDeviation() << endl;
+//
+//	//test
+//	srand((unsigned)time(NULL));
+//	m_evaluatemedia.SetDeviation(rand());
+//	FindNumComputerinVecotr(0).evaluate_point =
+//		EvaluateMedia::GetDeviation();
+//	Sleep(TIMEINTERVAL);
+//
+//	return 0;
+//}
+//
 int ComputerMonitor::BegintoWork()
 {
-	ComputerInfo monitor_computerinfo;
-	monitor_computerinfo.num = 0;
-	computers_vector.push_back(monitor_computerinfo);
-	HANDLE handle = (HANDLE)_beginthreadex(NULL, 0, ComputerMonitor::InterfacetoEvaluateMedia, NULL, 0, NULL);
-	
+	DetermineActivated();
 	return 0;
 }
 
@@ -144,7 +154,7 @@ int ComputerMonitor::DetermineActivated()
 				activated_num = computers_vector.at(i).num;
 			}
 		}
-		cout << "num " << activated_num << "is activated" << endl;
+		cout << "num " << activated_num << " is activated" << endl;
 		m_keyboard_simulater.SwitchScreentoFX(activated_num);
 		Sleep(TIMEINTERVAL);
 	}

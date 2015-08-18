@@ -133,7 +133,7 @@ int KeyBoardSimulater::SwitchScreentoFX(int key_value)
 	//release F(x)
 	m_keybd_input.ki.wVk = F_Who;
 	SendInput(1, &m_keybd_input, sizeof(INPUT));
-	cout << "simulating input" << endl;
+	//cout << "simulating input" << endl;
 	
 	return 1;
 }
