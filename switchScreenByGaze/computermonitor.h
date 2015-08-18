@@ -51,6 +51,12 @@ public:
 	//receive remote computers' message about themselves deviation
 	static int ReceiveDeviation(char *recvbuf, ComputerInfo *m_computerinfo);
 
+	//begin to work, start face tracking in a thread
+	//add self_monitor into computers_vector
+	//Lock the screen by m_keyboard_simulater
+	static unsigned int __stdcall InterfacetoEvaluateMedia(void *);
+	int BegintoWork();
+
 	//determine who is activated
 	int DetermineActivated();
 
@@ -61,5 +67,5 @@ private:
 	bool isaNewHost(char * remote_hostname);
 
 	//all receives will update this vector
-	std::vector<ComputerInfo> computers_vector;
+	static std::vector<ComputerInfo> computers_vector;
 };

@@ -57,6 +57,12 @@ double EvaluateMedia::GetDeviation()
 	return deviation;
 }
 
+double EvaluateMedia::SetDeviation(double value)
+{
+	deviation = value;
+	return deviation;
+}
+
 void SkinDetect(cv::Mat& face_frame_src, cv::Mat& face_frame_dst)
 {
 	IplImage* src = &IplImage(face_frame_src);

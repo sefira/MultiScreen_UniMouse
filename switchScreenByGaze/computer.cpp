@@ -25,7 +25,11 @@ THE SOFTWARE.
 #include "computer.h"
 #include "evaluatemedia.h"
 
+#include <stdlib.h>
+#include <time.h>  
+
 #include <iostream>
+#include <process.h>
 #include <Winsock2.h>
 
 #include "messenger.h"
@@ -180,6 +184,21 @@ int Computer::SendHostname()
 	}
 	
 	return ret;
+}
+
+unsigned int __stdcall Computer::InterfacetoEvaluateMedia(void *)
+{
+	EvaluateMedia m_evaluatemedia = EvaluateMedia(false);
+	srand((unsigned)time(NULL));
+	m_evaluatemedia.SetDeviation(rand());
+	//m_evaluatemedia.TrackingFace();
+	//cout << m_evaluatemedia.GetDeviation() << endl;
+
+}
+
+int Computer::BegintoWork()
+{
+	HANDLE handle = (HANDLE)_beginthreadex(NULL, 0, Computer::InterfacetoEvaluateMedia, NULL, 0, NULL);
 }
 
 int Computer::SendDeviation()

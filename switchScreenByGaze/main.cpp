@@ -83,7 +83,7 @@ int main()
 
 	//EvaluateMedia m_evaluatemedia = EvaluateMedia(false);
 	//m_evaluatemedia.TrackingFace();
-	//cout << EvaluateMedia::GetDeviation() << endl;
+	//cout << m_evaluatemedia.GetDeviation() << endl;
 
 	return 0;
 }

@@ -44,12 +44,16 @@ public:
 	//then the connection will be saved in socket_client
 	int ConncetWithServer();
 
+	//send local hostname
+	int SendHostname();
+
+	//begin to work, start face tracking in a thread
+	static unsigned int __stdcall InterfacetoEvaluateMedia(void *);
+	int BegintoWork();
+
 	//send deviation broadcastly or to monitor, get the deviation firstly
 	//by using QueryDeviation()
 	int SendDeviation();
-
-	//send local hostname
-	int SendHostname();
 
 	bool AmIaMonitor();
 

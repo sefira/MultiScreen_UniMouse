@@ -43,7 +43,8 @@ public:
 	~EvaluateMedia();
 
 	//return deviation 
-	static double GetDeviation();
+	static double GetDeviation(); 
+	double SetDeviation(double value);
 
 	//evaluate a skindetected frame by compute 
 	//left side and right side mean and stddev ratio

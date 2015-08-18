@@ -113,6 +113,7 @@ ComputerInfo &FindNumComputerinVecotr(vector<ComputerInfo> &computers_vector, in
 		}
 	}
 }
+
 int Messenger::ServerAcceptClient(vector<ComputerInfo> & computers_vector)
 {
 

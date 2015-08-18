@@ -24,9 +24,14 @@ THE SOFTWARE.
 
 #include "computermonitor.h"
 
+#include <stdlib.h>
+#include <time.h>  
+
+#include <process.h>
 #include <iostream>
 
 #include "messenger.h"
+#include "EvaluateMedia.h"
 
 using namespace std;
 
@@ -77,6 +82,40 @@ int ComputerMonitor::ReceiveDeviation(char *recvbuf, ComputerInfo * m_computerin
 	cout << deviation << endl;
 
 	return 0;
+}
+
+ComputerInfo &FindNumComputerinVecotr(vector<ComputerInfo> &computers_vector, int num)
+{
+	for (int i = 0; i < computers_vector.size(); i++)
+	{
+		ComputerInfo &m_computerinfo = computers_vector.at(i);
+		if (m_computerinfo.num == num)
+		{
+			return m_computerinfo;
+		}
+	}
+}
+
+unsigned int __stdcall ComputerMonitor::InterfacetoEvaluateMedia(void *)
+{
+	EvaluateMedia m_evaluatemedia = EvaluateMedia(false);
+	//m_evaluatemedia.TrackingFace();
+	//cout << m_evaluatemedia.GetDeviation() << endl;
+
+	//test
+	srand((unsigned)time(NULL));
+	m_evaluatemedia.SetDeviation(rand());
+	FindNumComputerinVecotr(computers_vector, 0).evaluate_point =
+		EvaluateMedia::GetDeviation();
+	Sleep(TIMEINTERVAL);
+}
+
+int ComputerMonitor::BegintoWork()
+{
+	ComputerInfo monitor_computerinfo;
+	monitor_computerinfo.num = 0;
+	computers_vector.push_back(monitor_computerinfo);
+	HANDLE handle = (HANDLE)_beginthreadex(NULL, 0, ComputerMonitor::InterfacetoEvaluateMedia, NULL, 0, NULL);
 }
 
 int ComputerMonitor::DetermineActivated()
