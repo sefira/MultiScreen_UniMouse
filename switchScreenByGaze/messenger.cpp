@@ -86,7 +86,7 @@ int Messenger::ClientConnectServer(char * serverIP, SOCKET & socket_client)
 		if (ret)
 		{
 			cout << "connect " << serverIP << " failed" << endl;
-			return 1;
+			cout << "reconnecting" << endl;
 		}
 		else
 		{
@@ -144,7 +144,7 @@ int Messenger::ServerAcceptClient(vector<ComputerInfo> & computers_vector)
 
 	SOCKADDR_IN addrServ;
 	addrServ.sin_family = AF_INET;
-	addrServ.sin_port = htons(6000);
+	addrServ.sin_port = htons(SWITCHGAZE_PORT);
 	addrServ.sin_addr.S_un.S_addr = htonl(INADDR_ANY);
 
 	bind(servSock, (SOCKADDR*)&addrServ, sizeof(SOCKADDR));
@@ -198,6 +198,8 @@ unsigned int __stdcall SocketServerThread(void *m_computerinfo_v)
 {
 	ComputerInfo *m_computerinfo = (ComputerInfo *)m_computerinfo_v;
 	ReleaseSemaphore(m_semaphore, 1, NULL);
+
+	cout << "this is num " << m_computerinfo->num << endl;
 
 	char recvbuf[128];
 	double m_deviation;

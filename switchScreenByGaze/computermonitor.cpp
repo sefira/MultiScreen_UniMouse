@@ -70,7 +70,6 @@ int ComputerMonitor::ReceiveHostname(char *recvbuf, ComputerInfo * m_computerinf
 
 int ComputerMonitor::ReceiveDeviation(char *recvbuf, ComputerInfo * m_computerinfo)
 {
-	//TODO socket receive, a really receive action
 	char deviation_str[128] = { 0 };
 	strcpy(deviation_str, &recvbuf[1]);
 	cout << deviation_str << endl;
