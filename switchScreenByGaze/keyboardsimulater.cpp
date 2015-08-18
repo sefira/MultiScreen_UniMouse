@@ -89,19 +89,20 @@ int KeyBoardSimulater::SwitchScreentoFX(int key_value)
 	m_keybd_input.ki.time = 0;
 	m_keybd_input.ki.dwExtraInfo = 0;
 
-	int F_Who = 0x6F;
-	switch (key_value)
-	{
-	case 1:
-		F_Who = VK_F1;
-		break;
-	case 2:
-		F_Who = VK_F2;
-		break;
-	case 3:
-		F_Who = VK_F3;
-		break;
-	}
+	int F_Who = VK_F1;
+	F_Who += key_value;
+	//switch (key_value)
+	//{
+	//case 1:
+	//	F_Who = VK_F1;
+	//	break;
+	//case 2:
+	//	F_Who = VK_F2;
+	//	break;
+	//case 3:
+	//	F_Who = VK_F3;
+	//	break;
+	//}
 
 	//press key
 	m_keybd_input.ki.dwFlags = 0;	//0 for press
