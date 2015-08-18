@@ -164,28 +164,46 @@ double Computer::QueryDeviation()
 int Computer::SendHostname()
 {
 	//socket send , a really send action
-	cout << local_hostname << endl;
-	char sendbuf[128];
-	sendbuf[0] = 1;
-	sendbuf[1] = 0;
-	strcpy(sendbuf,local_hostname);
+	int ret = 1;
+	for (int i = 0; i < 5; i++)
+	{
+		cout << local_hostname << endl;
+		char sendbuf[128];
+		sendbuf[0] = 1;
+		sendbuf[1] = 0;
+		strcpy(sendbuf, local_hostname);
+		if (SOCKET_ERROR != Messenger::SendMessagetoServer(socket_client, sendbuf))
+		{
+			ret = 0;
+		}
+		Sleep(TIMEINTERVAL);
+	}
 	
-	return Messenger::SendMessagetoServer(socket_client, sendbuf);
+	return ret;
 }
 
 int Computer::SendDeviation()
 {
 	//socket send , a really send action
-	double deviation = QueryDeviation();
-	cout << deviation << endl;
-	char sendbuf[128];
-	sendbuf[0] = 2;
-	sendbuf[1] = 0;
-	char deviation_str[128];
-	sprintf(deviation_str, "%f", deviation);
-	strcpy(sendbuf, deviation_str);
+	int ret = 1;
+	while (1)
+	{
+		double deviation = QueryDeviation();
+		cout << deviation << endl;
+		char sendbuf[128];
+		sendbuf[0] = 2;
+		sendbuf[1] = 0;
+		char deviation_str[128];
+		sprintf(deviation_str, "%f", deviation);
+		strcpy(sendbuf, deviation_str);
+		if (SOCKET_ERROR != Messenger::SendMessagetoServer(socket_client, sendbuf))
+		{
+			ret = 0;
+		}
+		Sleep(TIMEINTERVAL);
+	}
 
-	return 0;
+	return ret;
 }
 
 char * Computer::GetMonitorHostname()

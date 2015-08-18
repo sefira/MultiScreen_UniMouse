@@ -79,6 +79,33 @@ int ComputerMonitor::ReceiveDeviation(char *recvbuf, ComputerInfo * m_computerin
 	return 0;
 }
 
+int ComputerMonitor::DetermineActivated()
+{
+	int minmum_dev;
+	int activated_num = 0;
+	while (1)
+	{
+		if (computers_vector.empty())
+		{
+			return 1;
+		}
+		minmum_dev = 1000;
+		for (int i = 0; i < computers_vector.size(); i++)
+		{
+			int temp_dev = computers_vector.at(i).evaluate_point;
+			if (temp_dev < minmum_dev)
+			{
+				minmum_dev = temp_dev;
+				activated_num = computers_vector.at(i).num;
+			}
+		}
+		cout << "num " << activated_num << "is activated" << endl;
+		m_keyboard_simulater.SwitchScreentoFX(activated_num);
+		Sleep(TIMEINTERVAL);
+	}
+	return 0;
+}
+
 bool ComputerMonitor::isaNewHost(char * remote_hostname)
 {
 	bool isanewhost = true;

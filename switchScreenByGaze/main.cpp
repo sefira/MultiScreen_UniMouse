@@ -60,6 +60,8 @@ int main()
 		cout << "I am not a monitor." << endl;
 		myself_computer.ConncetWithServer();
 		myself_computer.SendHostname();
+
+		myself_computer.SendDeviation();
 	}
 
 	//char command[1024];

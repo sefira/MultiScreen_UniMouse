@@ -29,6 +29,8 @@ THE SOFTWARE.
 
 #define SWITCHGAZE_PORT 24805
 
+#define TIMEINTERVAL 500
+
 struct ComputerInfo
 {
 	//the num which be allot by monitor

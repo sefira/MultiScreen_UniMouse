@@ -51,6 +51,9 @@ public:
 	//receive remote computers' message about themselves deviation
 	static int ReceiveDeviation(char *recvbuf, ComputerInfo *m_computerinfo);
 
+	//determine who is activated
+	int DetermineActivated();
+
 	//simulater keyboard press and release
 	KeyBoardSimulater m_keyboard_simulater;
 
