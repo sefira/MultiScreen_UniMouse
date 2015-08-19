@@ -194,9 +194,9 @@ unsigned int __stdcall Computer::InterfacetoEvaluateMedia(void *)
 	//cout << m_evaluatemedia.GetDeviation() << endl;
 
 	//test
+	srand((unsigned)time(NULL));
 	while (1)
 	{
-		srand((unsigned)time(NULL));
 		m_evaluatemedia.SetDeviation(rand());
 	}
 	return 0;

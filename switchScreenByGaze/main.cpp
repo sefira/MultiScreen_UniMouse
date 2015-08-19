@@ -37,7 +37,7 @@ unsigned int __stdcall MonitorAsClientToo(void *)
 	myself_computer.ConncetWithServer();
 	myself_computer.SendHostname();
 	myself_computer.BegintoWork();
-	//myself_computer.SendDeviation();
+	myself_computer.SendDeviation();
 	
 	return 0;
 }

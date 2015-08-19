@@ -163,6 +163,7 @@ int ComputerMonitor::DetermineActivated()
 {
 	int minmum_dev;
 	int activated_num = 0;
+	int original_activated_num = 0;
 	while (1)
 	{
 		if (computers_vector.empty())
@@ -170,6 +171,7 @@ int ComputerMonitor::DetermineActivated()
 			return 1;
 		}
 		minmum_dev = 1000;
+		original_activated_num = activated_num;
 		for (int i = 0; i < computers_vector.size(); i++)
 		{
 			int temp_dev = computers_vector.at(i).evaluate_point;
@@ -179,8 +181,14 @@ int ComputerMonitor::DetermineActivated()
 				activated_num = computers_vector.at(i).num;
 			}
 		}
-		//cout << "num " << activated_num << " is activated" << endl;
-		m_keyboard_simulater.SwitchScreentoFX(activated_num);
+		if (original_activated_num != activated_num)
+		{
+			original_activated_num = activated_num;
+			cout << "num " << activated_num << " is activated" <<
+				"its name is: " <<
+				computers_vector.at(activated_num).local_hostname << endl;
+			m_keyboard_simulater.SwitchScreentoFX(activated_num);
+		}
 		Sleep(TIMEINTERVAL);
 	}
 	return 0;

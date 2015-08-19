@@ -204,7 +204,7 @@ unsigned int __stdcall SocketServerThread(void *m_computerinfo_v)
 		m_deviation = 1000;
 		memset(m_IP, 0, sizeof(m_IP));
 		recv(m_computerinfo->socket_server, recvbuf, 128, 0);
-		//cout << "recv: " << recvbuf << endl;
+		//cout << "recv: " << recvbuf << "from: " << m_computerinfo->local_hostname << endl;
 		int flag = recvbuf[0];
 		switch (flag)
 		{
@@ -212,8 +212,8 @@ unsigned int __stdcall SocketServerThread(void *m_computerinfo_v)
 			ComputerMonitor::ReceiveHostname(recvbuf, m_computerinfo);
 
 		case 'D':
+			cout << "recv: " << recvbuf << "   from: " << m_computerinfo->local_hostname << endl;
 			ComputerMonitor::ReceiveDeviation(recvbuf, m_computerinfo);
-
 		}
 	}
 	
