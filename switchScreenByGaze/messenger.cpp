@@ -208,9 +208,9 @@ unsigned int __stdcall SocketServerThread(void *m_computerinfo_v)
 		m_deviation = 1000;
 		memset(m_IP, 0, sizeof(m_IP));
 		recv(m_computerinfo->socket_server, recvbuf, 128, 0);
-		cout << "this is num " << m_computerinfo->num <<
-			" recv: " << recvbuf << 
-			" from: " << m_computerinfo->local_hostname << endl;
+		//cout << "this is num " << m_computerinfo->num <<
+		//	" recv: " << recvbuf << 
+		//	" from: " << m_computerinfo->local_hostname << endl;
 		if (strlen(m_computerinfo->local_hostname) < 3)
 		{
 			break;

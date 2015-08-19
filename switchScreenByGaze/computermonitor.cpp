@@ -100,6 +100,7 @@ int ComputerMonitor::ReceiveDeviation(char *recvbuf, ComputerInfo * m_computerin
 	strcpy(deviation_str, &recvbuf[1]);
 	//cout << deviation_str << endl;
 	double deviation = atof(deviation_str);
+	m_computerinfo->evaluate_point = deviation;
 	//cout << deviation << endl;
 
 	return 0;
@@ -174,7 +175,8 @@ int ComputerMonitor::DetermineActivated()
 		original_activated_num = activated_num;
 		for (int i = 0; i < computers_vector.size(); i++)
 		{
-			int temp_dev = computers_vector.at(i).evaluate_point;
+			double temp_dev = computers_vector.at(i).evaluate_point;
+			cout << "num: " << i << " devitaion: " << temp_dev << endl;
 			if (temp_dev < minmum_dev)
 			{
 				minmum_dev = temp_dev;

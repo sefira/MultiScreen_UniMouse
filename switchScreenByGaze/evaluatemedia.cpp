@@ -148,7 +148,7 @@ int EvaluateMedia::Evaluate()
 			cv::Mat face_frame_src = cv::Mat(frame, faces[0]);
 			cv::Mat face_frame_dst;
 			SkinDetect(face_frame_src, face_frame_dst);
-			cv::imshow("face_frame", face_frame_dst);
+			//cv::imshow("face_frame", face_frame_dst);
 			cv::meanStdDev(face_frame_dst, mean_leftdown, stddev_leftdown, mask_leftdown);
 			cv::meanStdDev(face_frame_dst, mean_rightdown, stddev_rightdown, mask_rightdown);
 
@@ -245,7 +245,7 @@ int EvaluateMedia::TrackingFace()
 			//}
 		}
 		Evaluate();
-		cout << deviation << endl;
+		//cout << deviation << endl;
 		//cv::imshow("Tracking result", frame);
 		cv::waitKey(1000);
 	}

@@ -190,15 +190,15 @@ unsigned int __stdcall Computer::InterfacetoEvaluateMedia(void *)
 {
 	cout << "Client start tracking face" << endl;
 	EvaluateMedia m_evaluatemedia = EvaluateMedia(false);
-	//m_evaluatemedia.TrackingFace();
+	m_evaluatemedia.TrackingFace();
 	//cout << m_evaluatemedia.GetDeviation() << endl;
 
 	//test
-	srand((unsigned)time(NULL));
-	while (1)
-	{
-		m_evaluatemedia.SetDeviation(rand());
-	}
+	//srand((unsigned)time(NULL));
+	//while (1)
+	//{
+	//	m_evaluatemedia.SetDeviation(rand());
+	//}
 	return 0;
 }
 
