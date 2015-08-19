@@ -44,7 +44,6 @@ unsigned int __stdcall MonitorAsClientToo(void *)
 
 int main()
 {
-
 	cout << "please input monitor name:" << endl;
 
 	char monitor_name[128];
@@ -64,13 +63,14 @@ int main()
 	if (myself_computer.AmIaMonitor())
 	{
 		cout << "I am a monitor." << endl;
+		int numof_connection = 0;
+		cout << "How many Client do you want to connect:" << endl;
+		cin >> numof_connection;
 		ComputerMonitor myself_computermonitor(myself_computer);
 		HANDLE handle = (HANDLE)_beginthreadex(NULL, 0, MonitorAsClientToo, NULL, 0, NULL);
-		myself_computermonitor.ConnectWithClient();
-		myself_computermonitor.ToString();
+		myself_computermonitor.ConnectWithClient(numof_connection);
+		myself_computermonitor.Configuration(numof_connection);
 		myself_computermonitor.BegintoWork();
-		//TODO myself_computermonitor.Configuration();
-		myself_computermonitor.ToString();
 	}
 	else
 	{

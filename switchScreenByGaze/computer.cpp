@@ -169,13 +169,13 @@ int Computer::SendHostname()
 {
 	//socket send , a really send action
 	int ret = 1;
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < 1; i++)
 	{
-		cout << local_hostname << endl;
+		//cout << local_hostname << endl;
 		char sendbuf[128];
-		sendbuf[0] = 1;
+		sendbuf[0] = 'H';
 		sendbuf[1] = 0;
-		strcpy(sendbuf, local_hostname);
+		strcat(sendbuf, local_hostname);
 		if (SOCKET_ERROR != Messenger::SendMessagetoServer(socket_client, sendbuf))
 		{
 			ret = 0;
@@ -215,13 +215,13 @@ int Computer::SendDeviation()
 	while (1)
 	{
 		double deviation = QueryDeviation();
-		cout << deviation << endl;
+		//cout << deviation << endl;
 		char sendbuf[128];
-		sendbuf[0] = 2;
+		sendbuf[0] = 'D';
 		sendbuf[1] = 0;
 		char deviation_str[128];
 		sprintf(deviation_str, "%f", deviation);
-		strcpy(sendbuf, deviation_str);
+		strcat(sendbuf, deviation_str);
 		if (SOCKET_ERROR != Messenger::SendMessagetoServer(socket_client, sendbuf))
 		{
 			ret = 0;

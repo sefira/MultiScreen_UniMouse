@@ -100,9 +100,9 @@ int Messenger::ClientConnectServer(char * serverIP, SOCKET & socket_client)
 
 unsigned int __stdcall SocketServerThread(void *pPM);
 //a semaphore to sync the thread
-HANDLE m_semaphore = CreateSemaphore(NULL, 1, 1, NULL);
+HANDLE num_semaphore = CreateSemaphore(NULL, 1, 1, NULL);
 
-int Messenger::ServerAcceptClient(vector<ComputerInfo> & computers_vector)
+int Messenger::ServerAcceptClient(vector<ComputerInfo> & computers_vector, int numof_connection)
 {
 
 	WORD wVersionRequested;
@@ -149,9 +149,6 @@ int Messenger::ServerAcceptClient(vector<ComputerInfo> & computers_vector)
 	int m_time_count = GetTickCount();
 	ComputerInfo m_computerinfo;
 	int m_count = 0;
-	int numof_connection = 0;
-	cout << "How many Client do you want to connect:" << endl;
-	cin >> numof_connection;
 	for (int i = 0; i < numof_connection; i++)
 	{
 		//accept will blocked until a connection is present
@@ -178,7 +175,7 @@ int Messenger::ServerAcceptClient(vector<ComputerInfo> & computers_vector)
 		}
 		else
 		{
-			WaitForSingleObject(m_semaphore, INFINITE);
+			WaitForSingleObject(num_semaphore, INFINITE);
 			m_computerinfo.num = m_count;
 			m_computerinfo.socket_server = cliSock;
 			m_computerinfo.evaluate_point = 1000;
@@ -194,7 +191,7 @@ int Messenger::ServerAcceptClient(vector<ComputerInfo> & computers_vector)
 unsigned int __stdcall SocketServerThread(void *m_computerinfo_v)
 {
 	ComputerInfo *m_computerinfo = (ComputerInfo *)m_computerinfo_v;
-	ReleaseSemaphore(m_semaphore, 1, NULL);
+	ReleaseSemaphore(num_semaphore, 1, NULL);
 
 	cout << "this is num " << m_computerinfo->num << endl;
 
@@ -206,15 +203,15 @@ unsigned int __stdcall SocketServerThread(void *m_computerinfo_v)
 		memset(recvbuf, 0, sizeof(recvbuf));
 		m_deviation = 1000;
 		memset(m_IP, 0, sizeof(m_IP));
-		recv(m_computerinfo->socket_server, recvbuf, sizeof(recvbuf), 0);
-
+		recv(m_computerinfo->socket_server, recvbuf, 128, 0);
+		//cout << "recv: " << recvbuf << endl;
 		int flag = recvbuf[0];
 		switch (flag)
 		{
-		case 1:
+		case 'H':
 			ComputerMonitor::ReceiveHostname(recvbuf, m_computerinfo);
 
-		case 2:
+		case 'D':
 			ComputerMonitor::ReceiveDeviation(recvbuf, m_computerinfo);
 
 		}
@@ -227,7 +224,8 @@ unsigned int __stdcall SocketServerThread(void *m_computerinfo_v)
 int Messenger::SendMessagetoServer(SOCKET socket_server, char * sendbuf)
 {
 	int ret = 0;
-	ret = send(socket_server, sendbuf ,sizeof(sendbuf), 0);
+	//cout << "send: " << sendbuf << endl;
+	ret = send(socket_server, sendbuf ,128, 0);
 	if (ret == SOCKET_ERROR)
 	{
 		//cout << "send message failed"<<endl;

@@ -42,7 +42,7 @@ public:
 
 	//for ComputerMonitor, accept Computer connection and creat thread for it
 	//save Computer information in vector include the socket of accept
-	static int ServerAcceptClient(std::vector<ComputerInfo> &computers_vector);
+	static int ServerAcceptClient(std::vector<ComputerInfo> &computers_vector, int numof_connection);
 
 	//for Computer
 	//send a given message to server which is indicated by socket_server

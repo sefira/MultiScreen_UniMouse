@@ -44,7 +44,7 @@ public:
 
 	//accept client connect for 30s
 	//and save the connection in vector, socket_server
-	int ConnectWithClient();
+	int ConnectWithClient(int numof_connection);
 
 	//receive remote computers' message about themselves hostname
 	//use isaNewHost() to judge weather it has been saved into computers_vector
@@ -53,6 +53,9 @@ public:
 	//receive remote computers' message about themselves deviation
 	static int ReceiveDeviation(char *recvbuf, ComputerInfo *m_computerinfo);
 
+	//configuration the vector and file according to the hostname
+	int Configuration(int numof_connection);
+	
 	//begin to work, start face tracking in a thread
 	//add self_monitor into computers_vector
 	//Lock the screen by m_keyboard_simulater

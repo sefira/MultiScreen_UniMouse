@@ -31,7 +31,7 @@ THE SOFTWARE.
 #include <iostream>
 
 #include "messenger.h"
-#include "EvaluateMedia.h"
+#include "evaluatemedia.h"
 
 using namespace std;
 
@@ -74,17 +74,22 @@ int ComputerMonitor::ToString()
 	return 0;
 }
 
-int ComputerMonitor::ConnectWithClient()
+HANDLE hostname_semaphore;
+
+int ComputerMonitor::ConnectWithClient(int numof_connection)
 {
-	return Messenger::ServerAcceptClient(computers_vector);
+	//waitting for all hostnames are received
+	hostname_semaphore = CreateSemaphore(NULL, 0, numof_connection, NULL);
+	return Messenger::ServerAcceptClient(computers_vector, numof_connection);
 }
 
 int ComputerMonitor::ReceiveHostname(char *recvbuf, ComputerInfo * m_computerinfo)
 {
 	char remote_hostname[128] = { 0 };
 	strcpy(remote_hostname, &recvbuf[1]);
-	cout << remote_hostname << endl;
+	//cout << remote_hostname << endl;
 	strcpy(m_computerinfo->local_hostname,remote_hostname);
+	ReleaseSemaphore(hostname_semaphore, 1, NULL);
 	
 	return 0;
 }
@@ -93,9 +98,9 @@ int ComputerMonitor::ReceiveDeviation(char *recvbuf, ComputerInfo * m_computerin
 {
 	char deviation_str[128] = { 0 };
 	strcpy(deviation_str, &recvbuf[1]);
-	cout << deviation_str << endl;
+	//cout << deviation_str << endl;
 	double deviation = atof(deviation_str);
-	cout << deviation << endl;
+	//cout << deviation << endl;
 
 	return 0;
 }
@@ -110,6 +115,26 @@ ComputerInfo &ComputerMonitor::FindNumComputerinVecotr(int num)
 			return m_computerinfo;
 		}
 	}
+}
+
+int ComputerMonitor::Configuration(int numof_connection)
+{
+	//waitting for all hostnames are received
+	for (int i = 0; i < numof_connection; i++)
+	{
+		WaitForSingleObject(hostname_semaphore,INFINITE);
+	}
+
+	for (int i = 0; i < numof_connection; i++)
+	{
+		ComputerInfo &m_computerinfo = computers_vector.at(i);
+		Computer tempcomputer;
+		Computer::QueryHostIPbyName(m_computerinfo.local_hostname, tempcomputer);
+		strcpy(m_computerinfo.local_IP, tempcomputer.GetIP());
+	}
+	ToString();
+
+	return 0;
 }
 
 //unsigned int __stdcall ComputerMonitor::InterfacetoEvaluateMedia(void *)
@@ -154,7 +179,7 @@ int ComputerMonitor::DetermineActivated()
 				activated_num = computers_vector.at(i).num;
 			}
 		}
-		cout << "num " << activated_num << " is activated" << endl;
+		//cout << "num " << activated_num << " is activated" << endl;
 		m_keyboard_simulater.SwitchScreentoFX(activated_num);
 		Sleep(TIMEINTERVAL);
 	}
