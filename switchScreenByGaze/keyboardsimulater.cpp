@@ -89,7 +89,7 @@ int KeyBoardSimulater::SwitchScreentoFX(int key_value)
 	m_keybd_input.ki.time = 0;
 	m_keybd_input.ki.dwExtraInfo = 0;
 
-	int F_Who = VK_F1;
+	int F_Who = VK_F13;
 	F_Who += key_value;
 	//switch (key_value)
 	//{
@@ -106,30 +106,30 @@ int KeyBoardSimulater::SwitchScreentoFX(int key_value)
 
 	//press key
 	m_keybd_input.ki.dwFlags = 0;	//0 for press
-	//press ctrl
-	m_keybd_input.ki.wVk = VK_CONTROL;
-	SendInput(1, &m_keybd_input, sizeof(INPUT));
-	//press alt
-	m_keybd_input.ki.wVk = VK_MENU;
-	SendInput(1, &m_keybd_input, sizeof(INPUT));
-	//press shift
-	m_keybd_input.ki.wVk = VK_SHIFT;
-	SendInput(1, &m_keybd_input, sizeof(INPUT));
+	////press ctrl
+	//m_keybd_input.ki.wVk = VK_CONTROL;
+	//SendInput(1, &m_keybd_input, sizeof(INPUT));
+	////press alt
+	//m_keybd_input.ki.wVk = VK_MENU;
+	//SendInput(1, &m_keybd_input, sizeof(INPUT));
+	////press shift
+	//m_keybd_input.ki.wVk = VK_SHIFT;
+	//SendInput(1, &m_keybd_input, sizeof(INPUT));
 	//press F(x)
 	m_keybd_input.ki.wVk = F_Who;
 	SendInput(1, &m_keybd_input, sizeof(INPUT));
 
 	//release key
 	m_keybd_input.ki.dwFlags = KEYEVENTF_KEYUP;
-	//release ctrl
-	m_keybd_input.ki.wVk = VK_CONTROL;
-	SendInput(1, &m_keybd_input, sizeof(INPUT));
-	//release alt
-	m_keybd_input.ki.wVk = VK_MENU;
-	SendInput(1, &m_keybd_input, sizeof(INPUT));
-	//release shift
-	m_keybd_input.ki.wVk = VK_SHIFT;
-	SendInput(1, &m_keybd_input, sizeof(INPUT));
+	////release ctrl
+	//m_keybd_input.ki.wVk = VK_CONTROL;
+	//SendInput(1, &m_keybd_input, sizeof(INPUT));
+	////release alt
+	//m_keybd_input.ki.wVk = VK_MENU;
+	//SendInput(1, &m_keybd_input, sizeof(INPUT));
+	////release shift
+	//m_keybd_input.ki.wVk = VK_SHIFT;
+	//SendInput(1, &m_keybd_input, sizeof(INPUT));
 	//release F(x)
 	m_keybd_input.ki.wVk = F_Who;
 	SendInput(1, &m_keybd_input, sizeof(INPUT));
