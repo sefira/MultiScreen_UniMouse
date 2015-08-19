@@ -165,7 +165,7 @@ int Messenger::ServerAcceptClient(vector<ComputerInfo> & computers_vector, int n
 		int length = sizeof(SOCKADDR);
 
 		SOCKET cliSock = accept(servSock, (SOCKADDR*)&cliAddr, &length);
-		
+
 		if (INVALID_SOCKET == cliSock)
 		{
 			cout << "listen failed with error: " << WSAGetLastError() << endl;
@@ -175,15 +175,19 @@ int Messenger::ServerAcceptClient(vector<ComputerInfo> & computers_vector, int n
 		}
 		else
 		{
-			WaitForSingleObject(num_semaphore, INFINITE);
 			m_computerinfo.num = m_count;
 			m_computerinfo.socket_server = cliSock;
 			m_computerinfo.evaluate_point = 1000;
 			computers_vector.push_back(m_computerinfo);
 			m_count++;
-			HANDLE handle = (HANDLE)_beginthreadex(NULL, 0, SocketServerThread,
-				&ComputerMonitor::FindNumComputerinVecotr(m_count - 1), 0, NULL);
 		}
+	}
+
+	for (int i = 0; i < numof_connection; i++)
+	{
+		WaitForSingleObject(num_semaphore, INFINITE);
+		HANDLE handle = (HANDLE)_beginthreadex(NULL, 0, SocketServerThread,
+			&computers_vector.at(i), 0, NULL);
 	}
 	return 0;
 }
@@ -204,7 +208,13 @@ unsigned int __stdcall SocketServerThread(void *m_computerinfo_v)
 		m_deviation = 1000;
 		memset(m_IP, 0, sizeof(m_IP));
 		recv(m_computerinfo->socket_server, recvbuf, 128, 0);
-		//cout << "recv: " << recvbuf << "from: " << m_computerinfo->local_hostname << endl;
+		cout << "this is num " << m_computerinfo->num <<
+			" recv: " << recvbuf << 
+			" from: " << m_computerinfo->local_hostname << endl;
+		if (strlen(m_computerinfo->local_hostname) < 3)
+		{
+			break;
+		}
 		int flag = recvbuf[0];
 		switch (flag)
 		{
@@ -212,7 +222,7 @@ unsigned int __stdcall SocketServerThread(void *m_computerinfo_v)
 			ComputerMonitor::ReceiveHostname(recvbuf, m_computerinfo);
 
 		case 'D':
-			cout << "recv: " << recvbuf << "   from: " << m_computerinfo->local_hostname << endl;
+			//cout << "recv: " << recvbuf << "   from: " << m_computerinfo->local_hostname << endl;
 			ComputerMonitor::ReceiveDeviation(recvbuf, m_computerinfo);
 		}
 	}
