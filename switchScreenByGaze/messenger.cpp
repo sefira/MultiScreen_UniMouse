@@ -226,7 +226,6 @@ unsigned int __stdcall SocketServerThread(void *m_computerinfo_v)
 			ComputerMonitor::ReceiveDeviation(recvbuf, m_computerinfo);
 		}
 	}
-	
 
 	return 0;
 }

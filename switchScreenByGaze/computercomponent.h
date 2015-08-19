@@ -29,7 +29,7 @@ THE SOFTWARE.
 
 #define SWITCHGAZE_PORT 24805
 
-#define TIMEINTERVAL 500
+#define TIMEINTERVAL 1000
 
 struct ComputerInfo
 {

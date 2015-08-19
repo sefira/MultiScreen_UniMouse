@@ -222,9 +222,13 @@ int Computer::SendDeviation()
 		char deviation_str[128];
 		sprintf(deviation_str, "%f", deviation);
 		strcat(sendbuf, deviation_str);
-		if (SOCKET_ERROR != Messenger::SendMessagetoServer(socket_client, sendbuf))
+		if (1 != Messenger::SendMessagetoServer(socket_client, sendbuf))
 		{
 			ret = 0;
+		}
+		else
+		{
+			return 1;
 		}
 		Sleep(TIMEINTERVAL);
 	}
