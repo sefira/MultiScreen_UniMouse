@@ -183,6 +183,25 @@ int Messenger::ServerAcceptClient(vector<ComputerInfo> & computers_vector, int n
 		}
 	}
 
+	for (int i = 1; i < numof_connection; i++)
+	{
+		for (int j = 0; j < numof_connection - i; j++)
+		{
+			if (strcmp(computers_vector.at(j).local_hostname, computers_vector.at(j + 1).local_hostname) > 0)
+			{
+				ComputerInfo tempcom = computers_vector.at(j);
+				computers_vector.at(j) = computers_vector.at(j + 1);
+				computers_vector.at(j + 1) = tempcom;
+			}
+		}
+	}
+
+	for (int i = 0; i < numof_connection; i++)
+	{
+		computers_vector.at(i).num = i;
+	}
+
+
 	for (int i = 0; i < numof_connection; i++)
 	{
 		WaitForSingleObject(num_semaphore, INFINITE);

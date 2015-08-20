@@ -141,11 +141,11 @@ int WriteFile(vector<ComputerInfo> computers_vector)
 	{
 		filename.append(infoBuf);
 		filename.append("\\synergy.sgc");
-		cout << filename.c_str() << endl;
+		//cout << filename.c_str() << endl;
 	}
 	else
 	{
-		cout << filename.c_str() << endl;
+		//cout << filename.c_str() << endl;
 		return 1;
 	}
 	FILE * pfile;
