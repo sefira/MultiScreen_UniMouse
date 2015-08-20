@@ -101,7 +101,7 @@ int ComputerMonitor::ReceiveDeviation(char *recvbuf, ComputerInfo * m_computerin
 	strcpy(deviation_str, &recvbuf[1]);
 	//cout << deviation_str << endl;
 	double deviation = atof(deviation_str);
-	m_computerinfo->evaluate_point = deviation;
+	m_computerinfo->evaluate_point = deviation + sqrt(m_computerinfo->evaluate_point);
 	//cout << deviation << endl;
 
 	return 0;
@@ -175,6 +175,10 @@ int WriteFile(vector<ComputerInfo> computers_vector)
 		fprintf(pfile,
 			"\tkeystroke(F%d) = switchToScreen(%s)\n",
 			13 + computers_vector.at(i).num,
+			computers_vector.at(i).local_hostname);
+		fprintf(pfile,
+			"\tkeystroke(Control+Alt+Shift+F%d) = switchToScreen(%s)\n",
+			1 + computers_vector.at(i).num,
 			computers_vector.at(i).local_hostname);
 	}
 	fprintf(pfile, "%s\n\n", "end");
@@ -260,7 +264,9 @@ int ComputerMonitor::DetermineActivated()
 			original_activated_num = activated_num;
 			cout << "num " << activated_num << " is activated" <<
 				"its name is: " <<
-				computers_vector.at(activated_num).local_hostname << endl;
+				computers_vector.at(activated_num).local_hostname <<
+				" win by evaluate: " << 
+				computers_vector.at(activated_num).evaluate_point << endl;
 			m_keyboard_simulater.SwitchScreentoFX(activated_num);
 		}
 		Sleep(TIMEINTERVAL);

@@ -30,6 +30,9 @@ THE SOFTWARE.
 #include <process.h>
 using namespace std;
 
+#define SelfConfig
+#define StartSS
+
 Computer myself_computer;
 
 unsigned int __stdcall MonitorAsClientToo(void *)
@@ -50,18 +53,20 @@ int StartSynergyService(char * path)
 	strcpy(path, path_str.c_str());
 	path[position + 1] = '\0';
 	strcat(path, "StartSynergyService.exe");
-	cout << path << endl;
+	//cout << path << endl;
 	int ret = WinExec(path, SW_SHOW);
-	cout << ret << endl;
+	//cout << ret << endl;
 	return 0;
 }
 
 int main(int argc, char * argv[])
 {
+#ifdef StartSS
 	if (argc >= 1)
 	{
 		StartSynergyService(argv[0]);
 	}
+#endif
 	cout << "please input monitor name:" << endl;
 
 	char monitor_name[128];
@@ -87,7 +92,9 @@ int main(int argc, char * argv[])
 		ComputerMonitor myself_computermonitor(myself_computer);
 		HANDLE handle = (HANDLE)_beginthreadex(NULL, 0, MonitorAsClientToo, NULL, 0, NULL);
 		myself_computermonitor.ConnectWithClient(numof_connection);
+#ifdef SelfConfig
 		myself_computermonitor.Configuration(numof_connection);
+#endif
 		myself_computermonitor.BegintoWork();
 	}
 	else

@@ -121,7 +121,7 @@ int EvaluateMedia::Evaluate()
 	{
 		if (!faces.empty())
 		{
-			if (faces[0].area() < 2000)
+			if (faces[0].area() < 10000)
 			{
 				return deviation;
 			}
@@ -145,26 +145,51 @@ int EvaluateMedia::Evaluate()
 
 			cv::Scalar mean_leftdown, mean_rightdown;
 			cv::Scalar stddev_leftdown, stddev_rightdown;
+			cv::Scalar mean_all, stddev_all;
 			cv::Mat face_frame_src = cv::Mat(frame, faces[0]);
 			cv::Mat face_frame_dst;
 			SkinDetect(face_frame_src, face_frame_dst);
 			//cv::imshow("face_frame", face_frame_dst);
 			cv::meanStdDev(face_frame_dst, mean_leftdown, stddev_leftdown, mask_leftdown);
 			cv::meanStdDev(face_frame_dst, mean_rightdown, stddev_rightdown, mask_rightdown);
+			cv::meanStdDev(face_frame_dst, mean_all, stddev_all);
 
 			//cout << "leftdown mean:" <<
-			//	mean_leftdown.val[0] << ","<<mean_leftdown.val[1] << "," << 
-			//	mean_leftdown.val[2] << "," << mean_leftdown.val[3] << endl;
+			//	mean_leftdown.val[0] <<
+			//	//"," << mean_leftdown.val[1] <<
+			//	//"," << mean_leftdown.val[2] <<
+			//	//"," << mean_leftdown.val[3] << 
+			//	endl;
 			//cout << "rightdown mean:" << 
-			//	mean_rightdown.val[0] << "," << mean_rightdown.val[1] << "," <<
-			//	mean_rightdown.val[2] << "," << mean_rightdown.val[3] << endl;
+			//	mean_rightdown.val[0] <<
+			//	//"," << mean_rightdown.val[1] <<
+			//	//"," << mean_rightdown.val[2] <<
+			//	//"," << mean_rightdown.val[3] <<
+			//	endl;
+			//cout << "all mean:" <<
+			//	mean_all.val[0] <<
+			//	//"," << mean_all.val[1] <<
+			//	//"," << mean_all.val[2] <<
+			//	//"," << mean_all.val[3] <<
+			//	endl;
 			//cout << "leftdown stddev:" << 
-			//	stddev_leftdown.val[0] << "," << stddev_leftdown.val[1] << "," << 
-			//	stddev_leftdown.val[2] << "," << stddev_leftdown.val[3] << endl;
+			//	stddev_leftdown.val[0] << 
+			//	//"," << stddev_leftdown.val[1] << 
+			//	//"," << stddev_leftdown.val[2] <<
+			//	//"," << stddev_leftdown.val[3] <<
+			//	endl;
 			//cout << "rightdown stddev:" <<
-			//	stddev_rightdown.val[0] << "," << stddev_rightdown.val[1] << "," <<
-			//	stddev_rightdown.val[2] << "," << stddev_rightdown.val[3] << endl;
-
+			//	stddev_rightdown.val[0] <<
+			//	//"," << stddev_rightdown.val[1] <<
+			//	//"," << stddev_rightdown.val[2] <<
+			//	//"," << stddev_rightdown.val[3] << 
+			//	endl;
+			//cout << "all stddev:" <<
+			//	stddev_all.val[0] <<
+			//	//"," << stddev_all.val[1] <<
+			//	//"," << stddev_all.val[2] <<
+			//	//"," << stddev_all.val[3] <<
+			//	endl;
 			if (mean_leftdown.val[0] > mean_rightdown.val[0])
 			{
 				//if (mean_rightdown.val[0] <= 0 || stddev_leftdown.val[0] <= 0)
