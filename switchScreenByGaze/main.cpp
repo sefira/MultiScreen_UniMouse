@@ -42,8 +42,26 @@ unsigned int __stdcall MonitorAsClientToo(void *)
 	return 0;
 }
 
-int main()
+int StartSynergyService(char * path)
 {
+	string path_str = path;
+	char flag = '\\';
+	int position = path_str.rfind(flag);
+	strcpy(path, path_str.c_str());
+	path[position + 1] = '\0';
+	strcat(path, "StartSynergyService.exe");
+	cout << path << endl;
+	int ret = WinExec(path, SW_SHOW);
+	cout << ret << endl;
+	return 0;
+}
+
+int main(int argc, char * argv[])
+{
+	if (argc >= 1)
+	{
+		StartSynergyService(argv[0]);
+	}
 	cout << "please input monitor name:" << endl;
 
 	char monitor_name[128];

@@ -29,6 +29,7 @@ THE SOFTWARE.
 
 #include <process.h>
 #include <iostream>
+#include <fstream>
 
 #include "messenger.h"
 #include "evaluatemedia.h"
@@ -117,9 +118,73 @@ ComputerInfo &ComputerMonitor::FindNumComputerinVecotr(int num)
 		}
 	}
 }
+std::string sectionscreens = "\t\thalfDuplexCapsLock = false\n" \
+"\t\thalfDuplexNumLock = false\n" \
+"\t\thalfDuplexScrollLock = false\n" \
+"\t\txtestIsXineramaUnaware = false\n" \
+"\t\tswitchCorners = none\n" \
+"\t\tswitchCornerSize = 0\n";
+std::string sectionoptions = "	relativeMouseMoves = false\n" \
+"\tscreenSaverSync = true\n" \
+"\twin32KeepForeground = false\n" \
+"\tswitchCorners = none\n" \
+"\tswitchCornerSize = 0\n";
+
+int WriteFile(vector<ComputerInfo> computers_vector)
+{
+	string filename = "C:\\Users\\";
+
+	char  infoBuf[128];
+	DWORD  bufCharCount = 128;
+
+	if (GetUserName(infoBuf, &bufCharCount))
+	{
+		filename.append(infoBuf);
+		filename.append("\\synergy.sgc");
+		cout << filename.c_str() << endl;
+	}
+	else
+	{
+		cout << filename.c_str() << endl;
+		return 1;
+	}
+	FILE * pfile;
+	fopen_s(&pfile, filename.c_str(), "wt+");
+	if (pfile == NULL)
+	{
+		return 1;
+	}
+	fprintf(pfile, "%s\n", "section: screens");
+	for (int i = 0; i < computers_vector.size(); i++)
+	{
+		fprintf(pfile, "\t%s:\n", computers_vector.at(i).local_hostname);
+		fprintf(pfile, "%s", sectionscreens.c_str());
+	}
+	fprintf(pfile, "%s\n\n", "end");
+
+	fprintf(pfile, "%s\n", "section: aliases");
+	fprintf(pfile, "%s\n\n", "end");
+
+	fprintf(pfile, "%s\n", "section: links");
+	fprintf(pfile, "%s\n\n", "end");
+
+	fprintf(pfile, "%s\n", "section: options");
+	fprintf(pfile, "%s", sectionoptions.c_str());
+	for (int i = 0; i < computers_vector.size(); i++)
+	{
+		fprintf(pfile,
+			"\tkeystroke(F%d) = switchToScreen(%s)\n",
+			13 + computers_vector.at(i).num,
+			computers_vector.at(i).local_hostname);
+	}
+	fprintf(pfile, "%s\n\n", "end");
+	fclose(pfile);
+	return 0;
+}
 
 int ComputerMonitor::Configuration(int numof_connection)
 {
+	cout << "begin to configuration" << endl;
 	//waitting for all hostnames are received
 	for (int i = 0; i < numof_connection; i++)
 	{
@@ -133,8 +198,13 @@ int ComputerMonitor::Configuration(int numof_connection)
 		Computer::QueryHostIPbyName(m_computerinfo.local_hostname, tempcomputer);
 		strcpy(m_computerinfo.local_IP, tempcomputer.GetIP());
 	}
-	ToString();
+	//ToString();
 
+	if (1 == WriteFile(computers_vector))
+	{
+		return 1;
+	}
+	
 	return 0;
 }
 
@@ -176,7 +246,9 @@ int ComputerMonitor::DetermineActivated()
 		for (int i = 0; i < computers_vector.size(); i++)
 		{
 			double temp_dev = computers_vector.at(i).evaluate_point;
-			cout << "num: " << i << " devitaion: " << temp_dev << endl;
+			cout << "num: " << computers_vector.at(i).num <<
+				"hostname: " << computers_vector.at(i).local_hostname <<
+				" devitaion: " << temp_dev << endl;
 			if (temp_dev < minmum_dev)
 			{
 				minmum_dev = temp_dev;

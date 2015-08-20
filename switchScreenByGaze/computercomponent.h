@@ -43,4 +43,5 @@ struct ComputerInfo
 	double evaluate_point;
 };
 
+
 #endif
