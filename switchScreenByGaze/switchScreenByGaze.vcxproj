@@ -80,6 +80,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="computercomponent.cpp" />
     <ClCompile Include="computermonitor.cpp" />
     <ClCompile Include="evaluatemedia.cpp" />
     <ClCompile Include="face_x.cpp" />

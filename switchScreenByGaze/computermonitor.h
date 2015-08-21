@@ -72,6 +72,9 @@ public:
 	static ComputerInfo &FindNumComputerinVecotr(int num);
 
 private:
+	//generate configruation file for synergy
+	int WriteFile(std::vector<ComputerInfo> computers_vector);
+
 	bool isaNewHost(char * remote_hostname);
 
 	//all receives will update this vector

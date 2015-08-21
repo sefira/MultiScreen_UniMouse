@@ -22,31 +22,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#ifndef SWITCHSCREENBYGAZE_COMPUTERCOMPONENT_H_
-#define SWITCHSCREENBYGAZE_COMPUTERCOMPONENT_H_
+#include "computercomponent.h"
 
-#include <WinSock2.h>
-
-#define SWITCHGAZE_PORT 24805
-
-#define TIMEINTERVAL 1000
-
-#define COMMANDCOLOR FOREGROUND_GREEN
-#define INITCOLOR (FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE)
-
-struct ComputerInfo
+bool SetConsoleColor(WORD wAttributes)
 {
-	//the num which be allot by monitor
-	int num;
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	if (hConsole == INVALID_HANDLE_VALUE)
+		return FALSE;
 
-	SOCKET socket_server;
-
-	char local_hostname[128];
-	char local_IP[128];
-	double evaluate_point;
-};
-
-//set cout color
-bool SetConsoleColor(WORD wAttributes);
-
-#endif
+	return SetConsoleTextAttribute(hConsole, wAttributes);
+}

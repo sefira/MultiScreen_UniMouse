@@ -67,7 +67,9 @@ int main(int argc, char * argv[])
 		StartSynergyService(argv[0]);
 	}
 #endif
+	SetConsoleColor(COMMANDCOLOR);
 	cout << "please input monitor name:" << endl;
+	SetConsoleColor(INITCOLOR);
 
 	char monitor_name[128];
 
@@ -87,7 +89,9 @@ int main(int argc, char * argv[])
 	{
 		cout << "I am a monitor." << endl;
 		int numof_connection = 0;
+		SetConsoleColor(COMMANDCOLOR);
 		cout << "How many Client do you want to connect:" << endl;
+		SetConsoleColor(INITCOLOR);
 		cin >> numof_connection;
 		ComputerMonitor myself_computermonitor(myself_computer);
 		HANDLE handle = (HANDLE)_beginthreadex(NULL, 0, MonitorAsClientToo, NULL, 0, NULL);
@@ -106,6 +110,6 @@ int main(int argc, char * argv[])
 		myself_computer.SendDeviation();
 	}
 
-	cout << "main thread finshed" << endl;
+	cout << "main thread finished" << endl;
 	return 0;
 }

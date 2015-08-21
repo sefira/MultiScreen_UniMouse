@@ -45,6 +45,9 @@
     <ClCompile Include="messenger.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="computercomponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="face_x.h">

@@ -130,7 +130,7 @@ std::string sectionoptions = "	relativeMouseMoves = false\n" \
 "\tswitchCorners = none\n" \
 "\tswitchCornerSize = 0\n";
 
-int WriteFile(vector<ComputerInfo> computers_vector)
+int ComputerMonitor::WriteFile(vector<ComputerInfo> computers_vector)
 {
 	string filename = "C:\\Users\\";
 
@@ -280,11 +280,13 @@ int ComputerMonitor::DetermineActivated()
 		if (original_activated_num != activated_num)
 		{
 			original_activated_num = activated_num;
+			SetConsoleColor(COMMANDCOLOR);
 			cout << "num " << activated_num << " is activated" <<
 				"its name is: " <<
 				computers_vector.at(activated_num).local_hostname <<
 				" win by evaluate: " << 
 				computers_vector.at(activated_num).evaluate_point << endl;
+			SetConsoleColor(INITCOLOR);
 			m_keyboard_simulater.SwitchScreentoFX(activated_num);
 		}
 		Sleep(TIMEINTERVAL);
@@ -306,5 +308,3 @@ bool ComputerMonitor::isaNewHost(char * remote_hostname)
 	}
 	return isanewhost;
 }
-
-
