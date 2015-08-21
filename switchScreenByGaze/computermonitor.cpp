@@ -279,15 +279,18 @@ int ComputerMonitor::DetermineActivated()
 		}
 		if (original_activated_num != activated_num)
 		{
-			original_activated_num = activated_num;
-			SetConsoleColor(COMMANDCOLOR);
-			cout << "num " << activated_num << " is activated" <<
-				"its name is: " <<
-				computers_vector.at(activated_num).local_hostname <<
-				" win by evaluate: " << 
-				computers_vector.at(activated_num).evaluate_point << endl;
-			SetConsoleColor(INITCOLOR);
-			m_keyboard_simulater.SwitchScreentoFX(activated_num);
+			if (computers_vector.at(activated_num).evaluate_point < 120)
+			{
+				original_activated_num = activated_num;
+				SetConsoleColor(COMMANDCOLOR);
+				cout << "num " << activated_num << " is activated" <<
+					"its name is: " <<
+					computers_vector.at(activated_num).local_hostname <<
+					" win by evaluate: " <<
+					computers_vector.at(activated_num).evaluate_point << endl;
+				SetConsoleColor(INITCOLOR);
+				m_keyboard_simulater.SwitchScreentoFX(activated_num);
+			}
 		}
 		Sleep(TIMEINTERVAL);
 	}
