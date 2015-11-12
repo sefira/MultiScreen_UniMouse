@@ -270,7 +270,7 @@ int EvaluateMedia::TrackingFace()
 			//}
 		}
 		Evaluate();
-		//cout << deviation << endl;
+		cout << deviation << endl;
 		//cv::imshow("Tracking result", frame);
 		cv::waitKey(1000);
 	}
