@@ -312,13 +312,13 @@ int EvaluateMedia::TrackingFaceFastMode()
 			faces[0].y = faces[0].y * scale;
 			faces[0].width = faces[0].width * scale;
 			faces[0].height = faces[0].height * scale;
-			cv::rectangle(gray_image, faces[0], cv::Scalar(0, 0, 255), 2);
+			//cv::rectangle(gray_image, faces[0], cv::Scalar(0, 0, 255), 2);
 			//cout << face.area() << endl;
 			//}
 		}
 		EvaluateByCNN();
 		//cout << deviation << endl;
-		cv::imshow("Tracking result", gray_image);
+		//cv::imshow("Tracking result", gray_image);
 		cv::waitKey(1000);
 	}
 

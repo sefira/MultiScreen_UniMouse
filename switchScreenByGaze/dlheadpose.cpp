@@ -77,6 +77,7 @@ CNNHeadPose::CNNHeadPose()
 
 CNNHeadPose::~CNNHeadPose()
 {
+
 }
 
 int CNNHeadPose::ColouringWeightBias()
@@ -127,27 +128,57 @@ int CNNHeadPose::GetImageDataFromPicture(const std::string &picutrefilename, vec
 	return 0;
 }
 
-double CNNHeadPose::Recognize(cv::Mat gray_frame) {
+double CNNHeadPose::Recognize(cv::Mat gray_frame) 
+{
+	vec_t data[5];
+	vec_t result[5];
+	cv::Mat augmented_frame[5];
 
-	//vec_t data;
-	//GetImageDataFromVideo(gray_frame, data);
+	cv::resize(gray_frame, gray_frame, cv::Size(100, 100));
+	cv::imshow("resized gray_frame",gray_frame);
+	//left_up_frame
+	augmented_frame[0] = cv::Mat(gray_frame, cv::Rect(0, 0, 91, 91));
+	//left_down_frame
+	augmented_frame[1] = cv::Mat(gray_frame, cv::Rect(0, 9, 91, 91));
+	//right_up_frame
+	augmented_frame[2] = cv::Mat(gray_frame, cv::Rect(9, 0, 91, 91));
+	//right_down_frame
+	augmented_frame[3] = cv::Mat(gray_frame, cv::Rect(9, 9, 91, 91));
+	//center_frame
+	augmented_frame[4] = cv::Mat(gray_frame, cv::Rect(5, 5, 91, 91));
 
-	//// recognize
-	//vec_t result = nn.predict(data);
-	//cout << result[0] << ' ' << result[1] << endl;
-	vec_t test[4];
-	GetImageDataFromPicture("down_down\\image0\\1_1.jpg", test[0]);
-	GetImageDataFromPicture("down_up\\image-30\\1_1.jpg", test[1]);
-	GetImageDataFromPicture("up_down\\image45\\1_1.jpg", test[2]);
-	GetImageDataFromPicture("up_up\\image60\\1_1.jpg", test[3]);
-
-	vec_t result[4];
-
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 5; i++)
 	{
-		result[i] = nn.predict(test[i]);
-		cout << result[i][0] << ' ' << result[i][1] << endl;
-	}
+		GetImageDataFromVideo(augmented_frame[i], data[i]);
 
-	return 0;
+		// recognize
+		result[i] = nn.predict(data[i]);
+	}
+	double pitch = 0;
+	double yaw = 0;
+	for (int i = 0; i < 5; i++)
+	{
+		pitch += result[i][0];
+		yaw += result[i][1];
+	}
+	cout << "pitch:" << pitch << "  yaw:" << yaw << endl;
+	pitch = fabs(pitch / 5);
+	yaw = fabs(yaw / 5);
+	double F1 = 2 * (pitch * yaw) / (pitch + yaw + 1);
+
+	//vec_t test[4];
+	//GetImageDataFromPicture("down_down\\image0\\1_1.jpg", test[0]);
+	//GetImageDataFromPicture("down_up\\image-30\\1_1.jpg", test[1]);
+	//GetImageDataFromPicture("up_down\\image45\\1_1.jpg", test[2]);
+	//GetImageDataFromPicture("up_up\\image60\\1_1.jpg", test[3]);
+
+	//vec_t result[4];
+
+	//for (int i = 0; i < 4; i++)
+	//{
+	//	result[i] = nn.predict(test[i]);
+	//	cout << result[i][0] << ' ' << result[i][1] << endl;
+	//}
+
+	return pitch;
 }
