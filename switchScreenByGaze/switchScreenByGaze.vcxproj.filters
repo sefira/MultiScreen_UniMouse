@@ -48,6 +48,9 @@
     <ClCompile Include="computercomponent.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="dlheadpose.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="face_x.h">
@@ -78,6 +81,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="computercomponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="dlheadpose.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

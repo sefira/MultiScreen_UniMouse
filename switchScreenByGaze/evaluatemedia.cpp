@@ -38,13 +38,9 @@ double EvaluateMedia::deviation = 1000;
 
 EvaluateMedia::EvaluateMedia(bool load_facex) 
 {
-	if (load_facex)
-	{
-		face_x = FaceX(kModelFileName);
-		landmarks = vector<cv::Point2d>(face_x.landmarks_count());
-	}
 	m_videocapture = cv::VideoCapture(0);
 	m_cascadeclassifier = cv::CascadeClassifier(kAlt2);
+
 }
 
 EvaluateMedia::~EvaluateMedia()
@@ -114,7 +110,7 @@ void SkinDetect(cv::Mat& face_frame_src, cv::Mat& face_frame_dst)
 	cvReleaseImage(&src_tmp1);
 }
 
-int EvaluateMedia::Evaluate()
+double EvaluateMedia::Evaluate()
 {
 	deviation = 1000;
 	if (!frame.empty())
@@ -221,28 +217,6 @@ int EvaluateMedia::Evaluate()
 	}
 }
 
-int EvaluateMedia::PaintFive(cv::Mat frame)
-{
-	if (landmarks.size() == 51)
-	{
-		cv::circle(frame, landmarks[0], 1, cv::Scalar(0, 255, 0), 2);
-		cv::circle(frame, landmarks[9], 1, cv::Scalar(0, 255, 0), 2);
-		cv::circle(frame, landmarks[13], 1, cv::Scalar(0, 255, 0), 2);
-		cv::circle(frame, landmarks[31], 1, cv::Scalar(0, 255, 0), 2);
-		cv::circle(frame, landmarks[37], 1, cv::Scalar(0, 255, 0), 2);
-		return 1;
-	}
-	if (landmarks.size() == 5)
-	{
-		for (cv::Point2d landmark : landmarks)
-		{
-			cv::circle(frame, landmark, 1, cv::Scalar(0, 255, 0), 2);
-		}
-		return 1;
-	}
-	return 0;
-}
-
 bool littlerface(const cv::Rect & face1, const cv::Rect & face2)
 {
 	return face1.area() > face2.area();
@@ -252,7 +226,6 @@ int EvaluateMedia::TrackingFace()
 {
 	while (1)
 	{
-
 		m_videocapture >> frame;
 		cv::cvtColor(frame, gray_image, cv::COLOR_BGR2GRAY);
 		//cv::imshow("Gray image", gray_image);
@@ -265,104 +238,89 @@ int EvaluateMedia::TrackingFace()
 			//cout << "in the beginning:" << endl;
 			//for (cv::Rect face : faces)
 			//{
-			//	cv::rectangle(frame, face, cv::Scalar(0, 0, 255), 2);
+				//cv::rectangle(frame, faces[0], cv::Scalar(0, 0, 255), 2);
 			//	cout << face.area() << endl;
 			//}
 		}
 		Evaluate();
-		cout << deviation << endl;
+		//cout << deviation << endl;
 		//cv::imshow("Tracking result", frame);
 		cv::waitKey(1000);
 	}
 	
-	return 1;
+	return 0;
 }
 
-int EvaluateMedia::AlignImage()
+double EvaluateMedia::EvaluateByCNN()
 {
-	frame = cv::imread(kTestImage);
-	cv::cvtColor(frame, gray_image, CV_BGR2GRAY);
-	cv::CascadeClassifier m_cascadeclassifier(kAlt2);
-	if (m_cascadeclassifier.empty())
+	deviation = 1000;
+	if (!gray_image.empty())
 	{
-		cout << "can not open model file for opencv face detect";
-		return 0;
+		if (!faces.empty())
+		{
+			if (faces[0].area() < 10000)
+			{
+				return deviation;
+			}
+			cv::Mat to_cnn = cv::Mat(gray_image, faces[0]);
+			cv::imshow("To CNN", to_cnn);
+			deviation = m_cnnheadpose.Recognize(to_cnn);
+			return deviation;
+		}
+		else
+		{
+			return deviation;
+		}
 	}
-
-	m_cascadeclassifier.detectMultiScale(gray_image, faces);
-	for (cv::Rect face : faces)
+	else
 	{
-		cv::rectangle(frame, face, cv::Scalar(0, 0, 255), 2);
-		landmarks = face_x.Alignment(gray_image, face);
-		PaintFive(frame);
+		return deviation;
 	}
-	cv::imshow("Alignment result", frame);
-	cv::waitKey();
-
-	return 1;
 }
 
-int EvaluateMedia::AlignVideo()
+int EvaluateMedia::TrackingFaceFastMode()
 {
-	m_videocapture >> frame;
-	cv::CascadeClassifier m_cascadeclassifier(kAlt2);
-
-	for (;;)
+	if (!m_videocapture.isOpened())
+	{
+		cout << "Video is not Opened, Please check the Webcam!" << endl;
+		return 1;
+	}
+	int scale = 2;
+	while (1)
 	{
 		m_videocapture >> frame;
+
+		cv::Mat small_image(cvRound(frame.rows / scale), cvRound(frame.cols / scale), CV_8UC1);
 		cv::cvtColor(frame, gray_image, cv::COLOR_BGR2GRAY);
 		//cv::imshow("Gray image", gray_image);
+		resize(gray_image, small_image, small_image.size(), 0, 0, cv::INTER_LINEAR);
+		cv::equalizeHist(small_image, small_image);
 
-		m_cascadeclassifier.detectMultiScale(gray_image, faces);
+		m_cascadeclassifier.detectMultiScale(small_image, faces, 1.1, 2, 0
+			//|CV_HAAR_FIND_BIGGEST_OBJECT
+			//|CV_HAAR_DO_ROUGH_SEARCH
+			| CV_HAAR_SCALE_IMAGE
+			, cv::Size(30, 30));
 
 		if (!faces.empty())
 		{
-			cv::rectangle(frame, faces[0], cv::Scalar(0, 0, 255), 2);
-			landmarks = face_x.Alignment(gray_image, faces[0]);
-			PaintFive(frame);
+			sort(faces.begin(), faces.end(), littlerface);
+			//cout << "in the beginning:" << endl;
+			//for (cv::Rect face : faces)
+			//{
+			faces[0].x = faces[0].x * scale;
+			faces[0].y = faces[0].y * scale;
+			faces[0].width = faces[0].width * scale;
+			faces[0].height = faces[0].height * scale;
+			cv::rectangle(gray_image, faces[0], cv::Scalar(0, 0, 255), 2);
+			//cout << face.area() << endl;
+			//}
 		}
-		cv::imshow("Alignment result", frame);
-		cv::waitKey();
+		EvaluateByCNN();
+		//cout << deviation << endl;
+		cv::imshow("Tracking result", gray_image);
+		cv::waitKey(1000);
 	}
 
-	return 1;
-}
-
-int EvaluateMedia::AlignVideoBasedonLast()
-{
-	cout << "Press \"r\" to re-initialize the face location." << endl;
-	m_videocapture >> frame;
-	cv::CascadeClassifier cc(kAlt2);
-
-	for (;;)
-	{
-		m_videocapture >> frame;
-		cv::cvtColor(frame, gray_image, cv::COLOR_BGR2GRAY);
-		//cv::imshow("Gray image", gray_image);
-
-		vector<cv::Point2d> original_landmarks = landmarks;
-		landmarks = face_x.Alignment(gray_image, landmarks);
-
-		for (int i = 0; i < landmarks.size(); ++i)
-		{
-			landmarks[i].x = (landmarks[i].x + original_landmarks[i].x) / 2;
-			landmarks[i].y = (landmarks[i].y + original_landmarks[i].y) / 2;
-		}
-		PaintFive(frame);
-
-		cv::imshow("\"r\" to re-initialize, \"q\" to exit", frame);
-		int key = cv::waitKey(10);
-		if (key == 'q')
-			break;
-		else if (key == 'r')
-		{
-			cc.detectMultiScale(gray_image, faces);
-			if (!faces.empty())
-			{
-				landmarks = face_x.Alignment(gray_image, faces[0]);
-				cv::rectangle(frame, faces[0], cv::Scalar(0, 0, 255), 2);
-			}
-		}
-	}
-	return 1;
+	return 0;
 }
