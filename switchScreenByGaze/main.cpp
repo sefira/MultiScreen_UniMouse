@@ -30,8 +30,8 @@ THE SOFTWARE.
 #include <process.h>
 using namespace std;
 
-#define SelfConfig
-#define StartSS
+#define SELFCONFIG
+//#define STARTSYNERGYSERVICE
 
 Computer myself_computer;
 
@@ -61,7 +61,7 @@ int StartSynergyService(char * path)
 
 int main(int argc, char * argv[])
 {
-#ifdef StartSS
+#ifdef STARTSYNERGYSERVICE
 	if (argc >= 1)
 	{
 		StartSynergyService(argv[0]);
@@ -96,7 +96,7 @@ int main(int argc, char * argv[])
 		ComputerMonitor myself_computermonitor(myself_computer);
 		HANDLE handle = (HANDLE)_beginthreadex(NULL, 0, MonitorAsClientToo, NULL, 0, NULL);
 		myself_computermonitor.ConnectWithClient(numof_connection);
-#ifdef SelfConfig
+#ifdef SELFCONFIG
 		myself_computermonitor.Configuration(numof_connection);
 #endif
 		myself_computermonitor.BegintoWork();

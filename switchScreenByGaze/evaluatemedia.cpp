@@ -40,7 +40,6 @@ EvaluateMedia::EvaluateMedia(bool load_facex)
 {
 	m_videocapture = cv::VideoCapture(0);
 	m_cascadeclassifier = cv::CascadeClassifier(kAlt2);
-
 }
 
 EvaluateMedia::~EvaluateMedia()
@@ -224,6 +223,12 @@ bool littlerface(const cv::Rect & face1, const cv::Rect & face2)
 
 int EvaluateMedia::TrackingFace()
 {
+	cout << "Camera is " << m_videocapture.isOpened() << endl;
+	if (!m_videocapture.isOpened())
+	{
+		cout << "Camera is not Opened, Please check the Webcam!" << endl;
+		return 1;
+	}
 	while (1)
 	{
 		m_videocapture >> frame;
@@ -280,9 +285,10 @@ double EvaluateMedia::EvaluateByCNN()
 
 int EvaluateMedia::TrackingFaceFastMode()
 {
+	cout << "Camera is " << m_videocapture.isOpened() << endl;
 	if (!m_videocapture.isOpened())
 	{
-		cout << "Video is not Opened, Please check the Webcam!" << endl;
+		cout << "Camera is not Opened, Please check the Webcam!" << endl;
 		return 1;
 	}
 	int scale = 2;

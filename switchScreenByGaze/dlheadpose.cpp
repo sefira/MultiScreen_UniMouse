@@ -133,9 +133,9 @@ double CNNHeadPose::Recognize(cv::Mat gray_frame)
 	vec_t data[5];
 	vec_t result[5];
 	cv::Mat augmented_frame[5];
-
 	cv::resize(gray_frame, gray_frame, cv::Size(100, 100));
 	cv::imshow("resized gray_frame",gray_frame);
+	//cout << gray_frame.cols << " " << gray_frame.rows << endl;
 	//left_up_frame
 	augmented_frame[0] = cv::Mat(gray_frame, cv::Rect(0, 0, 91, 91));
 	//left_down_frame
@@ -146,24 +146,30 @@ double CNNHeadPose::Recognize(cv::Mat gray_frame)
 	augmented_frame[3] = cv::Mat(gray_frame, cv::Rect(9, 9, 91, 91));
 	//center_frame
 	augmented_frame[4] = cv::Mat(gray_frame, cv::Rect(5, 5, 91, 91));
+	cv::imshow("left_up", augmented_frame[0]);
+	cv::imshow("left_down", augmented_frame[1]);
+	cv::imshow("right_up", augmented_frame[2]);
+	cv::imshow("right_down", augmented_frame[3]);
+	cv::imshow("center_frame", augmented_frame[4]);
+	cv::waitKey();
 
+	//estimation
+	double pitch = 0;
+	double yaw = 0;
 	for (int i = 0; i < 5; i++)
 	{
 		GetImageDataFromVideo(augmented_frame[i], data[i]);
 
 		// recognize
 		result[i] = nn.predict(data[i]);
-	}
-	double pitch = 0;
-	double yaw = 0;
-	for (int i = 0; i < 5; i++)
-	{
 		pitch += result[i][0];
 		yaw += result[i][1];
 	}
+	pitch = pitch / 5;
+	yaw = yaw / 5;
 	cout << "pitch:" << pitch << "  yaw:" << yaw << endl;
-	pitch = fabs(pitch / 5);
-	yaw = fabs(yaw / 5);
+	pitch = fabs(pitch);
+	yaw = fabs(yaw);
 	double F1 = 2 * (pitch * yaw) / (pitch + yaw + 1);
 
 	//vec_t test[4];
