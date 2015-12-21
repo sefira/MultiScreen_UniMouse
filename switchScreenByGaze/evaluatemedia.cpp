@@ -270,7 +270,7 @@ double EvaluateMedia::EvaluateByCNN()
 				return deviation;
 			}
 			cv::Mat to_cnn = cv::Mat(gray_image, faces[0]);
-			cv::imshow("To CNN", to_cnn);
+			cv::imshow("switch_screen To CNN", to_cnn);
 			deviation = m_cnnheadpose.Recognize(to_cnn);
 			return deviation;
 		}

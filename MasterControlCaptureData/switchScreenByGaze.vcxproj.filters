@@ -15,49 +15,55 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="computer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="computercomponent.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="computermonitor.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="evaluatemedia.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="facedetect-dll.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="keyboardsimulater.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="messenger.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="computer.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="computercomponent.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="computermonitor.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="evaluatemedia.cpp">
+    <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="keyboardsimulater.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="evaluatemedia.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="computer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="computermonitor.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="messenger.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="computercomponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="dlheadpose.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="keyboardsimulater.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="evaluatemedia.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="computer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="computermonitor.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="messenger.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="computercomponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="dlheadpose.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="facedetect-dll.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
