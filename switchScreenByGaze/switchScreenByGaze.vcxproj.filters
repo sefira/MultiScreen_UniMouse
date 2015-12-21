@@ -18,18 +18,6 @@
     <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="face_x.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="fern.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="regressor.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="utils.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="keyboardsimulater.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -53,18 +41,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="face_x.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="fern.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="regressor.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="utils.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="keyboardsimulater.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -84,6 +60,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="dlheadpose.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="facedetect-dll.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

@@ -57,13 +57,17 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINSOCK_DEPRECATED_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <BrowseInformation>true</BrowseInformation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <Bscmake>
+      <PreserveSbr>true</PreserveSbr>
+    </Bscmake>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -88,27 +92,20 @@
     <ClCompile Include="computermonitor.cpp" />
     <ClCompile Include="dlheadpose.cpp" />
     <ClCompile Include="evaluatemedia.cpp" />
-    <ClCompile Include="face_x.cpp" />
-    <ClCompile Include="fern.cpp" />
     <ClCompile Include="keyboardsimulater.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="messenger.cpp" />
-    <ClCompile Include="regressor.cpp" />
     <ClCompile Include="computer.cpp" />
-    <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="computercomponent.h" />
     <ClInclude Include="computermonitor.h" />
     <ClInclude Include="dlheadpose.h" />
     <ClInclude Include="evaluatemedia.h" />
-    <ClInclude Include="face_x.h" />
-    <ClInclude Include="fern.h" />
+    <ClInclude Include="facedetect-dll.h" />
     <ClInclude Include="keyboardsimulater.h" />
     <ClInclude Include="messenger.h" />
-    <ClInclude Include="regressor.h" />
     <ClInclude Include="computer.h" />
-    <ClInclude Include="utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

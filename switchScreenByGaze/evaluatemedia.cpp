@@ -23,6 +23,8 @@ THE SOFTWARE.
 */
 
 #include "evaluatemedia.h"
+#include "facedetect-dll.h"
+#pragma comment(lib,"libfacedetect.lib")
 
 #include <algorithm>
 #include <limits>
@@ -274,11 +276,13 @@ double EvaluateMedia::EvaluateByCNN()
 		}
 		else
 		{
+			//cout << "faces vector is empty" << endl;
 			return deviation;
 		}
 	}
 	else
 	{
+		//cout << "gray image is empty" << endl;
 		return deviation;
 	}
 }
@@ -291,22 +295,33 @@ int EvaluateMedia::TrackingFaceFastMode()
 		cout << "Camera is not Opened, Please check the Webcam!" << endl;
 		return 1;
 	}
-	int scale = 2;
+
+	int * pResults = NULL;
 	while (1)
 	{
 		m_videocapture >> frame;
 
-		cv::Mat small_image(cvRound(frame.rows / scale), cvRound(frame.cols / scale), CV_8UC1);
 		cv::cvtColor(frame, gray_image, cv::COLOR_BGR2GRAY);
 		//cv::imshow("Gray image", gray_image);
-		resize(gray_image, small_image, small_image.size(), 0, 0, cv::INTER_LINEAR);
-		cv::equalizeHist(small_image, small_image);
+		pResults = facedetect_multiview_reinforce((unsigned char*)(gray_image.ptr(0)), gray_image.cols, gray_image.rows, gray_image.step,
+			1.2f, 5, 24);
 
-		m_cascadeclassifier.detectMultiScale(small_image, faces, 1.1, 2, 0
-			//|CV_HAAR_FIND_BIGGEST_OBJECT
-			//|CV_HAAR_DO_ROUGH_SEARCH
-			| CV_HAAR_SCALE_IMAGE
-			, cv::Size(30, 30));
+		//print the detection results
+		faces.clear();
+		for (int i = 0; i < (pResults ? *pResults : 0); i++)
+		{
+			short * p = ((short*)(pResults + 1)) + 6 * i;
+			int x = p[0];
+			int y = p[1];
+			int w = p[2];
+			int h = p[3];
+			int neighbors = p[4];
+			int angle = p[5];
+
+			cv::Rect face_rect = cv::Rect(p[0], p[1], p[2], p[3]);
+			faces.push_back(cv::Rect(p[0], p[1], p[2], p[3]));
+			//cv::rectangle(frame, face_rect, cv::Scalar(0, 0, 255));
+		}
 
 		if (!faces.empty())
 		{
@@ -314,10 +329,6 @@ int EvaluateMedia::TrackingFaceFastMode()
 			//cout << "in the beginning:" << endl;
 			//for (cv::Rect face : faces)
 			//{
-			faces[0].x = faces[0].x * scale;
-			faces[0].y = faces[0].y * scale;
-			faces[0].width = faces[0].width * scale;
-			faces[0].height = faces[0].height * scale;
 			//cv::rectangle(gray_image, faces[0], cv::Scalar(0, 0, 255), 2);
 			//cout << face.area() << endl;
 			//}
@@ -325,7 +336,7 @@ int EvaluateMedia::TrackingFaceFastMode()
 		EvaluateByCNN();
 		//cout << deviation << endl;
 		//cv::imshow("Tracking result", gray_image);
-		cv::waitKey(1000);
+		cv::waitKey(100);
 	}
 
 	return 0;
