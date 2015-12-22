@@ -22,8 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#ifndef SWITCHSCREENBYGAZE_MESSENGER_H_
-#define SWITCHSCREENBYGAZE_MEDDENGER_H_
+#ifndef MASTERCONTROLCAPTUREDATA_MESSENGER_H_
+#define MASTERCONTROLCAPTUREDATA_MEDDENGER_H_
 
 #include <WinSock2.h>
 #include <vector>
@@ -47,6 +47,13 @@ public:
 	//for Computer
 	//send a given message to server which is indicated by socket_server
 	static int SendMessagetoServer(SOCKET socket_server, char * sendbuf);
+
+	/////////////////////////////////////////////////////////////////////////
+	/////////////nonsense code just for mastercotrol/////////////////////////
+	/////////////////////////////////////////////////////////////////////////
+	static int SendMessagetoClient(char * sendbuf);
+	static int ReceiveMessageFromServer(SOCKET socket_server, char * recvbuf);
+
 };
 
 #endif

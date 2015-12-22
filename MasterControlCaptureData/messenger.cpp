@@ -199,34 +199,29 @@ unsigned int __stdcall SocketServerThread(void *m_computerinfo_v)
 
 	cout << "this is num " << m_computerinfo->num << endl;
 
-	char recvbuf[128];
-	double m_deviation;
-	char m_IP[128];
 	while (1)
 	{
-		memset(recvbuf, 0, sizeof(recvbuf));
-		m_deviation = 1000;
-		memset(m_IP, 0, sizeof(m_IP));
-		recv(m_computerinfo->socket_server, recvbuf, 128, 0);
-		//cout << "this is num " << m_computerinfo->num <<
-		//	" recv: " << recvbuf << 
-		//	" from: " << m_computerinfo->local_hostname << endl;
-		if (strlen(m_computerinfo->local_hostname) < 3)
+		int ret = 0;
+		double deviation = ComputerMonitor::GetDeviation();
+		//cout << deviation << endl;
+		char sendbuf[128];
+		sendbuf[0] = 'D';
+		sendbuf[1] = 0;
+		char deviation_str[128];
+		sprintf(deviation_str, "%f", deviation);
+		strcat(sendbuf, deviation_str);
+		//cout << "send: " << sendbuf << endl;
+		ret = send(m_computerinfo->socket_server, sendbuf, 128, 0);
+		if (ret == SOCKET_ERROR)
 		{
-			break;
+			cout << "send message failed" << endl;
 		}
-		int flag = recvbuf[0];
-		switch (flag)
+		else
 		{
-		case 'H':
-			ComputerMonitor::ReceiveHostname(recvbuf, m_computerinfo);
-
-		case 'D':
-			//cout << "recv: " << recvbuf << "   from: " << m_computerinfo->local_hostname << endl;
-			ComputerMonitor::ReceiveDeviation(recvbuf, m_computerinfo);
+			//cout << "send message succeed" << endl;
 		}
+		Sleep(TIMEINTERVAL);
 	}
-
 	return 0;
 }
 
@@ -245,4 +240,11 @@ int Messenger::SendMessagetoServer(SOCKET socket_server, char * sendbuf)
 		//cout << "send message succeed" << endl;
 		return 0;
 	}
+}
+
+int Messenger::ReceiveMessageFromServer(SOCKET socket_server, char * recvbuf)
+{
+	memset(recvbuf, 0, sizeof(recvbuf));
+	recv(socket_server, recvbuf, 128, 0);
+	return 0;
 }

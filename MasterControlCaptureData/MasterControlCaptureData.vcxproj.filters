@@ -27,13 +27,10 @@
     <ClInclude Include="evaluatemedia.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="facedetect-dll.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="keyboardsimulater.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="messenger.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="facedetect-dll.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -48,9 +45,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="evaluatemedia.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="keyboardsimulater.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">

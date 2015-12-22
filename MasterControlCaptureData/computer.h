@@ -22,8 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#ifndef SWITCHSCREENBYGAZE_Computer_H_
-#define SWITCHSCREENBYGAZE_Computer_H_
+#ifndef MASTERCONTROLCAPTUREDATA_COMPUTER_H_
+#define MASTERCONTROLCAPTUREDATA_COMPUTER_H_
 
 #include <WinSock2.h>
 
@@ -67,6 +67,15 @@ public:
 	char * GetIP();
 
 	SOCKET socket_client;
+
+	/////////////////////////////////////////////////////////////////////////
+	/////////////nonsense code just for mastercotrol/////////////////////////
+	/////////////////////////////////////////////////////////////////////////
+
+	//receive remote computers' message about themselves deviation
+	int ReceiveDeviation();
+
+	static double deviation;
 
 protected:
 	//the num which be allot by monitor

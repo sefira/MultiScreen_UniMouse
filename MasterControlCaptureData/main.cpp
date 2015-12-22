@@ -30,9 +30,6 @@ THE SOFTWARE.
 #include <process.h>
 using namespace std;
 
-#define SELFCONFIG
-//#define STARTSYNERGYSERVICE
-
 Computer myself_computer;
 
 unsigned int __stdcall MonitorAsClientToo(void *)
@@ -40,7 +37,7 @@ unsigned int __stdcall MonitorAsClientToo(void *)
 	myself_computer.ConncetWithServer();
 	myself_computer.SendHostname();
 	myself_computer.BegintoWork();
-	myself_computer.SendDeviation();
+	myself_computer.ReceiveDeviation();
 	
 	return 0;
 }
@@ -61,12 +58,6 @@ int StartSynergyService(char * path)
 
 int main(int argc, char * argv[])
 {
-#ifdef STARTSYNERGYSERVICE
-	if (argc >= 1)
-	{
-		StartSynergyService(argv[0]);
-	}
-#endif
 	SetConsoleColor(COMMANDCOLOR);
 	cout << "please input monitor name:" << endl;
 	SetConsoleColor(INITCOLOR);
@@ -96,9 +87,6 @@ int main(int argc, char * argv[])
 		ComputerMonitor myself_computermonitor(myself_computer);
 		HANDLE handle = (HANDLE)_beginthreadex(NULL, 0, MonitorAsClientToo, NULL, 0, NULL);
 		myself_computermonitor.ConnectWithClient(numof_connection);
-#ifdef SELFCONFIG
-		myself_computermonitor.Configuration(numof_connection);
-#endif
 		myself_computermonitor.BegintoWork();
 	}
 	else
@@ -107,7 +95,8 @@ int main(int argc, char * argv[])
 		myself_computer.ConncetWithServer();
 		myself_computer.SendHostname();
 		myself_computer.BegintoWork();
-		myself_computer.SendDeviation();
+		//myself_computer.SendDeviation();
+		myself_computer.ReceiveDeviation();
 	}
 
 	cout << "main thread finished" << endl;

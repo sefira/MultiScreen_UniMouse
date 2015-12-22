@@ -89,7 +89,6 @@
     <ClInclude Include="computermonitor.h" />
     <ClInclude Include="evaluatemedia.h" />
     <ClInclude Include="facedetect-dll.h" />
-    <ClInclude Include="keyboardsimulater.h" />
     <ClInclude Include="messenger.h" />
   </ItemGroup>
   <ItemGroup>
@@ -97,7 +96,6 @@
     <ClCompile Include="computercomponent.cpp" />
     <ClCompile Include="computermonitor.cpp" />
     <ClCompile Include="evaluatemedia.cpp" />
-    <ClCompile Include="keyboardsimulater.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="messenger.cpp" />
   </ItemGroup>

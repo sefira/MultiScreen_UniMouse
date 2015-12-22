@@ -22,6 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
+#ifndef SWITCHSCREENBYGAZE_COMPUTERMONITOR_H_
+#define SWITCHSCREENBYGAZE_COMPUTERMONITOR_H_
 
 #include "computer.h"
 
@@ -80,3 +82,5 @@ private:
 	//all receives will update this vector
 	static std::vector<ComputerInfo> computers_vector;
 };
+
+#endif

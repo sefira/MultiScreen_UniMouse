@@ -37,10 +37,10 @@ THE SOFTWARE.
 using namespace std;
 
 vector<ComputerInfo> ComputerMonitor::computers_vector = vector<ComputerInfo>();
-
+double ComputerMonitor::deviation = 1000;
 ComputerMonitor::ComputerMonitor()
 {
-
+	
 }
 
 ComputerMonitor::ComputerMonitor(Computer m_computer)
@@ -230,22 +230,6 @@ int ComputerMonitor::Configuration(int numof_connection)
 	return 0;
 }
 
-//unsigned int __stdcall ComputerMonitor::InterfacetoEvaluateMedia(void *)
-//{
-//	EvaluateMedia m_evaluatemedia = EvaluateMedia(false);
-//	//m_evaluatemedia.TrackingFace();
-//	//cout << m_evaluatemedia.GetDeviation() << endl;
-//
-//	//test
-//	srand((unsigned)time(NULL));
-//	m_evaluatemedia.SetDeviation(rand());
-//	FindNumComputerinVecotr(0).evaluate_point =
-//		EvaluateMedia::GetDeviation();
-//	Sleep(TIMEINTERVAL);
-//
-//	return 0;
-//}
-//
 int ComputerMonitor::BegintoWork()
 {
 	DetermineActivated();
@@ -254,7 +238,6 @@ int ComputerMonitor::BegintoWork()
 
 int ComputerMonitor::DetermineActivated()
 {
-	int minmum_dev;
 	int activated_num = 0;
 	int original_activated_num = 0;
 	while (1)
@@ -263,39 +246,42 @@ int ComputerMonitor::DetermineActivated()
 		{
 			return 1;
 		}
-		minmum_dev = 1000;
 		original_activated_num = activated_num;
-		for (int i = 0; i < computers_vector.size(); i++)
-		{
-			double temp_dev = computers_vector.at(i).evaluate_point;
-			cout << "num: " << computers_vector.at(i).num <<
-				"hostname: " << computers_vector.at(i).local_hostname <<
-				" devitaion: " << temp_dev << endl;
-			if (temp_dev < minmum_dev)
-			{
-				minmum_dev = temp_dev;
-				activated_num = computers_vector.at(i).num;
-			}
-		}
+
+		cin >> activated_num;
 		if (original_activated_num != activated_num)
 		{
-			if (computers_vector.at(activated_num).evaluate_point < 120)
+			original_activated_num = activated_num;
+			SetConsoleColor(COMMANDCOLOR);
+			cout << "####################################################" <<
+				"####################################################" << endl;
+			cout << "num " << activated_num << " is activated" << endl;
+			cout << "now you should look at NO." << activated_num << "screen" << endl;
+			cout << "####################################################" <<
+				"####################################################" << endl;
+
+			for (int i = 0; i < 3; i++)
 			{
-				original_activated_num = activated_num;
-				SetConsoleColor(COMMANDCOLOR);
-				cout << "num " << activated_num << " is activated" <<
-					"its name is: " <<
-					computers_vector.at(activated_num).local_hostname <<
-					" win by evaluate: " <<
-					computers_vector.at(activated_num).evaluate_point << endl;
-				SetConsoleColor(INITCOLOR);
-				m_keyboard_simulater.SwitchScreentoFX(activated_num);
+				cout << "####################################################" <<
+					"####################################################" << endl;
+				cout << "########################" << i << "###########################" << endl;
+				cout << "####################################################" <<
+					"####################################################" << endl;
+				Sleep(1000);
 			}
+			SetConsoleColor(INITCOLOR);
 		}
+		deviation = activated_num;
 		Sleep(TIMEINTERVAL);
 	}
 	return 0;
 }
+
+double ComputerMonitor::GetDeviation()
+{
+	return deviation;
+}
+
 
 bool ComputerMonitor::isaNewHost(char * remote_hostname)
 {

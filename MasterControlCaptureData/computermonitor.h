@@ -22,12 +22,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
+#ifndef MASTERCONTROLCAPTUREDATA_COMPUTERMONITOR_H_
+#define MASTERCONTROLCAPTUREDATA_COMPUTERMONITOR_H_
 
 #include "computer.h"
 
 #include <vector>
 
-#include "keyboardsimulater.h"
 #include "computercomponent.h"
 
 
@@ -65,11 +66,22 @@ public:
 	//determine who is activated
 	int DetermineActivated();
 
-	//simulater keyboard press and release
-	KeyBoardSimulater m_keyboard_simulater;
-
 	//Find computer according given num
 	static ComputerInfo &FindNumComputerinVecotr(int num);
+
+	/////////////////////////////////////////////////////////////////////////
+	/////////////nonsense code just for mastercotrol/////////////////////////
+	/////////////////////////////////////////////////////////////////////////
+
+	//return deviation 
+	static double GetDeviation();
+
+	//send deviation broadcastly or to monitor, get the deviation firstly
+	//by using QueryDeviation()
+	int SendDeviation();
+
+	//deviation may be share in two thread
+	static double deviation;
 
 private:
 	//generate configruation file for synergy
@@ -79,4 +91,8 @@ private:
 
 	//all receives will update this vector
 	static std::vector<ComputerInfo> computers_vector;
+
 };
+
+
+#endif

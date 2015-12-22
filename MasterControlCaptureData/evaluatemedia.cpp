@@ -126,7 +126,10 @@ int EvaluateMedia::TrackingFaceFastMode()
 			faces.push_back(cv::Rect(p[0], p[1], p[2], p[3]));
 			//cv::rectangle(frame, face_rect, cv::Scalar(0, 0, 255));
 		}
-
+		if (faces.empty())
+		{
+			//cout << "empty faces vector" << endl;
+		}
 		if (!faces.empty())
 		{
 			sort(faces.begin(), faces.end(), littlerface);
