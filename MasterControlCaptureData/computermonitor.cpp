@@ -37,7 +37,8 @@ THE SOFTWARE.
 using namespace std;
 
 vector<ComputerInfo> ComputerMonitor::computers_vector = vector<ComputerInfo>();
-double ComputerMonitor::deviation = 1000;
+double ComputerMonitor::deviation = 0;
+
 ComputerMonitor::ComputerMonitor()
 {
 	
@@ -238,40 +239,9 @@ int ComputerMonitor::BegintoWork()
 
 int ComputerMonitor::DetermineActivated()
 {
-	int activated_num = 0;
-	int original_activated_num = 0;
 	while (1)
 	{
-		if (computers_vector.empty())
-		{
-			return 1;
-		}
-		original_activated_num = activated_num;
-
-		cin >> activated_num;
-		if (original_activated_num != activated_num)
-		{
-			original_activated_num = activated_num;
-			SetConsoleColor(COMMANDCOLOR);
-			cout << "####################################################" <<
-				"####################################################" << endl;
-			cout << "num " << activated_num << " is activated" << endl;
-			cout << "now you should look at NO." << activated_num << "screen" << endl;
-			cout << "####################################################" <<
-				"####################################################" << endl;
-
-			for (int i = 0; i < 3; i++)
-			{
-				cout << "####################################################" <<
-					"####################################################" << endl;
-				cout << "########################" << i << "###########################" << endl;
-				cout << "####################################################" <<
-					"####################################################" << endl;
-				Sleep(1000);
-			}
-			SetConsoleColor(INITCOLOR);
-		}
-		deviation = activated_num;
+		cin >> deviation;
 		Sleep(TIMEINTERVAL);
 	}
 	return 0;

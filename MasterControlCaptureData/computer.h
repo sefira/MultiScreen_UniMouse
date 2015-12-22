@@ -74,7 +74,7 @@ public:
 
 	//receive remote computers' message about themselves deviation
 	int ReceiveDeviation();
-
+	static int GetDeviation();
 	static double deviation;
 
 protected:

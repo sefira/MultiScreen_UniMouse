@@ -47,7 +47,7 @@ public:
 	//evaluate a frame by CNN 
 	//estiamtion the head pose pitch and yaw 
 	//use the F1 value combin pitch and yaw
-	double EvaluateByCNN();
+	int EvaluateByCNN();
 	//for CNN
 	int TrackingFaceFastMode();
 

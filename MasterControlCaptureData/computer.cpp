@@ -38,7 +38,7 @@ THE SOFTWARE.
 
 using namespace std;
 
-double Computer::deviation = 1000;
+double Computer::deviation = 0;
 Computer::Computer()
 {
 	QueryLocalHostname();
@@ -165,6 +165,11 @@ double Computer::QueryDeviation()
 	return dev;
 }
 
+int Computer::GetDeviation()
+{
+	return (int)deviation;
+}
+
 int Computer::SendHostname()
 {
 	//socket send , a really send action
@@ -239,24 +244,20 @@ int Computer::SendDeviation()
 
 int Computer::ReceiveDeviation()
 {
-
-	//socket send , a really send action
-	int ret = 1;
 	while (1)
 	{
-		cout << "hahahahah" << endl;
 		char recvbuf[128];
 		char deviation_str[128] = { 0 };
 		Messenger::ReceiveMessageFromServer(socket_client, recvbuf);
 		strcpy(deviation_str, &recvbuf[1]);
-		cout << deviation_str << endl;
+		//cout << deviation_str << endl;
 		deviation = atof(deviation_str);
 		//cout << deviation << endl;
 
 		Sleep(TIMEINTERVAL);
 	}
 
-	return ret;
+	return 0;
 }
 
 char * Computer::GetMonitorHostname()

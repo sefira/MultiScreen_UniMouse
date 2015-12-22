@@ -26,14 +26,16 @@ THE SOFTWARE.
 #include "facedetect-dll.h"
 #pragma comment(lib,"libfacedetect.lib")
 
+#include "computercomponent.h"
+#include "computer.h"
+
 #include <algorithm>
 #include <limits>
 
 #include "cv.h"
 using namespace std;
 
-double EvaluateMedia::deviation = 1000;
-
+double EvaluateMedia::deviation = 0;
 EvaluateMedia::EvaluateMedia(bool load_facex) 
 {
 	m_videocapture = cv::VideoCapture(0);
@@ -49,46 +51,29 @@ double EvaluateMedia::GetDeviation()
 	return deviation;
 }
 
-double EvaluateMedia::SetDeviation(double value)
-{
-	deviation = value;
-	return deviation;
-}
-
 bool littlerface(const cv::Rect & face1, const cv::Rect & face2)
 {
 	return face1.area() > face2.area();
 }
 
-double EvaluateMedia::EvaluateByCNN()
+int EvaluateMedia::EvaluateByCNN()
 {
-	deviation = 1000;
 	if (!gray_image.empty())
 	{
 		if (!faces.empty())
 		{
-			if (faces[0].area() < 10000)
+			if (faces[0].area() > 10000)
 			{
-				return deviation;
+				cv::Mat to_cnn = cv::Mat(gray_image, faces[0]);
+				cv::imshow("master_control To CNN", to_cnn);
+				/*
+				TODO£º write image
+				*/
+				cout << "now save image as " << deviation << " diraction" << endl;
 			}
-			cv::Mat to_cnn = cv::Mat(gray_image, faces[0]);
-			cv::imshow("master_control To CNN", to_cnn);
-			/*
-			TODO£º write image
-			*/
-			return deviation;
-		}
-		else
-		{
-			//cout << "faces vector is empty" << endl;
-			return deviation;
 		}
 	}
-	else
-	{
-		//cout << "gray image is empty" << endl;
-		return deviation;
-	}
+	return 0;
 }
 
 int EvaluateMedia::TrackingFaceFastMode()
@@ -100,6 +85,7 @@ int EvaluateMedia::TrackingFaceFastMode()
 		return 1;
 	}
 
+	int original_activated_num = 0;
 	int * pResults = NULL;
 	while (1)
 	{
@@ -140,10 +126,38 @@ int EvaluateMedia::TrackingFaceFastMode()
 			//cout << face.area() << endl;
 			//}
 		}
+		deviation = Computer::GetDeviation();
+		if (deviation == 0)
+		{
+			continue;
+		}
+		cout << deviation << endl;
+		if (original_activated_num != deviation)
+		{
+			original_activated_num = deviation;
+			SetConsoleColor(COMMANDCOLOR);
+			cout << "####################################################" << endl <<
+				"####################################################" << endl;
+			cout << "num " << deviation << " is activated" << endl;
+			cout << "now you should look at NO." << deviation << "screen" << endl;
+			cout << "####################################################" << endl <<
+				"####################################################" << endl;
+
+			for (int i = 0; i < 3; i++)
+			{
+				cout << "####################################################" << endl <<
+					"####################         #######################" << endl;
+				cout << "####################    " << i << "    #######################" << endl;
+				cout << "####################         #######################" << endl <<
+					"####################################################" << endl << endl;
+				Sleep(TIMEINTERVAL);
+			}
+			SetConsoleColor(INITCOLOR);
+		}
 		EvaluateByCNN();
 		//cout << deviation << endl;
 		//cv::imshow("Tracking result", gray_image);
-		cv::waitKey(100);
+		cv::waitKey(TIMEINTERVAL);
 	}
 
 	return 0;
