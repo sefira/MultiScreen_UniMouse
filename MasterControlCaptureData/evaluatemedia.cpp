@@ -31,9 +31,13 @@ THE SOFTWARE.
 
 #include <algorithm>
 #include <limits>
-
+#include <boost/filesystem/operations.hpp>
+#include <boost/filesystem/path.hpp>
+#include <boost/filesystem/convenience.hpp>
 #include "cv.h"
+
 using namespace std;
+namespace fs = boost::filesystem;
 
 double EvaluateMedia::deviation = 0;
 EvaluateMedia::EvaluateMedia(bool load_facex) 
@@ -62,7 +66,7 @@ int EvaluateMedia::CaptureImage(int deviation_num, int image_count)
 	{
 		if (!faces.empty())
 		{
-			if (faces[0].area() > 10000)
+			if (faces[0].area() > 8000)
 			{
 				cv::Mat to_cnn = cv::Mat(gray_image, faces[0]);
 				//cv::imshow("master_control To CNN", to_cnn);
@@ -71,19 +75,25 @@ int EvaluateMedia::CaptureImage(int deviation_num, int image_count)
 				TODO£º write image
 				*/
 				cv::Mat augmented_frame[5];
+				cv::Mat temp;
 				cv::resize(to_cnn, resized_to_cnn, cv::Size(100, 100));
 				cv::imshow("resized gray_frame", resized_to_cnn);
 				//cout << gray_frame.cols << " " << gray_frame.rows << endl;
 				//left_up_frame
-				augmented_frame[0] = cv::Mat(resized_to_cnn, cv::Rect(0, 0, 91, 91));
+				temp = cv::Mat(resized_to_cnn, cv::Rect(0, 0, 91, 91));
+				cv::resize(temp, augmented_frame[0], cv::Size(32, 32));
 				//left_down_frame
-				augmented_frame[1] = cv::Mat(resized_to_cnn, cv::Rect(0, 9, 91, 91));
+				temp = cv::Mat(resized_to_cnn, cv::Rect(0, 9, 91, 91));
+				cv::resize(temp, augmented_frame[1], cv::Size(32, 32));
 				//right_up_frame
-				augmented_frame[2] = cv::Mat(resized_to_cnn, cv::Rect(9, 0, 91, 91));
+				temp = cv::Mat(resized_to_cnn, cv::Rect(9, 0, 91, 91));
+				cv::resize(temp, augmented_frame[2], cv::Size(32, 32));
 				//right_down_frame
-				augmented_frame[3] = cv::Mat(resized_to_cnn, cv::Rect(9, 9, 91, 91));
+				temp = cv::Mat(resized_to_cnn, cv::Rect(9, 9, 91, 91));
+				cv::resize(temp, augmented_frame[3], cv::Size(32, 32));
 				//center_frame
-				augmented_frame[4] = cv::Mat(resized_to_cnn, cv::Rect(5, 5, 91, 91));
+				temp = cv::Mat(resized_to_cnn, cv::Rect(5, 5, 91, 91));
+				cv::resize(temp, augmented_frame[4], cv::Size(32, 32));
 				//cv::waitKey();
 
 				string original_filename;
@@ -97,22 +107,50 @@ int EvaluateMedia::CaptureImage(int deviation_num, int image_count)
 				memset(image_count_str, 0, sizeof(image_count_str));
 				sprintf_s(deviation_str, "%d", deviation_num);
 				sprintf_s(image_count_str, "%d", image_count); 
-				original_filename = "facedata/original/" + string(deviation_str) + "/" + string(image_count_str) + ".jpg";
+
+				//write the original image 100 * 100, which is for Windows
+				path_name = "facedata\\original\\" + string(deviation_str);
+				//cout << path_name << endl;
+				fs::path full_path(fs::initial_path());
+				full_path = fs::system_complete(fs::path(path_name, fs::native));
+				//create directory
+				if (!fs::exists(full_path))
+				{
+					bool bRet = fs::create_directories(full_path);
+					if (false == bRet)
+					{
+						cout << "failed to create directory" << endl;
+					}
+				}
+				original_filename = path_name + "\\" + string(image_count_str) + ".jpg";
 				cout << original_filename << endl;
 				cv::imwrite(original_filename, resized_to_cnn);
 
-				path_name = "facedata/data/" + string(deviation_str) + "/" + string(image_count_str) + "_";
+				//write the augmented image 5 * 32 * 32, which is for Torch
+				path_name = "facedata\\data\\" + string(deviation_str);
+				//cout << path_name << endl;
+				full_path = fs::system_complete(fs::path(path_name, fs::native));
+				//create directory
+				if (!fs::exists(full_path))
+				{
+					bool bRet = fs::create_directories(full_path);
+					if (false == bRet)
+					{
+						cout << "failed to create directory" << endl;
+					}
+				}
 				for (int i = 0; i < 5; i++)
 				{
 					sprintf_s(augmented_str, "%d", i);
-					augmented_filename = path_name + augmented_str + ".jpg";
+					augmented_filename = path_name + "\\" + string(image_count_str) + "_" +augmented_str + ".jpg";
 					cout << augmented_filename << endl;
 					cv::imwrite(augmented_filename, augmented_frame[i]);
 				}
+				return 0;
 			}
 		}
 	}
-	return 0;
+	return 1;
 }
 
 int EvaluateMedia::TrackingFaceFastMode()
@@ -197,12 +235,15 @@ int EvaluateMedia::TrackingFaceFastMode()
 		}
 		if (image_file_count < number_of_class)
 		{
-			CaptureImage((int)deviation, image_file_count);
-			image_file_count++;
+			if (CaptureImage((int)deviation, image_file_count) == 0)
+			{
+				image_file_count++;
+			}
 		}
 		else
 		{
-			Sleep(TIMEINTERVAL/100);
+			cout << "waiting.............................." << endl;
+			Sleep(TIMEINTERVAL/10);
 		}
 		//cout << deviation << endl;
 		cv::imshow("Tracking result", gray_image);

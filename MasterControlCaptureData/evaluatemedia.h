@@ -57,7 +57,7 @@ private:
 	cv::Mat frame;
 	cv::Mat gray_image;
 	cv::VideoCapture m_videocapture;
-	int number_of_class = 10;
+	int number_of_class = 600;
 	//deviation may be share in two thread
 	static double deviation;
 	
