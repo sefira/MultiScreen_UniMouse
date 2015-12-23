@@ -47,7 +47,7 @@ public:
 	//evaluate a frame by CNN 
 	//estiamtion the head pose pitch and yaw 
 	//use the F1 value combin pitch and yaw
-	int EvaluateByCNN();
+	int CaptureImage(int deviation_num, int image_count);
 	//for CNN
 	int TrackingFaceFastMode();
 
@@ -57,7 +57,7 @@ private:
 	cv::Mat frame;
 	cv::Mat gray_image;
 	cv::VideoCapture m_videocapture;
-
+	int number_of_class = 10;
 	//deviation may be share in two thread
 	static double deviation;
 	

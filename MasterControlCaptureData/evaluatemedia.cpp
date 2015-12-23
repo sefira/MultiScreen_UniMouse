@@ -56,7 +56,7 @@ bool littlerface(const cv::Rect & face1, const cv::Rect & face2)
 	return face1.area() > face2.area();
 }
 
-int EvaluateMedia::EvaluateByCNN()
+int EvaluateMedia::CaptureImage(int deviation_num, int image_count)
 {
 	if (!gray_image.empty())
 	{
@@ -65,11 +65,50 @@ int EvaluateMedia::EvaluateByCNN()
 			if (faces[0].area() > 10000)
 			{
 				cv::Mat to_cnn = cv::Mat(gray_image, faces[0]);
-				cv::imshow("master_control To CNN", to_cnn);
+				//cv::imshow("master_control To CNN", to_cnn);
+				cv::Mat resized_to_cnn;
 				/*
 				TODO£º write image
 				*/
-				cout << "now save image as " << deviation << " diraction" << endl;
+				cv::Mat augmented_frame[5];
+				cv::resize(to_cnn, resized_to_cnn, cv::Size(100, 100));
+				cv::imshow("resized gray_frame", resized_to_cnn);
+				//cout << gray_frame.cols << " " << gray_frame.rows << endl;
+				//left_up_frame
+				augmented_frame[0] = cv::Mat(resized_to_cnn, cv::Rect(0, 0, 91, 91));
+				//left_down_frame
+				augmented_frame[1] = cv::Mat(resized_to_cnn, cv::Rect(0, 9, 91, 91));
+				//right_up_frame
+				augmented_frame[2] = cv::Mat(resized_to_cnn, cv::Rect(9, 0, 91, 91));
+				//right_down_frame
+				augmented_frame[3] = cv::Mat(resized_to_cnn, cv::Rect(9, 9, 91, 91));
+				//center_frame
+				augmented_frame[4] = cv::Mat(resized_to_cnn, cv::Rect(5, 5, 91, 91));
+				//cv::waitKey();
+
+				string original_filename;
+				string path_name;
+				string augmented_filename;
+
+				char deviation_str[16];
+				char image_count_str[16];
+				char augmented_str[16];
+				memset(deviation_str, 0, sizeof(deviation_str));
+				memset(image_count_str, 0, sizeof(image_count_str));
+				sprintf_s(deviation_str, "%d", deviation_num);
+				sprintf_s(image_count_str, "%d", image_count); 
+				original_filename = "facedata/original/" + string(deviation_str) + "/" + string(image_count_str) + ".jpg";
+				cout << original_filename << endl;
+				cv::imwrite(original_filename, resized_to_cnn);
+
+				path_name = "facedata/data/" + string(deviation_str) + "/" + string(image_count_str) + "_";
+				for (int i = 0; i < 5; i++)
+				{
+					sprintf_s(augmented_str, "%d", i);
+					augmented_filename = path_name + augmented_str + ".jpg";
+					cout << augmented_filename << endl;
+					cv::imwrite(augmented_filename, augmented_frame[i]);
+				}
 			}
 		}
 	}
@@ -85,7 +124,8 @@ int EvaluateMedia::TrackingFaceFastMode()
 		return 1;
 	}
 
-	int original_activated_num = 0;
+	int original_activated_num = -1;
+	int image_file_count = -1;
 	int * pResults = NULL;
 	while (1)
 	{
@@ -131,33 +171,42 @@ int EvaluateMedia::TrackingFaceFastMode()
 		{
 			continue;
 		}
-		cout << deviation << endl;
+		//cout << deviation << endl;
 		if (original_activated_num != deviation)
 		{
+			image_file_count = 0;
 			original_activated_num = deviation;
 			SetConsoleColor(COMMANDCOLOR);
 			cout << "####################################################" << endl <<
 				"####################################################" << endl;
 			cout << "num " << deviation << " is activated" << endl;
-			cout << "now you should look at NO." << deviation << "screen" << endl;
+			cout << "now you should look at NO." << deviation << " screen" << endl;
 			cout << "####################################################" << endl <<
 				"####################################################" << endl;
 
 			for (int i = 0; i < 3; i++)
 			{
 				cout << "####################################################" << endl <<
-					"####################         #######################" << endl;
+						"####################         #######################" << endl;
 				cout << "####################    " << i << "    #######################" << endl;
 				cout << "####################         #######################" << endl <<
-					"####################################################" << endl << endl;
+						"####################################################" << endl << endl;
 				Sleep(TIMEINTERVAL);
 			}
 			SetConsoleColor(INITCOLOR);
 		}
-		EvaluateByCNN();
+		if (image_file_count < number_of_class)
+		{
+			CaptureImage((int)deviation, image_file_count);
+			image_file_count++;
+		}
+		else
+		{
+			Sleep(TIMEINTERVAL/100);
+		}
 		//cout << deviation << endl;
-		//cv::imshow("Tracking result", gray_image);
-		cv::waitKey(TIMEINTERVAL);
+		cv::imshow("Tracking result", gray_image);
+		cv::waitKey(TIMEINTERVAL/100);
 	}
 
 	return 0;

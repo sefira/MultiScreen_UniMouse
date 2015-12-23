@@ -238,7 +238,6 @@ int Computer::SendDeviation()
 		}
 		Sleep(TIMEINTERVAL);
 	}
-
 	return ret;
 }
 
@@ -254,7 +253,7 @@ int Computer::ReceiveDeviation()
 		deviation = atof(deviation_str);
 		//cout << deviation << endl;
 
-		Sleep(TIMEINTERVAL);
+		Sleep(TIMEINTERVAL/2);
 	}
 
 	return 0;
