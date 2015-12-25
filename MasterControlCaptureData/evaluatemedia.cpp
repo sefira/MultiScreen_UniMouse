@@ -23,8 +23,6 @@ THE SOFTWARE.
 */
 
 #include "evaluatemedia.h"
-#include "facedetect-dll.h"
-#pragma comment(lib,"libfacedetect.lib")
 
 #include "computercomponent.h"
 #include "computer.h"
@@ -40,9 +38,11 @@ using namespace std;
 namespace fs = boost::filesystem;
 
 double EvaluateMedia::deviation = 0;
-EvaluateMedia::EvaluateMedia(bool load_facex) 
+
+EvaluateMedia::EvaluateMedia() 
 {
 	m_videocapture = cv::VideoCapture(0);
+	m_detector = VideoFaceDetector(m_videocapture);
 }
 
 EvaluateMedia::~EvaluateMedia()
@@ -68,15 +68,18 @@ int EvaluateMedia::CaptureImage(int deviation_num, int image_count)
 		{
 			if (faces[0].area() > 8000)
 			{
+				cv::Mat origin_image = cv::Mat(frame, faces[0]);
 				cv::Mat to_cnn = cv::Mat(gray_image, faces[0]);
 				//cv::imshow("master_control To CNN", to_cnn);
 				cv::Mat resized_to_cnn;
+				cv::Mat resized_origin;
 				/*
 				TODO£º write image
 				*/
 				cv::Mat augmented_frame[5];
 				cv::Mat temp;
 				cv::resize(to_cnn, resized_to_cnn, cv::Size(100, 100));
+				cv::resize(origin_image, resized_origin, cv::Size(100, 100));
 				cv::imshow("resized gray_frame", resized_to_cnn);
 				//cout << gray_frame.cols << " " << gray_frame.rows << endl;
 				//left_up_frame
@@ -124,7 +127,7 @@ int EvaluateMedia::CaptureImage(int deviation_num, int image_count)
 				}
 				original_filename = path_name + "\\" + string(image_count_str) + ".jpg";
 				cout << original_filename << endl;
-				cv::imwrite(original_filename, resized_to_cnn);
+				cv::imwrite(original_filename, origin_image);
 
 				//write the augmented image 5 * 32 * 32, which is for Torch
 				path_name = "facedata\\data\\" + string(deviation_str);
@@ -167,33 +170,14 @@ int EvaluateMedia::TrackingFaceFastMode()
 	int * pResults = NULL;
 	while (1)
 	{
-		m_videocapture >> frame;
+		m_detector >> frame;
 
 		cv::cvtColor(frame, gray_image, cv::COLOR_BGR2GRAY);
 		//cv::imshow("Gray image", gray_image);
-		pResults = facedetect_multiview_reinforce((unsigned char*)(gray_image.ptr(0)), gray_image.cols, gray_image.rows, gray_image.step,
-			1.2f, 5, 24);
 
-		//print the detection results
 		faces.clear();
-		for (int i = 0; i < (pResults ? *pResults : 0); i++)
-		{
-			short * p = ((short*)(pResults + 1)) + 6 * i;
-			int x = p[0];
-			int y = p[1];
-			int w = p[2];
-			int h = p[3];
-			int neighbors = p[4];
-			int angle = p[5];
+		faces.push_back(m_detector.face());
 
-			cv::Rect face_rect = cv::Rect(p[0], p[1], p[2], p[3]);
-			faces.push_back(cv::Rect(p[0], p[1], p[2], p[3]));
-			//cv::rectangle(frame, face_rect, cv::Scalar(0, 0, 255));
-		}
-		if (faces.empty())
-		{
-			//cout << "empty faces vector" << endl;
-		}
 		if (!faces.empty())
 		{
 			sort(faces.begin(), faces.end(), littlerface);

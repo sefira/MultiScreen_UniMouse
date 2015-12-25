@@ -39,6 +39,9 @@
     <ClCompile Include="dlheadpose.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="videoFaceDetector.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="keyboardsimulater.h">
@@ -63,6 +66,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="facedetect-dll.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="videoFaceDetector.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

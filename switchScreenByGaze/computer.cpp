@@ -189,7 +189,7 @@ int Computer::SendHostname()
 unsigned int __stdcall Computer::InterfacetoEvaluateMedia(void *)
 {
 	cout << "Client start tracking face" << endl;
-	EvaluateMedia m_evaluatemedia = EvaluateMedia(false);
+	EvaluateMedia m_evaluatemedia = EvaluateMedia();
 	//m_evaluatemedia.TrackingFace();
 	m_evaluatemedia.TrackingFaceFastMode();
 	//cout << m_evaluatemedia.GetDeviation() << endl;

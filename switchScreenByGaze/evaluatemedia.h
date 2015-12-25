@@ -31,6 +31,7 @@ THE SOFTWARE.
 #include <string>
 #include <opencv/cv.h>
 #include <opencv/highgui.h>
+#include "videoFaceDetector.h"
 
 class EvaluateMedia
 {
@@ -38,7 +39,7 @@ public:
 	//load_facex then program will run with landmark model
 	//load landmark model file will take a while time 
 	//then we can use AlignImage(),AlignVideo(),AlignVideoBasedoLast()
-	EvaluateMedia(bool load_facex);
+	EvaluateMedia();
 
 	~EvaluateMedia();
 
@@ -75,6 +76,7 @@ private:
 	cv::Mat frame;
 	cv::Mat gray_image;
 	cv::VideoCapture m_videocapture;
+	VideoFaceDetector m_detector;
 	CNNHeadPose m_cnnheadpose;
 
 	//deviation may be share in two thread

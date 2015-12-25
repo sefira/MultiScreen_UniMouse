@@ -23,8 +23,7 @@ THE SOFTWARE.
 */
 
 #include "evaluatemedia.h"
-#include "facedetect-dll.h"
-#pragma comment(lib,"libfacedetect.lib")
+#include "videoFaceDetector.h"
 
 #include <algorithm>
 #include <limits>
@@ -38,10 +37,11 @@ const string EvaluateMedia::kAlt2 = "haarcascade_frontalface_alt2.xml";
 const string EvaluateMedia::kTestImage = "lena.png";
 double EvaluateMedia::deviation = 1000;
 
-EvaluateMedia::EvaluateMedia(bool load_facex) 
+EvaluateMedia::EvaluateMedia() 
 {
 	m_videocapture = cv::VideoCapture(0);
 	m_cascadeclassifier = cv::CascadeClassifier(kAlt2);
+	m_detector = VideoFaceDetector(m_videocapture);
 }
 
 EvaluateMedia::~EvaluateMedia()
@@ -260,30 +260,31 @@ int EvaluateMedia::TrackingFace()
 
 double EvaluateMedia::EvaluateByCNN()
 {
-	deviation = 1000;
+	int temp_deviation = 1000;
 	if (!gray_image.empty())
 	{
 		if (!faces.empty())
 		{
 			if (faces[0].area() < 10000)
 			{
-				return deviation;
+				return temp_deviation;
 			}
 			cv::Mat to_cnn = cv::Mat(gray_image, faces[0]);
 			cv::imshow("switch_screen To CNN", to_cnn);
-			deviation = m_cnnheadpose.Recognize(to_cnn);
-			return deviation;
+			temp_deviation = m_cnnheadpose.Recognize(to_cnn);
+			//cout << temp_deviation << endl;
+			return temp_deviation;
 		}
 		else
 		{
-			//cout << "faces vector is empty" << endl;
-			return deviation;
+			cout << "faces vector is empty" << endl;
+			return temp_deviation;
 		}
 	}
 	else
 	{
-		//cout << "gray image is empty" << endl;
-		return deviation;
+		cout << "gray image is empty" << endl;
+		return temp_deviation;
 	}
 }
 
@@ -296,32 +297,15 @@ int EvaluateMedia::TrackingFaceFastMode()
 		return 1;
 	}
 
-	int * pResults = NULL;
 	while (1)
 	{
-		m_videocapture >> frame;
+		m_detector >> frame;
 
 		cv::cvtColor(frame, gray_image, cv::COLOR_BGR2GRAY);
 		//cv::imshow("Gray image", gray_image);
-		pResults = facedetect_multiview_reinforce((unsigned char*)(gray_image.ptr(0)), gray_image.cols, gray_image.rows, gray_image.step,
-			1.2f, 5, 24);
 
-		//print the detection results
 		faces.clear();
-		for (int i = 0; i < (pResults ? *pResults : 0); i++)
-		{
-			short * p = ((short*)(pResults + 1)) + 6 * i;
-			int x = p[0];
-			int y = p[1];
-			int w = p[2];
-			int h = p[3];
-			int neighbors = p[4];
-			int angle = p[5];
-
-			cv::Rect face_rect = cv::Rect(p[0], p[1], p[2], p[3]);
-			faces.push_back(cv::Rect(p[0], p[1], p[2], p[3]));
-			//cv::rectangle(frame, face_rect, cv::Scalar(0, 0, 255));
-		}
+		faces.push_back(m_detector.face());
 
 		if (!faces.empty())
 		{
@@ -333,7 +317,7 @@ int EvaluateMedia::TrackingFaceFastMode()
 			//cout << face.area() << endl;
 			//}
 		}
-		EvaluateByCNN();
+		deviation = EvaluateByCNN();
 		//cout << deviation << endl;
 		//cv::imshow("Tracking result", gray_image);
 		cv::waitKey(100);

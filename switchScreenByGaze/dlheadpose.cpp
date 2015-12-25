@@ -167,7 +167,7 @@ double CNNHeadPose::Recognize(cv::Mat gray_frame)
 	}
 	pitch = pitch / 5;
 	yaw = yaw / 5;
-	cout << "pitch:" << pitch << "  yaw:" << yaw << endl;
+	//cout << "pitch:" << pitch << "  yaw:" << yaw << endl;
 	pitch = fabs(pitch);
 	yaw = fabs(yaw);
 	double F1 = 2 * (pitch * yaw) / (pitch + yaw + 1);

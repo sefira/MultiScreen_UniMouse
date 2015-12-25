@@ -92,6 +92,7 @@
     <ClInclude Include="evaluatemedia.h" />
     <ClInclude Include="facedetect-dll.h" />
     <ClInclude Include="messenger.h" />
+    <ClInclude Include="videoFaceDetector.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="computer.cpp" />
@@ -100,6 +101,7 @@
     <ClCompile Include="evaluatemedia.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="messenger.cpp" />
+    <ClCompile Include="videoFaceDetector.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
