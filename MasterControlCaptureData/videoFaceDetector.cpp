@@ -164,7 +164,6 @@ void VideoFaceDetector::detectFaceAllSizes(const cv::Mat &frame)
 		m_allFaces.push_back(cv::Rect(p[0], p[1], p[2], p[3]));
 		//cv::rectangle(frame, face_rect, cv::Scalar(0, 0, 255));
 	}
-
     if (m_allFaces.empty()) return;
 
     m_foundFace = true;
@@ -212,7 +211,6 @@ void VideoFaceDetector::detectFaceAroundRoi(const cv::Mat &frame)
 		m_allFaces.push_back(cv::Rect(p[0], p[1], p[2], p[3]));
 		//cv::rectangle(frame, face_rect, cv::Scalar(0, 0, 255));
 	}
-
     if (m_allFaces.empty())
     {
         // Activate template matching if not already started and start timer
@@ -256,15 +254,22 @@ void VideoFaceDetector::detectFacesTemplateMatching(const cv::Mat &frame)
         m_templateMatchingRunning = false;
         m_templateMatchingStartTime = m_templateMatchingCurrentTime = 0;
     }
-
     // Template matching with last known face 
-    //cv::matchTemplate(frame(m_faceRoi), m_faceTemplate, m_matchingResult, CV_TM_CCOEFF);
-    cv::matchTemplate(frame(m_faceRoi), m_faceTemplate, m_matchingResult, CV_TM_SQDIFF_NORMED);
+	try
+	{
+		//cv::matchTemplate(frame(m_faceRoi), m_faceTemplate, m_matchingResult, CV_TM_CCOEFF);
+		cv::matchTemplate(frame(m_faceRoi), m_faceTemplate, m_matchingResult, CV_TM_SQDIFF_NORMED);
+	}
+	catch (std::exception& e)
+	{
+		std::cout << frame.type() << m_faceTemplate.type() << std::endl;
+		std::cout << frame.depth() << m_faceTemplate.depth() << std::endl;
+		std::cout << e.what() << std::endl;
+	}
     cv::normalize(m_matchingResult, m_matchingResult, 0, 1, cv::NORM_MINMAX, -1, cv::Mat());
     double min, max;
     cv::Point minLoc, maxLoc;
     cv::minMaxLoc(m_matchingResult, &min, &max, &minLoc, &maxLoc);
-
     // Add roi offset to face position
     minLoc.x += m_faceRoi.x;
     minLoc.y += m_faceRoi.y;
@@ -295,9 +300,9 @@ cv::Point VideoFaceDetector::getFrameAndDetect(cv::Mat &frame)
     cv::Mat resizedFrame;
     cv::resize(frame, resizedFrame, resizedFrameSize);
 
-    if (!m_foundFace)
-        detectFaceAllSizes(resizedFrame); // Detect using cascades over whole image
-    else {
+	if (!m_foundFace){ 
+		detectFaceAllSizes(resizedFrame); // Detect using cascades over whole image
+	}else {
         detectFaceAroundRoi(resizedFrame); // Detect using cascades only in ROI
         if (m_templateMatchingRunning) {
             detectFacesTemplateMatching(resizedFrame); // Detect using template matching

@@ -68,13 +68,29 @@ int EvaluateMedia::CaptureImage(int deviation_num, int image_count)
 		{
 			if (faces[0].area() > 8000)
 			{
-				cv::Mat origin_image = cv::Mat(frame, faces[0]);
-				cv::Mat to_cnn = cv::Mat(gray_image, faces[0]);
+				cv::Mat origin_image;
+				cv::Mat to_cnn;
+				std::cout << "in CaptureImage" << std::endl;
+				try
+				{
+					origin_image = cv::Mat(frame, faces[0]);
+					to_cnn = cv::Mat(gray_image, faces[0]);
+				}
+				catch (exception& e)
+				{
+					SetConsoleColor(COMMANDCOLOR);
+					cout << frame.cols << endl << frame.rows << endl;
+					cout << gray_image.cols << endl << gray_image.rows << endl;
+					cout << faces[0].x << endl << faces[0].y << endl << faces[0].width << faces[0].height << endl;
+					cout << e.what() << endl;
+					SetConsoleColor(INITCOLOR);
+				}
+				std::cout << "middle CaptureImage" << std::endl;
 				//cv::imshow("master_control To CNN", to_cnn);
 				cv::Mat resized_to_cnn;
 				cv::Mat resized_origin;
 				/*
-				TODO£º write image
+				write image
 				*/
 				cv::Mat augmented_frame[5];
 				cv::Mat temp;
@@ -146,9 +162,10 @@ int EvaluateMedia::CaptureImage(int deviation_num, int image_count)
 				{
 					sprintf_s(augmented_str, "%d", i);
 					augmented_filename = path_name + "\\" + string(image_count_str) + "_" +augmented_str + ".jpg";
-					cout << augmented_filename << endl;
+					//cout << augmented_filename << endl;
 					cv::imwrite(augmented_filename, augmented_frame[i]);
 				}
+				std::cout << "out CaptureImage" << std::endl;
 				return 0;
 			}
 		}
