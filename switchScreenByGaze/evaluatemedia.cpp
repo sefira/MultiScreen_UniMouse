@@ -270,6 +270,18 @@ double EvaluateMedia::EvaluateByCNN()
 				return temp_deviation;
 			}
 			cv::Mat to_cnn = cv::Mat(gray_image, faces[0]);
+			try
+			{
+				to_cnn = cv::Mat(gray_image, faces[0]);
+			}
+			catch (exception& e)
+			{
+				cout << frame.cols << endl << frame.rows << endl;
+				cout << gray_image.cols << endl << gray_image.rows << endl;
+				cout << faces[0].x << endl << faces[0].y << endl << faces[0].width << faces[0].height << endl;
+				cout << e.what() << endl;
+				return 1;
+			}
 			cv::imshow("switch_screen To CNN", to_cnn);
 			temp_deviation = m_cnnheadpose.Recognize(to_cnn);
 			//cout << temp_deviation << endl;

@@ -270,6 +270,7 @@ void VideoFaceDetector::detectFacesTemplateMatching(const cv::Mat &frame)
     double min, max;
     cv::Point minLoc, maxLoc;
     cv::minMaxLoc(m_matchingResult, &min, &max, &minLoc, &maxLoc);
+
     // Add roi offset to face position
     minLoc.x += m_faceRoi.x;
     minLoc.y += m_faceRoi.y;

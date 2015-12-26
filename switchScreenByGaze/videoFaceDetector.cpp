@@ -255,12 +255,20 @@ void VideoFaceDetector::detectFacesTemplateMatching(const cv::Mat &frame)
         m_foundFace = false;
         m_templateMatchingRunning = false;
         m_templateMatchingStartTime = m_templateMatchingCurrentTime = 0;
-    }
-
-    // Template matching with last known face 
-    //cv::matchTemplate(frame(m_faceRoi), m_faceTemplate, m_matchingResult, CV_TM_CCOEFF);
-    cv::matchTemplate(frame(m_faceRoi), m_faceTemplate, m_matchingResult, CV_TM_SQDIFF_NORMED);
-    cv::normalize(m_matchingResult, m_matchingResult, 0, 1, cv::NORM_MINMAX, -1, cv::Mat());
+	}
+	// Template matching with last known face 
+	try
+	{
+		//cv::matchTemplate(frame(m_faceRoi), m_faceTemplate, m_matchingResult, CV_TM_CCOEFF);
+		cv::matchTemplate(frame(m_faceRoi), m_faceTemplate, m_matchingResult, CV_TM_SQDIFF_NORMED);
+	}
+	catch (std::exception& e)
+	{
+		std::cout << frame.type() << m_faceTemplate.type() << std::endl;
+		std::cout << frame.depth() << m_faceTemplate.depth() << std::endl;
+		std::cout << e.what() << std::endl;
+	}
+	cv::normalize(m_matchingResult, m_matchingResult, 0, 1, cv::NORM_MINMAX, -1, cv::Mat());
     double min, max;
     cv::Point minLoc, maxLoc;
     cv::minMaxLoc(m_matchingResult, &min, &max, &minLoc, &maxLoc);

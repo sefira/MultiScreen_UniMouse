@@ -84,6 +84,7 @@ int EvaluateMedia::CaptureImage(int deviation_num, int image_count)
 					cout << faces[0].x << endl << faces[0].y << endl << faces[0].width << faces[0].height << endl;
 					cout << e.what() << endl;
 					SetConsoleColor(INITCOLOR);
+					return 1;
 				}
 				std::cout << "middle CaptureImage" << std::endl;
 				//cv::imshow("master_control To CNN", to_cnn);
