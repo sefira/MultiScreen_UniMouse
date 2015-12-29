@@ -67,13 +67,20 @@ int main(int argc, char * argv[])
 		StartSynergyService(argv[0]);
 	}
 #endif
-	SetConsoleColor(COMMANDCOLOR);
-	cout << "please input monitor name:" << endl;
-	SetConsoleColor(INITCOLOR);
-
 	char monitor_name[128];
+	if (argc < 2)
+	{
+		SetConsoleColor(COMMANDCOLOR);
+		cout << "please input monitor name:" << endl;
+		SetConsoleColor(INITCOLOR);
 
-	cin >> monitor_name;
+		//cin >> monitor_name;
+		strcpy_s(monitor_name, "davy-pc");
+	}
+	else
+	{
+		strcpy(monitor_name, argv[1]);
+	}
 	//cout << monitor_name << endl;
 	ComputerMonitor monitor_computer;
 	Computer::QueryHostIPbyName(monitor_name, monitor_computer);

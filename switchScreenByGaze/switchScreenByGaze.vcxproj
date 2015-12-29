@@ -96,6 +96,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="messenger.cpp" />
     <ClCompile Include="computer.cpp" />
+    <ClCompile Include="videoFaceDetector.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="computercomponent.h" />
@@ -106,6 +107,7 @@
     <ClInclude Include="keyboardsimulater.h" />
     <ClInclude Include="messenger.h" />
     <ClInclude Include="computer.h" />
+    <ClInclude Include="videoFaceDetector.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

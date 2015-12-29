@@ -31,6 +31,7 @@ THE SOFTWARE.
 #include <string>
 #include <opencv/cv.h>
 #include <opencv/highgui.h>
+#include "videoFaceDetector.h"
 
 class EvaluateMedia
 {
@@ -76,6 +77,7 @@ private:
 	cv::Mat gray_image;
 	cv::VideoCapture m_videocapture;
 	CNNHeadPose m_cnnheadpose;
+	VideoFaceDetector m_detector;
 
 	//deviation may be share in two thread
 	static double deviation;
