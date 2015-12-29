@@ -29,7 +29,7 @@ using namespace tiny_cnn;
 using namespace tiny_cnn::activation;
 using namespace std;
 
-const std::string CNNHeadPose::weights_filename = "xbu-weights_71";
+const std::string CNNHeadPose::weights_filename = "xbu-weights_387";
 
 tiny_cnn::network<tiny_cnn::mse, tiny_cnn::adagrad> nn;
 
@@ -154,24 +154,18 @@ double CNNHeadPose::Recognize(cv::Mat gray_frame)
 	//cv::waitKey();
 
 	//estimation
-	double pitch = 0;
-	double yaw = 0;
+	double classnone = 0;
+	double classyes = 0;
 	for (int i = 0; i < 5; i++)
 	{
 		GetImageDataFromVideo(augmented_frame[i], data[i]);
 
 		// recognize
 		result[i] = nn.predict(data[i]);
-		pitch += result[i][0];
-		yaw += result[i][1];
+		classnone += result[i][0];
+		classyes += result[i][1];
 	}
-	pitch = pitch / 5;
-	yaw = yaw / 5;
-	//cout << "pitch:" << pitch << "  yaw:" << yaw << endl;
-	pitch = fabs(pitch);
-	yaw = fabs(yaw);
-	double F1 = 2 * (pitch * yaw) / (pitch + yaw + 1);
-
+	//cout << classnone << ' ' << classyes << endl;
 	//vec_t test[4];
 	//GetImageDataFromPicture("down_down\\image0\\1_1.jpg", test[0]);
 	//GetImageDataFromPicture("down_up\\image-30\\1_1.jpg", test[1]);
@@ -186,5 +180,5 @@ double CNNHeadPose::Recognize(cv::Mat gray_frame)
 	//	cout << result[i][0] << ' ' << result[i][1] << endl;
 	//}
 
-	return pitch;
+	return classyes - classnone;
 }
