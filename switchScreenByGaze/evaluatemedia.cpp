@@ -23,7 +23,8 @@ THE SOFTWARE.
 */
 
 #include "evaluatemedia.h"
-#include "videoFaceDetector.h"
+#include "facedetect-dll.h"
+#pragma comment(lib, "libfacedetect.lib")
 
 #include <algorithm>
 #include <limits>
@@ -41,7 +42,6 @@ EvaluateMedia::EvaluateMedia()
 {
 	m_videocapture = cv::VideoCapture(0);
 	m_cascadeclassifier = cv::CascadeClassifier(kAlt2);
-	m_detector = VideoFaceDetector(m_videocapture);
 }
 
 EvaluateMedia::~EvaluateMedia()
@@ -260,7 +260,7 @@ int EvaluateMedia::TrackingFace()
 
 double EvaluateMedia::EvaluateByCNN()
 {
-	int temp_deviation = 1000;
+	double temp_deviation = 1000;
 	if (!gray_image.empty())
 	{
 		if (!faces.empty())
@@ -284,18 +284,18 @@ double EvaluateMedia::EvaluateByCNN()
 			}
 			cv::imshow("switch_screen To CNN", to_cnn);
 			temp_deviation = m_cnnheadpose.Recognize(to_cnn);
-			cout << temp_deviation << endl;
-			return temp_deviation;
+			//cout << temp_deviation << endl;
+			return abs(temp_deviation);
 		}
 		else
 		{
-			cout << "faces vector is empty" << endl;
+			//cout << "faces vector is empty" << endl;
 			return temp_deviation;
 		}
 	}
 	else
 	{
-		cout << "gray image is empty" << endl;
+		//cout << "gray image is empty" << endl;
 		return temp_deviation;
 	}
 }
@@ -309,15 +309,32 @@ int EvaluateMedia::TrackingFaceFastMode()
 		return 1;
 	}
 
+	int * pResults = NULL;
 	while (1)
 	{
-		m_detector >> frame;
+		m_videocapture >> frame;
 
 		cv::cvtColor(frame, gray_image, cv::COLOR_BGR2GRAY);
 		//cv::imshow("Gray image", gray_image);
 
+		pResults = facedetect_multiview_reinforce((unsigned char*)(gray_image.ptr(0)), gray_image.cols, gray_image.rows, gray_image.step,
+			-1.2f, 5, 24);
+		//print the detection results
 		faces.clear();
-		faces.push_back(m_detector.face());
+		for (int i = 0; i < (pResults ? *pResults : 0); i++)
+		{
+			short * p = ((short*)(pResults + 1)) + 6 * i;
+			int x = p[0];
+			int y = p[1];
+			int w = p[2];
+			int h = p[3];
+			int neighbors = p[4];
+			int angle = p[5];
+
+			cv::Rect face_rect = cv::Rect(p[0], p[1], p[2], p[3]);
+			faces.push_back(cv::Rect(p[0], p[1], p[2], p[3]));
+			//cv::rectangle(frame, face_rect, cv::Scalar(0, 0, 255));		
+		}
 
 		if (!faces.empty())
 		{
