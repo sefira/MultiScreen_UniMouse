@@ -23,7 +23,6 @@ THE SOFTWARE.
 */
 
 #include "computer.h"
-#include "evaluatemedia.h"
 
 #include <stdlib.h>
 #include <time.h>  
@@ -33,6 +32,7 @@ THE SOFTWARE.
 #include <Winsock2.h>
 
 #include "messenger.h"
+#include "evaluatemedia.h"
 
 #pragma comment(lib, "Ws2_32.lib")
 

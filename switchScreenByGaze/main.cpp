@@ -76,6 +76,7 @@ int main(int argc, char * argv[])
 
 		//cin >> monitor_name;
 		strcpy_s(monitor_name, "davy-pc");
+		//strcpy_s(monitor_name, "xbu-pc");
 	}
 	else
 	{

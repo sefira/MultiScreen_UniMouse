@@ -23,12 +23,15 @@ THE SOFTWARE.
 */
 
 #include "evaluatemedia.h"
-#include "videoFaceDetector.h"
 
 #include <algorithm>
 #include <limits>
 
 #include "cv.h"
+
+#include "computercomponent.h"
+#include "videoFaceDetector.h"
+
 using namespace std;
 
 const string EvaluateMedia::kModelFileName = "model.xml.gz";
@@ -113,14 +116,20 @@ void SkinDetect(cv::Mat& face_frame_src, cv::Mat& face_frame_dst)
 
 double EvaluateMedia::Evaluate()
 {
-	deviation = 1000;
+	double temp_deviation = 1000;
 	if (!frame.empty())
 	{
 		if (!faces.empty())
 		{
 			if (faces[0].area() < 10000)
 			{
-				return deviation;
+				return temp_deviation;
+			}
+
+			if ((faces[0].width / faces[0].height) > (5 / 7) && (faces[0].width / faces[0].height) < (7 / 5))
+			{
+				cout << "the face's width is not to scale in relation height" << endl;
+				return temp_deviation;
 			}
 			int face_height = faces[0].height;
 			int face_width = faces[0].width;
@@ -146,7 +155,7 @@ double EvaluateMedia::Evaluate()
 			cv::Mat face_frame_src = cv::Mat(frame, faces[0]);
 			cv::Mat face_frame_dst;
 			SkinDetect(face_frame_src, face_frame_dst);
-			//cv::imshow("face_frame", face_frame_dst);
+			cv::imshow("face_frame", face_frame_dst);
 			cv::meanStdDev(face_frame_dst, mean_leftdown, stddev_leftdown, mask_leftdown);
 			cv::meanStdDev(face_frame_dst, mean_rightdown, stddev_rightdown, mask_rightdown);
 			cv::meanStdDev(face_frame_dst, mean_all, stddev_all);
@@ -191,30 +200,30 @@ double EvaluateMedia::Evaluate()
 			{
 				//if (mean_rightdown.val[0] <= 0 || stddev_leftdown.val[0] <= 0)
 				//{
-				//	return deviation;
+				//	return temp_deviation;
 				//}
-				deviation = (mean_leftdown.val[0] + 1) / (mean_rightdown.val[0] + 1);
-				deviation += (stddev_rightdown.val[0] + 1) / (stddev_leftdown.val[0] + 1);
+				temp_deviation = (mean_leftdown.val[0] + 1) / (mean_rightdown.val[0] + 1);
+				temp_deviation += (stddev_rightdown.val[0] + 1) / (stddev_leftdown.val[0] + 1);
 			}
 			else
 			{
 				//if (mean_leftdown.val[0] <= 0 || stddev_rightdown.val[0] <= 0)
 				//{
-				//	return deviation;
+				//	return temp_deviation;
 				//}
-				deviation = (mean_rightdown.val[0] + 1) / (mean_leftdown.val[0] + 1);
-				deviation += (stddev_leftdown.val[0] + 1) / (stddev_rightdown.val[0] + 1);
+				temp_deviation = (mean_rightdown.val[0] + 1) / (mean_leftdown.val[0] + 1);
+				temp_deviation += (stddev_leftdown.val[0] + 1) / (stddev_rightdown.val[0] + 1);
 			}
-			return deviation;
+			return temp_deviation;
 		}
 		else
 		{
-			return deviation;
+			return temp_deviation;
 		}
 	}
 	else
 	{
-		return deviation;
+		return temp_deviation;
 	}
 }
 
@@ -249,10 +258,10 @@ int EvaluateMedia::TrackingFace()
 			//	cout << face.area() << endl;
 			//}
 		}
-		Evaluate();
+		deviation = Evaluate();
 		//cout << deviation << endl;
 		//cv::imshow("Tracking result", frame);
-		cv::waitKey(1000);
+		Sleep(TIMEINTERVAL);
 	}
 	
 	return 0;
@@ -317,7 +326,16 @@ int EvaluateMedia::TrackingFaceFastMode()
 		//cv::imshow("Gray image", gray_image);
 
 		faces.clear();
-		faces.push_back(m_detector.face());
+		cv::Rect temp_face = m_detector.face();
+		if (0 <= temp_face.x && 0 <= temp_face.width && temp_face.x + temp_face.width <= frame.cols && 
+			0 <= temp_face.y && 0 <= temp_face.height && temp_face.y + temp_face.height <= frame.rows)
+		{
+			faces.push_back(temp_face);
+		}
+		else
+		{
+			continue;
+		}
 
 		if (!faces.empty())
 		{
@@ -329,10 +347,14 @@ int EvaluateMedia::TrackingFaceFastMode()
 			//cout << face.area() << endl;
 			//}
 		}
-		deviation = EvaluateByCNN();
+		double cnn_deviation = EvaluateByCNN();
+		double skin_deviation = Evaluate();
+		deviation = cnn_deviation + skin_deviation;
+		cout << "evaluated by cnn :" << cnn_deviation << endl;
+		cout << "evaluated by skin:" << skin_deviation << endl;
 		//cout << deviation << endl;
 		//cv::imshow("Tracking result", gray_image);
-		cv::waitKey(100);
+		Sleep(TIMEINTERVAL);
 	}
 
 	return 0;

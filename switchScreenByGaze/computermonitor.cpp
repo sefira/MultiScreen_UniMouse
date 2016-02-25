@@ -32,7 +32,6 @@ THE SOFTWARE.
 #include <fstream>
 
 #include "messenger.h"
-#include "evaluatemedia.h"
 
 using namespace std;
 
