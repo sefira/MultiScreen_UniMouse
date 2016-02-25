@@ -350,8 +350,8 @@ int EvaluateMedia::TrackingFaceFastMode()
 		double cnn_deviation = EvaluateByCNN();
 		double skin_deviation = Evaluate();
 		deviation = cnn_deviation + skin_deviation;
-		cout << "evaluated by cnn :" << cnn_deviation << endl;
-		cout << "evaluated by skin:" << skin_deviation << endl;
+		//cout << "evaluated by cnn :" << cnn_deviation << endl;
+		//cout << "evaluated by skin:" << skin_deviation << endl;
 		//cout << deviation << endl;
 		//cv::imshow("Tracking result", gray_image);
 		Sleep(TIMEINTERVAL);

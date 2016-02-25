@@ -267,9 +267,9 @@ int ComputerMonitor::DetermineActivated()
 		for (int i = 0; i < computers_vector.size(); i++)
 		{
 			double temp_dev = computers_vector.at(i).evaluate_point;
-			cout << "num: " << computers_vector.at(i).num <<
+			/*cout << "num: " << computers_vector.at(i).num <<
 				"hostname: " << computers_vector.at(i).local_hostname <<
-				" devitaion: " << temp_dev << endl;
+				" devitaion: " << temp_dev << endl;*/
 			if (temp_dev < minmum_dev)
 			{
 				minmum_dev = temp_dev;
@@ -282,11 +282,11 @@ int ComputerMonitor::DetermineActivated()
 			{
 				original_activated_num = activated_num;
 				SetConsoleColor(COMMANDCOLOR);
-				cout << "num " << activated_num << " is activated" <<
+				/*cout << "num " << activated_num << " is activated" <<
 					"its name is: " <<
 					computers_vector.at(activated_num).local_hostname <<
 					" win by evaluate: " <<
-					computers_vector.at(activated_num).evaluate_point << endl;
+					computers_vector.at(activated_num).evaluate_point << endl;*/
 				SetConsoleColor(INITCOLOR);
 				m_keyboard_simulater.SwitchScreentoFX(activated_num);
 			}
