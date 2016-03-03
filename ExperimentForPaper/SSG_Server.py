@@ -2,6 +2,7 @@
 import socket
 import os
 import subprocess
+import GUIForExperiment
 
 ssg_handle = 0
 
@@ -21,10 +22,12 @@ def close_ssg():
 
 
 def click_work():
+    GUIForExperiment.click_gui()
     print("click work")
 
 
 def input_work():
+    GUIForExperiment.input_gui()
     print("input work")
 
 
@@ -80,5 +83,5 @@ def main():
         assign_work(data)
     s.close()
 
-open_ssg()
+input_work()
 main()
