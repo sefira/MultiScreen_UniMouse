@@ -1,17 +1,16 @@
 #!/usr/bin/python2
 import socket
-import getpass
+import os
 import subprocess
 
 ssg_handle = 0
 
 
 def open_ssg():
-    # print("open ssg")
+    print("open ssg")
     # os.system("C:\\Users\\sefir\\Desktop\\switchScreenByGaze.exe")
     global ssg_handle
-    host_user_name = getpass.getuser()
-    ssg_path = "C:\\Users\\" + host_user_name + "\\Desktop\\SSG\\switchScreenByGaze.exe"
+    ssg_path = os.path.split(os.path.realpath(__file__))[0] + "\\SSG\\switchScreenByGaze.exe"
     ssg_handle = subprocess.Popen(ssg_path)
 
 
@@ -23,6 +22,10 @@ def close_ssg():
 
 def click_work():
     print("click work")
+
+
+def input_work():
+    print("input work")
 
 
 # TODO
@@ -55,7 +58,8 @@ def assign_work(instructions):
         works = {
             "open": open_ssg,
             "close": close_ssg,
-            "click": click_work
+            "click": click_work,
+            "input": input_work
             # TODO
         }
         if command in works:
@@ -76,5 +80,5 @@ def main():
         assign_work(data)
     s.close()
 
-
+open_ssg()
 main()
