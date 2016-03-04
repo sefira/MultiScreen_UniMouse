@@ -23,18 +23,20 @@ def close_ssg():
         ssg_handle.terminate()
 
 
-def click_work(sender_address):
+def click_work(master_address):
     GUIForExperiment.click_gui()
+    m_socket.sendto("work finished", master_address)
     print("click work")
 
 
-def input_work(sender_address):
+def input_work(master_address):
     GUIForExperiment.input_gui()
+    m_socket.sendto("work finished", master_address)
     print("input work")
 
 
 # to do different work according to different instructions
-def assign_work(instructions, sender_address):
+def assign_work(instructions, master_address):
     my_name = socket.gethostname()
     is_myself = False
 
@@ -66,9 +68,9 @@ def assign_work(instructions, sender_address):
         if command == "close":
             close_ssg()
         if command == "click":
-            click_work(sender_address)
+            click_work(master_address)
         if command == "input":
-            input_work(sender_address)
+            input_work(master_address)
 
 
 def main():
@@ -77,11 +79,11 @@ def main():
     address = (host, port)
     m_socket.bind(address)
     while 1:
-        data, sender_address = m_socket.recvfrom(2048)
+        data, master_address = m_socket.recvfrom(2048)
         if not data:
             break
-        print "got data from", sender_address
-        assign_work(data, sender_address)
+        print "got data from", master_address
+        assign_work(data, master_address)
     m_socket.close()
 
 main()
