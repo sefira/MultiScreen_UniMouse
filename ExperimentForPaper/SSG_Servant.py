@@ -11,9 +11,8 @@ m_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 def open_ssg():
     print("open ssg")
-    # os.system("C:\\Users\\sefir\\Desktop\\switchScreenByGaze.exe")
     global ssg_handle
-    ssg_path = os.path.split(os.path.realpath(__file__))[0] + "\\SSG\\switchScreenByGaze.exe"
+    ssg_path = os.path.split(os.path.realpath(__file__))[0] + "\\switchScreenByGaze.exe"
     ssg_handle = subprocess.Popen(ssg_path)
 
 
@@ -24,9 +23,9 @@ def close_ssg():
 
 
 def click_work(master_address):
+    print("click work")
     GUIForExperiment.click_gui()
     m_socket.sendto("work finished", master_address)
-    print("click work")
 
 
 def input_work(master_address):
@@ -41,7 +40,7 @@ def assign_work(instructions, master_address):
     is_myself = False
 
     # parse instructions
-    # print(instructions)
+    print(instructions)
     if len(instructions) < 4:
         return
     else:
@@ -57,7 +56,7 @@ def assign_work(instructions, master_address):
                 # print(member)
                 # print(command)
                 # print(my_name)
-                if my_name[0] in member:
+                if my_name[0].lower() in member.lower():
                     # print(my_name)
                     is_myself = True
 

@@ -42,7 +42,7 @@ def random_member_list():
 
 
 def main():
-    servant_address = ('255.255.255.255', 24806)
+    servant_address = ('<broadcast>', 24806)
     m_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     m_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     m_socket.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
@@ -66,7 +66,7 @@ def main():
         if command == "click" or command == "input":
             shuffled_member_list = random_member_list()
             for member in shuffled_member_list:
-                data = command + member
+                data = command + " " + member
                 m_socket.sendto(data, servant_address)
                 # wait servant finish work
                 data, response_address = m_socket.recvfrom(2048)
