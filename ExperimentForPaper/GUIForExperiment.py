@@ -1,27 +1,11 @@
+#!/usr/bin/python2
+# -*- coding: utf-8 -*-
 import Tkinter
 import random
 
 
-window = Tkinter.Tk()
-
-
-def on_click():
-    window.destroy()
-
-
-def click_gui():
-    window.title("Click Task")
-    window.geometry('300x180')
-    white_label = Tkinter.Label(window, text = " ", font = ('Arial', 40))
-    white_label.pack(side = Tkinter.TOP)
-    m_button = Tkinter.Button(window, text = '     ', command = on_click)
-    m_button["background"] = "red"
-    m_button.pack()
-    window.mainloop()
-
-
 def rand_word():
-    word_list = {
+    word_list={
         1:"this",
         2:"index",
         3:"page",
@@ -60,17 +44,66 @@ def rand_word():
     return the_word
 
 
-def input_gui():
-    window.title("Input Task")
-    window.geometry('400x180')
-    m_label = Tkinter.Label(window, text = "Please enter the following word:", font = ('Arial', 20))
-    m_label.pack(side = Tkinter.TOP)
-    white_label = Tkinter.Label(window, text = " ", font = ('Arial', 12))
-    white_label.pack(side = Tkinter.TOP)
-    m_word = Tkinter.Label(window, font = ('Arial', 20))
-    m_word["text"] = rand_word()
-    m_word["fg"] = "red"
-    m_word.pack(side = Tkinter.TOP)
-    m_entry = Tkinter.Entry(window, bd = 5)
-    m_entry.pack(side = Tkinter.TOP)
+window = Tkinter.Tk()
+m_word = rand_word()
+
+
+##################################################
+# click work part
+def on_click():
+    global window
+    window.destroy()
+
+
+def click_gui():
+    global window
+    try:
+        window.title("Click Task")
+    except:
+        window = Tkinter.Tk()
+        window.title("Click Task")
+    window.geometry('300x180')
+    white_label = Tkinter.Label(window, text=" ", font=('Arial', 40))
+    white_label.pack(side=Tkinter.TOP)
+    global m_button
+    m_button = Tkinter.Button(window, text='     ', background="red", command=on_click)
+    m_button.pack()
     window.mainloop()
+m_button = Tkinter.Button()
+
+
+##################################################
+# input work part
+def val(input_string):
+    if input_string == m_word:
+        global window
+        window.destroy()
+    return True
+
+
+def input_gui():
+    global window
+    try:
+        window.title("Input Task")
+    except:
+        window = Tkinter.Tk()
+        window.title("Input Task")
+    window.geometry('400x180')
+    m_label = Tkinter.Label(window, text="Please enter the following word:", font=('Arial', 20))
+    m_label.pack(side=Tkinter.TOP)
+    white_label = Tkinter.Label(window, text=" ", font=('Arial', 12))
+    white_label.pack(side=Tkinter.TOP)
+    word_label = Tkinter.Label(window, font=('Arial', 20))
+    word_label["text"] = m_word
+    word_label["fg"] = "red"
+    word_label.pack(side=Tkinter.TOP)
+
+    ###########################################
+    # validate input
+    validate_input = (window.register(val), '%P')
+    global m_entry
+    m_entry = Tkinter.Entry(window, validate="key", validatecommand=validate_input)
+    # m_entry = Tkinter.Entry()
+    m_entry.pack()
+    window.mainloop()
+m_entry = Tkinter.Entry()

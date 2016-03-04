@@ -1,4 +1,5 @@
 #!/usr/bin/python2
+# -*- coding: utf-8 -*-
 import socket
 import os
 import subprocess
@@ -31,7 +32,7 @@ def input_work():
     print("input work")
 
 
-# TODO
+# to do different work according to different instructions
 def assign_work(instructions):
     my_name = socket.gethostname()
     is_myself = False
@@ -41,6 +42,7 @@ def assign_work(instructions):
     if len(instructions) < 4:
         return
     else:
+        # split into command and member
         the_space = instructions.find(' ')
         if the_space == -1:
             command = instructions[0:]
@@ -56,7 +58,7 @@ def assign_work(instructions):
                     # print(my_name)
                     is_myself = True
 
-    # assign work
+    # if myself was mentioned , then do it
     if is_myself:
         works = {
             "open": open_ssg,
@@ -71,7 +73,7 @@ def assign_work(instructions):
 
 def main():
     host = ''
-    port = 24806
+    port = 24807
     address = (host, port)
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     s.bind(address)
@@ -83,5 +85,9 @@ def main():
         assign_work(data)
     s.close()
 
+click_work()
+click_work()
+click_work()
+click_work()
 input_work()
 main()
