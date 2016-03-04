@@ -3,6 +3,7 @@
 import socket
 import os
 import subprocess
+import threading
 import GUIForExperiment
 
 ssg_handle = 0
@@ -27,7 +28,18 @@ def click_work():
     print("click work")
 
 
+class ThreadForInputWork(threading.Thread):
+    def __init__(self):
+        threading.Thread.__init__(self)
+
+    def run(self):
+        GUIForExperiment.input_gui()
+
+
 def input_work():
+    # input_work_thread = ThreadForInputWork()
+    # input_work_thread.start()
+    # input_work_thread.join()
     GUIForExperiment.input_gui()
     print("input work")
 
@@ -87,7 +99,6 @@ def main():
 
 click_work()
 click_work()
-click_work()
-click_work()
+input_work()
 input_work()
 main()

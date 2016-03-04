@@ -5,39 +5,39 @@ import random
 
 
 def rand_word():
-    word_list={
-        1:"this",
-        2:"index",
-        3:"page",
-        4:"lists",
-        5:"same",
-        6:"change",
-        7:"intend",
-        8:"refer",
-        9:"today",
-        10:"rail",
-        11:"strike",
-        12:"stand",
-        13:"streets",
-        14:"start",
-        15:"china",
-        16:"gather",
-        17:"about",
-        18:"debate",
-        19:"night",
-        20:"after",
-        21:"block",
-        22:"losing",
-        23:"home",
-        24:"changes",
-        25:"where",
-        26:"health",
-        27:"replace",
-        28:"expect",
-        29:"paris",
-        30:"fashion",
-        31:"bring",
-        32:"include"
+    word_list = {
+        1: "this",
+        2: "index",
+        3: "page",
+        4: "lists",
+        5: "same",
+        6: "change",
+        7: "intend",
+        8: "refer",
+        9: "today",
+        10: "rail",
+        11: "strike",
+        12: "stand",
+        13: "streets",
+        14: "start",
+        15: "china",
+        16: "gather",
+        17: "about",
+        18: "debate",
+        19: "night",
+        20: "after",
+        21: "block",
+        22: "losing",
+        23: "home",
+        24: "changes",
+        25: "where",
+        26: "health",
+        27: "replace",
+        28: "expect",
+        29: "paris",
+        30: "fashion",
+        31: "bring",
+        32: "include"
     }
     index = random.randint(1, 32)
     the_word = word_list[index]
@@ -45,7 +45,7 @@ def rand_word():
 
 
 window = Tkinter.Tk()
-m_word = rand_word()
+m_word = ""
 
 
 ##################################################
@@ -74,13 +74,6 @@ m_button = Tkinter.Button()
 
 ##################################################
 # input work part
-def val(input_string):
-    if input_string == m_word:
-        global window
-        window.destroy()
-    return True
-
-
 def input_gui():
     global window
     try:
@@ -94,16 +87,29 @@ def input_gui():
     white_label = Tkinter.Label(window, text=" ", font=('Arial', 12))
     white_label.pack(side=Tkinter.TOP)
     word_label = Tkinter.Label(window, font=('Arial', 20))
+    global m_word
+    m_word = rand_word()
     word_label["text"] = m_word
     word_label["fg"] = "red"
     word_label.pack(side=Tkinter.TOP)
 
     ###########################################
     # validate input
-    validate_input = (window.register(val), '%P')
     global m_entry
-    m_entry = Tkinter.Entry(window, validate="key", validatecommand=validate_input)
-    # m_entry = Tkinter.Entry()
+    m_entry = Tkinter.Entry(window)
     m_entry.pack()
+
+    contents = Tkinter.StringVar()
+    contents.set("")
+    m_entry.config(textvariable=contents)
+
+    def validate_input(event):
+        # print contents.get()
+        global m_word
+        if contents.get() == m_word:
+            global window
+            window.destroy()
+    m_entry.bind('<Key-Return>', validate_input)
     window.mainloop()
+
 m_entry = Tkinter.Entry()
