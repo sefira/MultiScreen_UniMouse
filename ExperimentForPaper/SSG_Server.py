@@ -3,10 +3,10 @@
 import socket
 import os
 import subprocess
-import threading
 import GUIForExperiment
 
 ssg_handle = 0
+m_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 
 def open_ssg():
@@ -23,29 +23,18 @@ def close_ssg():
         ssg_handle.terminate()
 
 
-def click_work():
+def click_work(sender_address):
     GUIForExperiment.click_gui()
     print("click work")
 
 
-class ThreadForInputWork(threading.Thread):
-    def __init__(self):
-        threading.Thread.__init__(self)
-
-    def run(self):
-        GUIForExperiment.input_gui()
-
-
-def input_work():
-    # input_work_thread = ThreadForInputWork()
-    # input_work_thread.start()
-    # input_work_thread.join()
+def input_work(sender_address):
     GUIForExperiment.input_gui()
     print("input work")
 
 
 # to do different work according to different instructions
-def assign_work(instructions):
+def assign_work(instructions, sender_address):
     my_name = socket.gethostname()
     is_myself = False
 
@@ -72,33 +61,27 @@ def assign_work(instructions):
 
     # if myself was mentioned , then do it
     if is_myself:
-        works = {
-            "open": open_ssg,
-            "close": close_ssg,
-            "click": click_work,
-            "input": input_work
-            # TODO
-        }
-        if command in works:
-            works[command]()
+        if command == "open":
+            open_ssg()
+        if command == "close":
+            close_ssg()
+        if command == "click":
+            click_work(sender_address)
+        if command == "input":
+            input_work(sender_address)
 
 
 def main():
     host = ''
-    port = 24807
+    port = 24806
     address = (host, port)
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    s.bind(address)
+    m_socket.bind(address)
     while 1:
-        data, sender_address = s.recvfrom(2048)
+        data, sender_address = m_socket.recvfrom(2048)
         if not data:
             break
-        # print "got data from", sender_address
-        assign_work(data)
-    s.close()
+        print "got data from", sender_address
+        assign_work(data, sender_address)
+    m_socket.close()
 
-click_work()
-click_work()
-input_work()
-input_work()
 main()

@@ -21,15 +21,15 @@ def print_indication():
 def main():
     print_indication()
     receiver_address = ('255.255.255.255', 24806)
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    s.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+    m_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    m_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    m_socket.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
     while 1:
         data = raw_input()
         if not data:
             break
-        s.sendto(data, receiver_address)
-    s.close()
+        m_socket.sendto(data, receiver_address)
+    m_socket.close()
 
 
 main()
