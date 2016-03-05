@@ -62,7 +62,7 @@ def click_gui():
     except:
         window = Tkinter.Tk()
         window.title("Click Task")
-    window.geometry('300x180')
+    window.geometry('300x180+520+320')
     white_label = Tkinter.Label(window, text=" ", font=('Arial', 40))
     white_label.pack(side=Tkinter.TOP)
     global m_button
@@ -81,7 +81,7 @@ def input_gui():
     except:
         window = Tkinter.Tk()
         window.title("Input Task")
-    window.geometry('400x180')
+    window.geometry('400x180+520+320')
     m_label = Tkinter.Label(window, text="Please enter the following word:", font=('Arial', 20))
     m_label.pack(side=Tkinter.TOP)
     white_label = Tkinter.Label(window, text=" ", font=('Arial', 12))

@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import socket
 import random
+import time
 
 
 def print_indication():
@@ -13,7 +14,7 @@ def print_indication():
         so we can use openBDH or open
     b.close sb.: close SSG(SwitchScreenbyGaze) in machine
     c.click : to create mouse click work
-    d.# TODO
+    d.input : to create input word work
     now please input your instructions
     """
     print(indication)
@@ -65,12 +66,15 @@ def main():
             m_socket.sendto(data, servant_address)
         if command == "click" or command == "input":
             shuffled_member_list = random_member_list()
+            start_time = time.time()
             for member in shuffled_member_list:
                 data = command + " " + member
                 m_socket.sendto(data, servant_address)
                 # wait servant finish work
                 data, response_address = m_socket.recvfrom(2048)
                 # print data
+            end_time = time.time()
+            print "this task cost %f second" % (end_time - start_time)
 
     m_socket.close()
 
