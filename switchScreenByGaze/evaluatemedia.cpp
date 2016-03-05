@@ -417,6 +417,11 @@ int EvaluateMedia::TrackingFaceFastModeWithoutTamplateMatching()
 		//cout << cnn_deviation << endl;
 		//cout << skin_deviation << endl;
 		//cout << angle_deviation << endl;
+		//3000 means cnn_deviation + skin_deviation + angle_deviation
+		if (deviation > 65 && deviation < 3000)
+		{
+			deviation = 4000;
+		}
 		cout << deviation << endl;
 		//cv::imshow("Tracking result", frame);
 		cv::waitKey(TIMEINTERVAL);
