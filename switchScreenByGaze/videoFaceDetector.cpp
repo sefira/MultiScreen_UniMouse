@@ -208,8 +208,18 @@ void VideoFaceDetector::detectFaceAroundRoi(const cv::Mat &frame)
 		int neighbors = p[4];
 		int angle = p[5];
 
-		cv::Rect face_rect = cv::Rect(p[0], p[1], p[2], p[3]);
-		m_allFaces.push_back(cv::Rect(p[0], p[1], p[2], p[3]));
+		printf("face_rect=[%d, %d, %d, %d], neighbors=%d, angle=%d\n", x, y, w, h, neighbors, angle);
+
+		cv::Rect temp_face = cv::Rect(p[0], p[1], p[2], p[3]);
+		if (0 <= temp_face.x && 0 <= temp_face.width && temp_face.x + temp_face.width <= frame.cols &&
+			0 <= temp_face.y && 0 <= temp_face.height && temp_face.y + temp_face.height <= frame.rows)
+		{
+			m_allFaces.push_back(temp_face);
+		}
+		else
+		{
+			continue;
+		}
 		//cv::rectangle(frame, face_rect, cv::Scalar(0, 0, 255));		
 	}
 

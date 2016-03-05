@@ -191,7 +191,7 @@ unsigned int __stdcall Computer::InterfacetoEvaluateMedia(void *)
 	cout << "Client start tracking face" << endl;
 	EvaluateMedia m_evaluatemedia = EvaluateMedia();
 	//m_evaluatemedia.TrackingFace();
-	m_evaluatemedia.TrackingFaceFastMode();
+	m_evaluatemedia.TrackingFaceFastModeWithoutTamplateMatching();
 	//cout << m_evaluatemedia.GetDeviation() << endl;
 
 	//test

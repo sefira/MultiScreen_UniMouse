@@ -28,6 +28,8 @@ THE SOFTWARE.
 #include <limits>
 
 #include "cv.h"
+#include "facedetect-dll.h"
+#pragma comment(lib,"libfacedetect.lib")
 
 #include "computercomponent.h"
 #include "videoFaceDetector.h"
@@ -121,18 +123,21 @@ double EvaluateMedia::Evaluate()
 	{
 		if (!faces.empty())
 		{
-			if (faces[0].area() < 10000)
+			//cout << faces[0].area() << endl;
+			if (faces[0].area() < 27000)
 			{
 				return temp_deviation;
 			}
-
-			if ((faces[0].width / faces[0].height) > (5 / 7) && (faces[0].width / faces[0].height) < (7 / 5))
+			double face_height = faces[0].height;
+			double face_width = faces[0].width;
+			//cout << face_width << endl;
+			//cout << face_height << endl;
+			//cout << face_width / face_height << endl;
+			if ((face_width / face_height) > (5 / 7) && (face_width / face_height) < (7 / 5))
 			{
 				cout << "the face's width is not to scale in relation height" << endl;
 				return temp_deviation;
 			}
-			int face_height = faces[0].height;
-			int face_width = faces[0].width;
 			cv::Mat mask_leftdown = cv::Mat::zeros(face_height, face_width, CV_8U);
 			cv::Mat mask_rightdown = cv::Mat::zeros(face_height, face_width, CV_8U);
 
@@ -155,7 +160,7 @@ double EvaluateMedia::Evaluate()
 			cv::Mat face_frame_src = cv::Mat(frame, faces[0]);
 			cv::Mat face_frame_dst;
 			SkinDetect(face_frame_src, face_frame_dst);
-			cv::imshow("face_frame", face_frame_dst);
+			//cv::imshow("face_frame", face_frame_dst);
 			cv::meanStdDev(face_frame_dst, mean_leftdown, stddev_leftdown, mask_leftdown);
 			cv::meanStdDev(face_frame_dst, mean_rightdown, stddev_rightdown, mask_rightdown);
 			cv::meanStdDev(face_frame_dst, mean_all, stddev_all);
@@ -258,10 +263,12 @@ int EvaluateMedia::TrackingFace()
 			//	cout << face.area() << endl;
 			//}
 		}
-		deviation = Evaluate();
+		double cnn_deviation = EvaluateByCNN();
+		double skin_deviation = Evaluate();
+		deviation = cnn_deviation + skin_deviation;
 		//cout << deviation << endl;
 		//cv::imshow("Tracking result", frame);
-		Sleep(TIMEINTERVAL);
+		cv::waitKey(TIMEINTERVAL);
 	}
 	
 	return 0;
@@ -274,7 +281,7 @@ double EvaluateMedia::EvaluateByCNN()
 	{
 		if (!faces.empty())
 		{
-			if (faces[0].area() < 10000)
+			if (faces[0].area() < 27000)
 			{
 				return temp_deviation;
 			}
@@ -291,7 +298,7 @@ double EvaluateMedia::EvaluateByCNN()
 				cout << e.what() << endl;
 				return 1;
 			}
-			cv::imshow("switch_screen To CNN", to_cnn);
+			//cv::imshow("switch_screen To CNN", to_cnn);
 			temp_deviation = m_cnnheadpose.Recognize(to_cnn);
 			//cout << temp_deviation << endl;
 			return abs(temp_deviation);
@@ -321,9 +328,7 @@ int EvaluateMedia::TrackingFaceFastMode()
 	while (1)
 	{
 		m_detector >> frame;
-
 		cv::cvtColor(frame, gray_image, cv::COLOR_BGR2GRAY);
-		//cv::imshow("Gray image", gray_image);
 
 		faces.clear();
 		cv::Rect temp_face = m_detector.face();
@@ -340,12 +345,6 @@ int EvaluateMedia::TrackingFaceFastMode()
 		if (!faces.empty())
 		{
 			sort(faces.begin(), faces.end(), littlerface);
-			//cout << "in the beginning:" << endl;
-			//for (cv::Rect face : faces)
-			//{
-			//cv::rectangle(gray_image, faces[0], cv::Scalar(0, 0, 255), 2);
-			//cout << face.area() << endl;
-			//}
 		}
 		double cnn_deviation = EvaluateByCNN();
 		double skin_deviation = Evaluate();
@@ -353,8 +352,74 @@ int EvaluateMedia::TrackingFaceFastMode()
 		//cout << "evaluated by cnn :" << cnn_deviation << endl;
 		//cout << "evaluated by skin:" << skin_deviation << endl;
 		//cout << deviation << endl;
-		//cv::imshow("Tracking result", gray_image);
-		Sleep(TIMEINTERVAL);
+		cv::imshow("Tracking result", gray_image);
+		cv::waitKey(TIMEINTERVAL);
+	}
+
+	return 0;
+}
+
+int EvaluateMedia::TrackingFaceFastModeWithoutTamplateMatching()
+{
+	cout << "Camera is " << m_videocapture.isOpened() << endl;
+	if (!m_videocapture.isOpened())
+	{
+		cout << "Camera is not Opened, Please check the Webcam!" << endl;
+		return 1;
+	}
+	while (1)
+	{
+		m_videocapture >> frame;
+		cv::cvtColor(frame, gray_image, cv::COLOR_BGR2GRAY);
+
+		//m_cascadeclassifier.detectMultiScale(gray_image, faces);
+		int * pResults = NULL;
+		pResults = facedetect_multiview_reinforce((unsigned char*)(gray_image.ptr(0)), gray_image.cols, gray_image.rows, gray_image.step, 1.2f, 2, 5);
+		//printf("%d reinforced multiview faces detected.\n", (pResults ? *pResults : 0));		
+
+		//print the detection results	
+		faces.clear();
+		double face_angle = 1000;
+		for (int i = 0; i < (pResults ? *pResults : 0); i++)
+		{
+			short * p = ((short*)(pResults + 1)) + 6 * i;
+			int x = p[0];
+			int y = p[1];
+			int w = p[2];
+			int h = p[3];
+			int neighbors = p[4];
+			int angle = p[5];
+
+			//printf("face_rect=[%d, %d, %d, %d], neighbors=%d, angle=%d\n", x, y, w, h, neighbors, angle);
+
+			cv::Rect temp_face = cv::Rect(p[0], p[1], p[2], p[3]);
+			if (0 <= temp_face.x && 0 <= temp_face.width && temp_face.x + temp_face.width <= frame.cols &&
+				0 <= temp_face.y && 0 <= temp_face.height && temp_face.y + temp_face.height <= frame.rows)
+			{
+				cv::rectangle(frame, temp_face, cv::Scalar(0, 0, 255), 2);
+				faces.push_back(temp_face);
+				face_angle = p[5];
+			}
+			else
+			{
+				continue;
+			}
+		}
+
+		if (!faces.empty())
+		{
+			sort(faces.begin(), faces.end(), littlerface);
+		}
+		double cnn_deviation = EvaluateByCNN();
+		double skin_deviation = Evaluate();
+		double angle_deviation = abs(face_angle);
+		deviation = cnn_deviation + skin_deviation + angle_deviation;
+		//cout << cnn_deviation << endl;
+		//cout << skin_deviation << endl;
+		//cout << angle_deviation << endl;
+		cout << deviation << endl;
+		//cv::imshow("Tracking result", frame);
+		cv::waitKey(TIMEINTERVAL);
 	}
 
 	return 0;

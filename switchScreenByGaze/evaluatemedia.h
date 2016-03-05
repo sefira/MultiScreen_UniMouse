@@ -60,6 +60,7 @@ public:
 	double EvaluateByCNN();
 	//for CNN
 	int TrackingFaceFastMode();
+	int TrackingFaceFastModeWithoutTamplateMatching();
 
 private:
 	//landmark model file name
