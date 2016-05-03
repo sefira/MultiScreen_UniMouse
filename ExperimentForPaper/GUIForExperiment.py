@@ -62,7 +62,10 @@ def click_gui():
     except:
         window = Tkinter.Tk()
         window.title("Click Task")
-    window.geometry('300x180+520+320')
+    window_offset_x = random.randint(1, 100) + 500
+    window_offset_y = random.randint(1, 100) + 300
+    window_position = '300x180+%d+%d' % (window_offset_x, window_offset_y)
+    window.geometry(window_position)
     white_label = Tkinter.Label(window, text=" ", font=('Arial', 40))
     white_label.pack(side=Tkinter.TOP)
     global m_button

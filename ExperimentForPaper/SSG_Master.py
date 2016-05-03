@@ -33,7 +33,8 @@ def random_member_list():
         9: "L",
         10: "R",
     }
-    member_order = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    # member_order = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    member_order = [1, 2, 3, 4, 5]
     random.shuffle(member_order)
     shuffled_member_list = []
     for member_num in member_order:

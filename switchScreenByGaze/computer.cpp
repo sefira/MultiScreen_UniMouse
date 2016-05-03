@@ -216,6 +216,12 @@ int Computer::SendDeviation()
 	while (1)
 	{
 		double deviation = QueryDeviation();
+		if (strcmp(local_hostname, "Rajesh-PC") == 0)
+		{
+			deviation = deviation * 2.0;
+			//cout << "shift" << endl;
+		}
+
 		//cout << deviation << endl;
 		char sendbuf[128];
 		sendbuf[0] = 'D';

@@ -253,11 +253,16 @@ int ComputerMonitor::BegintoWork()
 
 int ComputerMonitor::DetermineActivated()
 {
+
+#include<time.h>  
+long beginTime = 0;
+long endTime = 0;
 	int minmum_dev;
 	int activated_num = 0;
 	int original_activated_num = 0;
 	while (1)
 	{
+beginTime = endTime;
 		if (computers_vector.empty())
 		{
 			return 1;
@@ -289,6 +294,8 @@ int ComputerMonitor::DetermineActivated()
 					computers_vector.at(activated_num).evaluate_point << endl;*/
 				SetConsoleColor(INITCOLOR);
 				m_keyboard_simulater.SwitchScreentoFX(activated_num);
+endTime = clock();
+//cout << "DetermineActivated time:" << endTime - beginTime << endl;
 			}
 		}
 		Sleep(TIMEINTERVAL);

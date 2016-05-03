@@ -17,7 +17,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,  
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
@@ -42,7 +42,7 @@ const string EvaluateMedia::kAlt2 = "haarcascade_frontalface_alt2.xml";
 const string EvaluateMedia::kTestImage = "lena.png";
 double EvaluateMedia::deviation = 1000;
 
-EvaluateMedia::EvaluateMedia() 
+EvaluateMedia::EvaluateMedia()
 {
 	m_videocapture = cv::VideoCapture(0);
 	m_cascadeclassifier = cv::CascadeClassifier(kAlt2);
@@ -259,7 +259,7 @@ int EvaluateMedia::TrackingFace()
 			//cout << "in the beginning:" << endl;
 			//for (cv::Rect face : faces)
 			//{
-				//cv::rectangle(frame, faces[0], cv::Scalar(0, 0, 255), 2);
+			//cv::rectangle(frame, faces[0], cv::Scalar(0, 0, 255), 2);
 			//	cout << face.area() << endl;
 			//}
 		}
@@ -270,7 +270,7 @@ int EvaluateMedia::TrackingFace()
 		//cv::imshow("Tracking result", frame);
 		cv::waitKey(TIMEINTERVAL);
 	}
-	
+
 	return 0;
 }
 
@@ -292,7 +292,7 @@ double EvaluateMedia::EvaluateByCNN()
 			}
 			catch (exception& e)
 			{
-				cout << "frame.cols:" << frame.cols << " frame.rows:"  << frame.rows << endl;
+				cout << "frame.cols:" << frame.cols << " frame.rows:" << frame.rows << endl;
 				cout << "gray_image.cols:" << gray_image.cols << " gray_image.rows:" << gray_image.rows << endl;
 				cout << "faces[0].x:" << faces[0].x << " faces[0].y:" << faces[0].y << " faces[0].width:" << faces[0].width << " faces[0].height:" << faces[0].height << endl;
 				cout << e.what() << endl;
@@ -326,13 +326,13 @@ int EvaluateMedia::TrackingFaceFastMode()
 	}
 
 	while (1)
-	{
+	{ 
 		m_detector >> frame;
 		cv::cvtColor(frame, gray_image, cv::COLOR_BGR2GRAY);
 
 		faces.clear();
 		cv::Rect temp_face = m_detector.face();
-		if (0 <= temp_face.x && 0 <= temp_face.width && temp_face.x + temp_face.width <= frame.cols && 
+		if (0 <= temp_face.x && 0 <= temp_face.width && temp_face.x + temp_face.width <= frame.cols &&
 			0 <= temp_face.y && 0 <= temp_face.height && temp_face.y + temp_face.height <= frame.rows)
 		{
 			faces.push_back(temp_face);
@@ -352,7 +352,7 @@ int EvaluateMedia::TrackingFaceFastMode()
 		//cout << "evaluated by cnn :" << cnn_deviation << endl;
 		//cout << "evaluated by skin:" << skin_deviation << endl;
 		//cout << deviation << endl;
-		cv::imshow("Tracking result", gray_image);
+		//cv::imshow("Tracking result", gray_image);
 		cv::waitKey(TIMEINTERVAL);
 	}
 
@@ -367,8 +367,12 @@ int EvaluateMedia::TrackingFaceFastModeWithoutTamplateMatching()
 		cout << "Camera is not Opened, Please check the Webcam!" << endl;
 		return 1;
 	}
+#include<time.h>  
+long beginTime = 0;
+long endTime = 0;
 	while (1)
 	{
+beginTime = clock();//获得开始时间，单位为毫秒
 		m_videocapture >> frame;
 		cv::cvtColor(frame, gray_image, cv::COLOR_BGR2GRAY);
 
@@ -414,6 +418,8 @@ int EvaluateMedia::TrackingFaceFastModeWithoutTamplateMatching()
 		double skin_deviation = Evaluate();
 		double angle_deviation = abs(face_angle);
 		deviation = cnn_deviation + skin_deviation + angle_deviation;
+endTime = clock();//获得结束时间  
+//cout << "evaluatemedia time:" << endTime - beginTime << endl;
 		//cout << cnn_deviation << endl;
 		//cout << skin_deviation << endl;
 		//cout << angle_deviation << endl;
@@ -423,7 +429,7 @@ int EvaluateMedia::TrackingFaceFastModeWithoutTamplateMatching()
 			deviation = 4000;
 		}
 		cout << deviation << endl;
-		//cv::imshow("Tracking result", frame);
+		cv::imshow("Tracking result", frame);
 		cv::waitKey(TIMEINTERVAL);
 	}
 
