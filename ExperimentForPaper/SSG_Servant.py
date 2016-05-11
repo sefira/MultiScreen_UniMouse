@@ -13,6 +13,7 @@ def open_ssg():
     print("open ssg")
     global ssg_handle
     ssg_path = os.path.split(os.path.realpath(__file__))[0] + "\\switchScreenByGaze.exe"
+    #print(ssg_path)
     ssg_handle = subprocess.Popen(ssg_path)
 
 

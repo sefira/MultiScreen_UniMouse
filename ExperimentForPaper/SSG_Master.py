@@ -7,12 +7,13 @@ import time
 
 def print_indication():
     indication = """
-    1.there are servant: Bernadette\Davy\Howard\Leonard\Rajesh
-    use B\D\H\L\R to represent\n
+    1.there are servant: Amy\Bernadette\Davy\Howard\Leonard\Penny\Rajesh\Tom
+    use A\B\D\H\L\P\R\T to represent\n
     2.there are instructions:
     a.open sb.: open SSG(SwitchScreenbyGaze) in machine
-        so we can use openBDH or open
+        so we can use "open BDH" or "open" to open somebody or all
     b.close sb.: close SSG(SwitchScreenbyGaze) in machine
+        as well as open sb.
     c.click : to create mouse click work
     d.input : to create input word work
     now please input your instructions
@@ -22,19 +23,26 @@ def print_indication():
 
 def random_member_list():
     member_list = {
-        1: "B",  # Bernadette
-        2: "D",  # Davy
-        3: "H",  # Howard
-        4: "L",  # Leonard
-        5: "R",  # Rajesh
-        6: "B",
-        7: "D",
-        8: "H",
-        9: "L",
-        10: "R",
+        1: "A",  # Amy
+        2: "B",  # Bernadette
+        3: "D",  # Davy
+        4: "H",  # Howard
+        5: "L",  # Leonard
+        6: "P",  # Penny
+        7: "R",  # Rajesh
+        8: "T",  # Tom
+        
+        9: "A",  # Amy
+        10: "B",  # Bernadette
+        11: "D",  # Davy
+        12: "H",  # Howard
+        13: "L",  # Leonard
+        14: "P",  # Penny
+        15: "R",  # Rajesh
+        16: "T",  # Tom
     }
-    # member_order = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-    member_order = [1, 2, 3, 4, 5]
+    # member_order = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+    member_order = [1, 2, 3, 4, 5, 6, 7, 8]
     random.shuffle(member_order)
     shuffled_member_list = []
     for member_num in member_order:
